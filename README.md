@@ -35,6 +35,9 @@ train.zip contains 6 different csv files apart from the data dictionary as descr
 
 ### Modeling 
 
+[[16088  2418]]
+ [[ 9349  7394]]
+
 
 ---
 
