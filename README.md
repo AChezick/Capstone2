@@ -96,6 +96,10 @@ Given my goal is to ensure all patients have a good experience , there has to be
 | Yes Attendance                 | .62      | .57       | .76    | .65      | 
 
 
+| Logistic Regression alpha = .56 | Accuracy | Precision | Recall | f1-Score |
+|---------------------------------|----------|-----------|--------|----------|
+| NO Attendance                   | .65      | .61       | .92    | .74      |
+| Yes Attendance                  | .65      | .80       | .36    | .49      |
 
 
 #### Results from PCA 
