@@ -66,6 +66,12 @@ train.zip contains 6 different csv files apart from the data dictionary as descr
 There were imbalanced classes among potential health fair attendies. However, this ratio was propotionally split and the train test ratios were smaller.
 There were 18 NO, and 16000 in the yes. Thus 8,000 patients were in both the train and test group provided by the company. 
 
+|              | Total | Train | Test  | Overlap (Multi-Attends)  |
+|--------------|-------|-------|-------|--------------------------|
+| Yes Attended | 26565 | 45275 | 16743 | 28532                    |
+| No           | 11068 | 30003 | 18506 | 11497                    |
+
+
 show attendies 0/ 1
 
 The additional features provided by MedCamp were deffenitally imbalanced and colinear 
