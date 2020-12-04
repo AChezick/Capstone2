@@ -90,10 +90,12 @@ Given my goal is to ensure all patients have a good experience , there has to be
 
 #### Results from the Logistic Regression after creating features, one-hot encoding, scaling 
 
-| Accuracy   | .68 |
-|------------|-----|
-| Precision  | .74 |
-| Recall     | .71 |
+| Random Forest 200 Trees | Accuracy | Precision | Recall | f1-Score |
+|--------------------------------|----------|-----------|--------|----------|
+| NO Attendance                  | .62      | .69       | .49    | .57      |
+| Yes Attendance                 | .62      | .57       | .76    | .65      | 
+
+
 
 
 #### Results from PCA 
