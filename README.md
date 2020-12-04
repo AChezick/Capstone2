@@ -87,6 +87,12 @@ The additional features provided by MedCamp were imbalanced and co-linear
 
 Given my goal is to ensure all patients have a good experience , there has to be extra supplies. However, having accurate predictions means we can be confident in having just enough extra supplies thus covering both goals. 
 
+| Accuracy   | .68 |
+|------------|-----|
+| Precision  | .74 |
+| Recall     | .71 |
+
+
 #### Results from PCA 
 ![]( https://github.com/AChezick/Capstone2/blob/main/images/PCA_7.png ) 
  
