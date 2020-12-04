@@ -71,8 +71,7 @@ There were 18 NO, and 16000 in the yes. Thus 8,000 patients were in both the tra
 | Yes Attended   | 26565 | 45275 | 16743 | 28532                    |
 | No             | 11068 | 30003 | 18506 | 11497                    | 
 
-
-show attendies 0/ 1
+(https://github.com/AChezick/Capstone2/blob/main/images/attendance_counts.png ) 
 
 The additional features provided by MedCamp were deffenitally imbalanced and colinear 
 
