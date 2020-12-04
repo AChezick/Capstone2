@@ -1,4 +1,4 @@
-# Capstone2
+# Are you going? I am not sure ... 
 
 The goal of my project was to help MedCamp -a healthfair provider company – reduce wasteful spending AND maintain quality experiences of attendies by accuretly predcting who will and will not attend a healthfare events.
 
