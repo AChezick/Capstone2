@@ -87,6 +87,9 @@ The additional features provided by MedCamp were imbalanced and co-linear
 
 Given my goal is to ensure all patients have a good experience , there has to be extra supplies. However, having accurate predictions means we can be confident in having just enough extra supplies thus covering both goals. 
 
+--- 
+
+Results from the Logistic Regression after creating features, one-hot encoding, and scaling 
 | Accuracy   | .68 |
 |------------|-----|
 | Precision  | .74 |
