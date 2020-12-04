@@ -17,94 +17,44 @@ train.zip contains 6 different csv files apart from the data dictionary as descr
 **Train.csv** – File containing registration details for all the test camps. This includes PatientID, HealthCampID, RegistrationDate and a few anonymized variables as on registration date.
 
 ---
-<style type="text/css">
-.tg  {border-collapse:collapse;border-spacing:0;}
-.tg td{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;
-  overflow:hidden;padding:10px 5px;word-break:normal;}
-.tg th{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;
-  font-weight:normal;overflow:hidden;padding:10px 5px;word-break:normal;}
-.tg .tg-0lax{text-align:left;vertical-align:top}
-</style>
-<table class="tg">
-<thead>
-  <tr>
-    <th class="tg-0lax"></th>
-    <th class="tg-0lax">Patient_ID</th>
-    <th class="tg-0lax">Health_Camp_ID</th>
-    <th class="tg-0lax">Registration_Date</th>
-    <th class="tg-0lax">Var1</th>
-    <th class="tg-0lax">Var2</th>
-    <th class="tg-0lax">Var3</th>
-    <th class="tg-0lax">Var4</th>
-    <th class="tg-0lax">Var5</th>
-  </tr>
-</thead>
-<tbody>
-  <tr>
-    <td class="tg-0lax">0</td>
-    <td class="tg-0lax">489652</td>
-    <td class="tg-0lax">6578</td>
-    <td class="tg-0lax">10-Sep-05</td>
-    <td class="tg-0lax">4</td>
-    <td class="tg-0lax">0</td>
-    <td class="tg-0lax">0</td>
-    <td class="tg-0lax">0</td>
-    <td class="tg-0lax">2</td>
-  </tr>
-  <tr>
-    <td class="tg-0lax">1</td>
-    <td class="tg-0lax">507246</td>
-    <td class="tg-0lax">6578</td>
-    <td class="tg-0lax">18-Aug-05</td>
-    <td class="tg-0lax">45</td>
-    <td class="tg-0lax">5</td>
-    <td class="tg-0lax">0</td>
-    <td class="tg-0lax">0</td>
-    <td class="tg-0lax">7</td>
-  </tr>
-  <tr>
-    <td class="tg-0lax">2</td>
-    <td class="tg-0lax">523729</td>
-    <td class="tg-0lax">6534</td>
-    <td class="tg-0lax">29-Apr-06</td>
-    <td class="tg-0lax">0</td>
-    <td class="tg-0lax">0</td>
-    <td class="tg-0lax">0</td>
-    <td class="tg-0lax">0</td>
-    <td class="tg-0lax">0</td>
-  </tr>
-  <tr>
-    <td class="tg-0lax">3</td>
-    <td class="tg-0lax">524931</td>
-    <td class="tg-0lax">6535</td>
-    <td class="tg-0lax">07-Feb-04</td>
-    <td class="tg-0lax">0</td>
-    <td class="tg-0lax">0</td>
-    <td class="tg-0lax">0</td>
-    <td class="tg-0lax">0</td>
-    <td class="tg-0lax">0</td>
-  </tr>
-  <tr>
-    <td class="tg-0lax">4</td>
-    <td class="tg-0lax">521364</td>
-    <td class="tg-0lax">6529</td>
-    <td class="tg-0lax">28-Feb-06</td>
-    <td class="tg-0lax">15</td>
-    <td class="tg-0lax">1</td>
-    <td class="tg-0lax">0</td>
-    <td class="tg-0lax">0</td>
-    <td class="tg-0lax">7</td>
-  </tr>
-</tbody>
-</table>
+
+|   | Patient_ID | Health_Camp_ID | Registration_Date | Var1 | Var2 | Var3 | Var4 | Var5 |
+|---|------------|----------------|-------------------|------|------|------|------|------|
+| 0 | 489652     | 6578           | 10-Sep-05         | 4    | 0    | 0    | 0    | 2    |
+| 1 | 507246     | 6578           | 18-Aug-05         | 45   | 5    | 0    | 0    | 7    |
+| 2 | 523729     | 6534           | 29-Apr-06         | 0    | 0    | 0    | 0    | 0    |
+| 3 | 524931     | 6535           | 07-Feb-04         | 0    | 0    | 0    | 0    | 0    |
+| 4 | 521364     | 6529           | 28-Feb-06         | 15   | 1    | 0    | 0    | 7    | 
 
 --- 
 
-
 **Patient_Profile.csv** – This file contains Patient profile details like PatientID, OnlineFollower, Social media details, Income, Education, Age, FirstInteractionDate, CityType and EmployerCategory
-      
+
+--- 
+|   | Patient_ID | Online_Follower | LinkedIn_Shared | Twitter_Shared | Facebook_Shared | Income | Education_Score | Age | First_Interaction | City_Type | Employer_Category |
+|---|------------|-----------------|-----------------|----------------|-----------------|--------|-----------------|-----|-------------------|-----------|-------------------|
+| 0 | 516956     | 0               | 0               | 0              | 0               | 1      | 90              | 39  | 18-Jun-03         |           | Software Industry |
+| 1 | 507733     | 0               | 0               | 0              | 0               | 1      | None            | 40  | 20-Jul-03         | H         | Software Industry |
+| 2 | 508307     | 0               | 0               | 0              | 0               | 3      | 87              | 46  | 02-Nov-02         | D         | BFSI              |
+| 3 | 512612     | 0               | 0               | 0              | 0               | 1      | 75              | 47  | 02-Nov-02         | D         | Education         |
+| 4 | 521075     | 0               | 0               | 0              | 0               | 3      | None            | 80  | 24-Nov-02         | H         | Others            
+
+ ---      
 
 **First_Health_Camp_Attended.csv** – This file contains details about people who attended health camp of first format. This includes Donation (amount) & Health_Score of the person.
+
+--- 
+
+|   | Patient_ID | Health_Camp_ID | Donation | Health_Score | Unnamed: 4 |
+|---|------------|----------------|----------|--------------|------------|
+| 0 | 506181     | 6560           | 40       | 0.43902439   |            |
+| 1 | 494977     | 6560           | 20       | 0.097560976  |            |
+| 2 | 518680     | 6560           | 10       | 0.048780488  |            |
+| 3 | 509916     | 6560           | 30       | 0.634146341  |            |
+| 4 | 488006     | 6560           | 20       | 0.024390244  |            |
+
+---
+
 
 **Second_Health_Camp_Attended.csv** - This file contains details about people who attended health camp of second format. This includes Health_Score of the person.
 
