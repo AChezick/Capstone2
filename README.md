@@ -119,4 +119,4 @@ However, knowing these components might be important for MedCamp.
 There are more features which can be extracted from the raw data which might be helpful. Specifically aspects of when someone signed up for an event and if they attended. 
 
 #### Models to try
-Since this data is no descriptive black-box models are OK to use. Implementing and optimization a neural network is likely to produce good results. Learning how to use XDGBoost is also likely to improve prediction score. 
+Since this data is not descriptive black-box models are OK to use. Implementing and optimization a neural network is likely to produce good results. Learning how to use XDGBoost is also likely to improve prediction score. 
