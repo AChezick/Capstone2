@@ -1,6 +1,6 @@
 # Capstone2
 
-The goal of my project is to help MedCamp -a healthfair provider company – reduce wasteful spending AND maintain quality experiences of attendies by accuretly predcting who will and will not attend a healthfare. Specifically reducing false positives and negaitves. 
+The goal of my project was to help MedCamp -a healthfair provider company – reduce wasteful spending AND maintain quality experiences of attendies by accuretly predcting who will and will not attend a healthfare events.
 
 --- 
 
@@ -66,6 +66,7 @@ train.zip contains 6 different csv files apart from the data dictionary as descr
 ### EDA
 
 
+
 ---
 
 
@@ -74,7 +75,8 @@ train.zip contains 6 different csv files apart from the data dictionary as descr
 [[16088  2418]]
  [[ 9349  7394]]
 
-
+ Specifically reducing false positives and negaitves. 
+ 
 ---
 
 
