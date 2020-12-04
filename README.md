@@ -79,7 +79,6 @@ The additional features provided by MedCamp were imbalanced and co-linear
 ![]( https://github.com/AChezick/Capstone2/blob/main/images/hist_online_features.png ) 
 
 
-
 ---
 
 
@@ -89,7 +88,8 @@ Given my goal is to ensure all patients have a good experience , there has to be
 
 --- 
 
-Results from the Logistic Regression after creating features, one-hot encoding, and scaling 
+#### Results from the Logistic Regression after creating features, one-hot encoding, scaling 
+
 | Accuracy   | .68 |
 |------------|-----|
 | Precision  | .74 |
@@ -98,9 +98,9 @@ Results from the Logistic Regression after creating features, one-hot encoding, 
 
 #### Results from PCA 
 ![]( https://github.com/AChezick/Capstone2/blob/main/images/PCA_7.png ) 
- 
----
 
+---
+ 
 
 ### Next Steps
-There are more features which can be extracted from the raw data.
+There are more features which can be extracted from the raw data which might be helpful. Specifically aspects of when someone signed up for an event and if they attended. 
