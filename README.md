@@ -99,6 +99,10 @@ Given my goal is to ensure all patients have a good experience , there has to be
 #### Results from PCA 
 ![]( https://github.com/AChezick/Capstone2/blob/main/images/PCA_7.png ) 
 
+The most important components were columns 1,2,4,5,24. 
+The raw data has no information on what columns 1,2,4,5 are or what the numbers mean. Column 24 points to a city of one of the heathfairs.
+However, knowing these components might be important for MedCamp.
+
 ---
  
 
