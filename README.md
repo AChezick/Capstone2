@@ -7,8 +7,7 @@ The goal of my project was to help MedCamp -a healthfair provider company – re
 ## Data 
 This project, Healthcare Analytics, came from [Kaggle](https://www.kaggle.com/vin1234/janatahack-healthcare-analytics?select=Train) 
 
-#### Kaggle Description 
-
+##### Kaggle Description 
 
 train.zip contains 6 different csv files apart from the data dictionary as described below:
 
@@ -55,7 +54,6 @@ train.zip contains 6 different csv files apart from the data dictionary as descr
 
 ---
 
-
 **Second_Health_Camp_Attended.csv** - This file contains details about people who attended health camp of second format. This includes Health_Score of the person.
 
 **Third_Health_Camp_Attended.csv** - This file contains details about people who attended health camp of third format. This includes Numberofstallvisited & LastStallVisitedNumber.
@@ -64,6 +62,15 @@ train.zip contains 6 different csv files apart from the data dictionary as descr
 
 
 ### EDA
+
+There were imbalanced classes among potential health fair attendies. However, this ratio was propotionally split and the train test ratios were smaller.
+There were 18 NO, and 16000 in the yes. Thus 8,000 patients were in both the train and test group provided by the company. 
+
+show attendies 0/ 1
+
+The additional features provided by MedCamp were deffenitally imbalanced and colinear 
+
+show hist plot
 
 
 
