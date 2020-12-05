@@ -44,13 +44,13 @@ train.zip contains 6 different csv files apart from the data dictionary as descr
 
 --- 
 
-|   | Patient_ID | Health_Camp_ID | Donation | Health_Score | Unnamed: 4 |
-|---|------------|----------------|----------|--------------|------------|
-| 0 | 506181     | 6560           | 40       | 0.43902439   |            |
-| 1 | 494977     | 6560           | 20       | 0.097560976  |            |
-| 2 | 518680     | 6560           | 10       | 0.048780488  |            |
-| 3 | 509916     | 6560           | 30       | 0.634146341  |            |
-| 4 | 488006     | 6560           | 20       | 0.024390244  |            |
+|   | Patient_ID | Health_Camp_ID | Donation | Health_Score | 
+|---|------------|----------------|----------|--------------|
+| 0 | 506181     | 6560           | 40       | 0.43902439   |            
+| 1 | 494977     | 6560           | 20       | 0.097560976  |            
+| 2 | 518680     | 6560           | 10       | 0.048780488  |            
+| 3 | 509916     | 6560           | 30       | 0.634146341  |            
+| 4 | 488006     | 6560           | 20       | 0.024390244  |            
 
 ---
 
@@ -58,26 +58,24 @@ train.zip contains 6 different csv files apart from the data dictionary as descr
 
 **Third_Health_Camp_Attended.csv** - This file contains details about people who attended health camp of third format. This includes Numberofstallvisited & LastStallVisitedNumber.
 
-**Test.csv** – File containing registration details for all the camps done after 1st April 2006. This includes PatientID, HealthCampID, RegistrationDate and a few anonymized variables as on registration date. Participant should make predictions for these patient camp combinations
-
+**Test.csv** – File containing registration details for all the camps done after 1st April 2006. This includes PatientID, HealthCampID, RegistrationDate and a few anonymized variables as on registration date. 
 
 ### EDA
 
-There were imbalanced classes among potential health fair attendees. However, this ratio was more balanced in split and the train test ratios were smaller.
-There were 18 NO, and 16000 in the yes. Thus 8,000 patients were in both the train and test group provided by the company.  
+There were imbalanced classes among potential health fair attendees. However, this ratio ended up balanced within split and the train test ratios were smaller.
+There were 18,000 non-attendees and 16000 successful attendees. Thus 8,000 patients were in both the train and test group. Additionally, it is important to note that some patients attended more than one MedCamp health event.  
 
-| 37633 Patients | Total | Train | Test  | Overlap (Multi-Attends)  |
+| 37633 Patients | Total | Train | Test  | Overlap in Train/Test |
 |----------------|-------|-------|-------|--------------------------|
 | Yes Attended   | 26565 | 45275 | 16743 | 28532                    |
 | No             | 11068 | 30003 | 18506 | 11497                    | 
 
 ![]( https://github.com/AChezick/Capstone2/blob/main/images/attendance_counts.png ) 
 
-The additional features provided by MedCamp were imbalanced and co-linear  
+The additional features provided by MedCamp were imbalanced and co-linear.  
 ![]( https://github.com/AChezick/Capstone2/blob/main/images/all_stacked_bar1.png ) 
 
-Additionally most columns are sparse. 
-
+Additionally most columns are sparsely populated.  
 ![]( https://github.com/AChezick/Capstone2/blob/main/images/hist_online_features.png ) 
 
 
@@ -86,7 +84,7 @@ Additionally most columns are sparse.
 
 ### Modeling 
 
-Given my goal is to ensure all patients have a good experience , there has to be extra supplies. However, having accurate predictions means we can be confident in having just enough extra supplies thus covering both goals. I compared 
+Given my goal is to ensure all patients have a good experience , there has to be extra supplies. However, having accurate predictions means we can be confident in having just enough extra supplies thus covering both goals. 
 
 --- 
 
@@ -115,4 +113,4 @@ Given my goal is to ensure all patients have a good experience , there has to be
 There are more features which can be extracted from the raw data which might be helpful. Specifically aspects of when someone signed up for an event and if they attended. 
 
 #### Models to try
-Since this data is not descriptive black-box models are OK to use. Implementing and optimization a neural network is likely to produce good results. Learning how to use XDGBoost is also likely to improve prediction score. 
+Since this data is not descriptive black-box models are OK to use. Implementing and optimization a neural network is likely to produce good results; XDGBoost is also likely to improve prediction score. 
