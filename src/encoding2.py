@@ -1,3 +1,10 @@
+'''
+This file combines the patient data frame and tran data frame
+to create the master train data frame
+
+Features are scaled 
+
+'''
 import numpy as np 
 import pandas as pd 
 pd.set_option('display.max_columns', None) 
@@ -11,50 +18,22 @@ train1 = train.copy()
 test_df = pd.read_csv('/home/allen/Galva/capstones/capstone2/data/test.csv') 
 test_df1 = test_df.copy() 
 
-#print(train1.head())
 train1_ = ['Var1','Var2','Var3','Var4','Var5'] 
-
 def make_frames(x, train1_):
 
     for i in train1_:
         x[i]
 
     return x
-
-
 test_frames = make_frames(test_df1, train1_)
 train_frames = make_frames(train1, train1_ )
-
 
 from sklearn import preprocessing
 scaler = StandardScaler() 
 
-
-
-
-
-
-
-
 # class PreProcessing(): 
 
 #     def __init__(self,)
-
-
-
-
-
-
-#     if __name__ == '__main__':
-
-
-
-
-
-
-
-
-
 
 # def scaling(train1,test_df1, train1_):
 #     for i in train1_:
@@ -70,9 +49,8 @@ scaler = StandardScaler()
 #         test_df1[i] = transform_vals 
 #     return test_df1 ,  train1
 
+#     if __name__ == '__main__
+
+
 # print(scaling(train1,test_df1,train1_)) 
-
 # print(test_df1.head(), train1.head() )
-
-
-

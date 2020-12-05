@@ -1,3 +1,9 @@
+'''
+This file completes encoding on two Columns of several 
+discrete descriptors.
+
+'''
+
 import numpy as np 
 import pandas as pd 
 pd.set_option('display.max_columns', None) 
