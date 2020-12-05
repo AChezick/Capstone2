@@ -1,6 +1,6 @@
-# Capstone2
+# Are you going? I am not sure ... 
 
-The goal of my project was to help MedCamp -a healthfair provider company – reduce wasteful spending AND maintain quality experiences of attendies by accuretly predcting who will and will not attend a healthfare events.
+The goal of my project was to help MedCamp -a health-fare provider company – reduce wasteful spending AND maintain quality experiences of attendees by accurately predicting who will and will not attend a health-fare events. 
 
 --- 
 
@@ -63,21 +63,22 @@ train.zip contains 6 different csv files apart from the data dictionary as descr
 
 ### EDA
 
-There were imbalanced classes among potential health fair attendies. However, this ratio was propotionally split and the train test ratios were smaller.
-There were 18 NO, and 16000 in the yes. Thus 8,000 patients were in both the train and test group provided by the company. 
+There were imbalanced classes among potential health fair attendees. However, this ratio was more balanced in split and the train test ratios were smaller.
+There were 18 NO, and 16000 in the yes. Thus 8,000 patients were in both the train and test group provided by the company.  
 
 | 37633 Patients | Total | Train | Test  | Overlap (Multi-Attends)  |
 |----------------|-------|-------|-------|--------------------------|
 | Yes Attended   | 26565 | 45275 | 16743 | 28532                    |
 | No             | 11068 | 30003 | 18506 | 11497                    | 
 
+![]( https://github.com/AChezick/Capstone2/blob/main/images/attendance_counts.png ) 
 
-show attendies 0/ 1
+The additional features provided by MedCamp were imbalanced and co-linear  
+![]( https://github.com/AChezick/Capstone2/blob/main/images/all_stacked_bar1.png ) 
 
-The additional features provided by MedCamp were deffenitally imbalanced and colinear 
+Additionally most columns are sparse. 
 
-show hist plot
-
+![]( https://github.com/AChezick/Capstone2/blob/main/images/hist_online_features.png ) 
 
 
 ---
@@ -85,18 +86,33 @@ show hist plot
 
 ### Modeling 
 
-[[16088  2418]]
- [[ 9349  7394]]
+Given my goal is to ensure all patients have a good experience , there has to be extra supplies. However, having accurate predictions means we can be confident in having just enough extra supplies thus covering both goals. I compared 
 
- Specifically reducing false positives and negaitves. 
+--- 
+
+#### Results from the Logistic Regression after creating features, one-hot encoding, scaling 
+
+| Random Forest 200 Trees | Accuracy | Precision | Recall | f1-Score |
+|--------------------------------|----------|-----------|--------|----------|
+| NO Attendance                  | .62      | .69       | .49    | .57      |
+| Yes Attendance                 | .62      | .57       | .76    | .65      | 
+
+#### Results from PCA 
+![]( https://github.com/AChezick/Capstone2/blob/main/images/PCA_7.png ) 
+
+| Logistic Regression alpha = .56 | Accuracy | Precision | Recall | f1-Score |
+|---------------------------------|----------|-----------|--------|----------|
+| NO Attendance                   | .65      | .61       | .92    | .74      |
+| Yes Attendance                  | .65      | .80       | .36    | .49      |
+
+
+
+
+---
  
----
-
-
-### Discussion 
-
-
----
-
 
 ### Next Steps
+There are more features which can be extracted from the raw data which might be helpful. Specifically aspects of when someone signed up for an event and if they attended. 
+
+#### Models to try
+Since this data is not descriptive black-box models are OK to use. Implementing and optimization a neural network is likely to produce good results. Learning how to use XDGBoost is also likely to improve prediction score. 
