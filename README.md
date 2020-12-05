@@ -97,6 +97,8 @@ Given my goal is to ensure all patients have a good experience , there has to be
 | NO Attendance                  | .62      | .69       | .49    | .57      |
 | Yes Attendance                 | .62      | .57       | .76    | .65      | 
 
+#### Results from PCA 
+![]( https://github.com/AChezick/Capstone2/blob/main/images/PCA_7.png ) 
 
 | Logistic Regression alpha = .56 | Accuracy | Precision | Recall | f1-Score |
 |---------------------------------|----------|-----------|--------|----------|
@@ -104,13 +106,7 @@ Given my goal is to ensure all patients have a good experience , there has to be
 | Yes Attendance                  | .65      | .80       | .36    | .49      |
 
 
-#### Results from PCA 
-![]( https://github.com/AChezick/Capstone2/blob/main/images/PCA_7.png ) 
 
-The most important components were columns 1,2,4,5,24. 
-
-The raw data has no information on what columns 1,2,4,5 are or what the numbers mean. Column 24 points to a city of one of the heathfairs.
-However, knowing these components might be important for MedCamp.
 
 ---
  
