@@ -2,7 +2,8 @@
 
 
 
-The company is a non-profit which provides health camps for people in various cities. MedCamp was having challenges maintaining their operations due to operational expense. 
+MedCamp is a non-profit which provides health camps for people in various cities acorss America.  MedCamp was having challenges maintaining their operations due to excessive operational expense. 
+
 #### Goal 
 Help MedCamp reduce wasteful spending AND maintain quality experiences of attendees by accurately predicting who will and will not attend a health-fare events. 
 
