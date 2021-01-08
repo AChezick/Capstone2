@@ -5,6 +5,7 @@ import pandas as pd
 from matplotlib import cm
 import matplotlib.pyplot as plt
 
+from sklearn.model_selection import RandomizedSearchCV
 from sklearn.model_selection import train_test_split
 from sklearn.naive_bayes import GaussianNB
 from sklearn.metrics import confusion_matrix, plot_roc_curve, accuracy_score
@@ -21,9 +22,15 @@ from sklearn.model_selection import train_test_split, KFold
 from sklearn.preprocessing import StandardScaler
 from sklearn.base import clone
 
+from sklearn.ensemble import GradientBoostingClassifier
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.linear_model import LogisticRegression
+
 from utils import XyScaler
 from roc_curve2 import roc_curve
-
+from scipy.stats import uniform 
+###########################################################################################33
+'''
 train_set = pd.read_csv('/home/allen/Galva/capstones/capstone2/data/train_1.csv')
 test_set = pd.read_csv('/home/allen/Galva/capstones/capstone2/data/test_df1.csv') 
 
@@ -41,11 +48,26 @@ test_set = test_set.drop(['Unnamed: 0.1.1','Unnamed: 0', 'Unnamed: 0.1','Registr
 test_set.drop(test_set.columns[5], axis=1, inplace=True) 
 
 y1, y2 = train1.pop('Event1_or_2') , test_set.pop('Event1_or_2')
+'''
+###########################################################################################33
+
+
+
+
+checker = pd.read_csv('/home/allen/Galva/capstones/capstone2/src/explore/train_4_model.csv')
+checker1 = checker.copy() 
+
+from sklearn.model_selection import train_test_split 
+ynot = checker.pop('y_target')
+train_test_split(ynot, shuffle=False) 
+X_train,X_test,y_train,y_test = train_test_split(
+    checker,ynot,test_size = .3, random_state=101)
+
 
 pca = decomposition.PCA(n_components=8)
-X_pca = pca.fit_transform(test_set)
+X_pca = pca.fit_transform(X_test)
 
-def scree_plot(ax, pca, n_components_to_plot=7, title=None):
+def scree_plot(ax, pca, n_components_to_plot=7, title=None): 
 
     num_components = pca.n_components_
     ind = np.arange(num_components)
@@ -72,3 +94,25 @@ def scree_plot(ax, pca, n_components_to_plot=7, title=None):
 fig, ax = plt.subplots(figsize=(10, 6))
 scree_plot(ax, pca, title="Principal Components for Attendance")
 plt.show() 
+
+
+
+'''
+  File "pca_cap2.py", line 97, in <module>
+    importances = X_pca.feature_importances_
+AttributeError: 'numpy.ndarray' object has no attribute 'feature_importances_'
+''' # Error for trying below : 
+# def cm_to_inch(value):
+#     return value/2.54
+
+# col_names = X_test.columns 
+# importances = X_pca.feature_importances_
+# indices = np.argsort(importances)[::-1]
+# Random_Forest = 'Random Forest'
+# plt.bar(range(X_test.shape[1]), importances[indices], color="b")
+# plt.title("{} Feature Importances".format(Random_Forest))
+# plt.xlabel("Feature")
+# plt.ylabel("Feature importance")
+# plt.xticks(range(X_test.shape[1]), col_names[indices], rotation=45, fontsize=12, ha='right')
+# plt.xlim([-1, X_test.shape[1]])
+# plt.figure(figsize=(cm_to_inch(15),cm_to_inch(10)))

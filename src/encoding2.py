@@ -35,22 +35,22 @@ scaler = StandardScaler()
 
 #     def __init__(self,)
 
-# def scaling(train1,test_df1, train1_):
-#     for i in train1_:
-#         transform_vals = [] 
-#         m =  sum(train[i].values) / len(train1[i].values)
-#         s = train1_[i].values
-#         sd = np.std(s)
+def scaling(train1):
+    for i in train1_:
+        transform_vals = [] 
+        m =  sum(train[i].values) / len(train1[i].values)
+        s = train1_[i].values
+        sd = np.std(s)
 
-#         for ii in i:
-#             ii_ = ii-m / sd
-#             transform_vals.append(ii_)
-#         train1[i] = transform_vals 
-#         test_df1[i] = transform_vals 
-#     return test_df1 ,  train1
+        for ii in i:
+            ii_ = ii-m / sd
+            transform_vals.append(ii_)
+        train1[i] = transform_vals 
+        test_df1[i] = transform_vals 
+    return test_df1 ,  train1
 
-#     if __name__ == '__main__
+    if __name__ == '__main__
 
 
-# print(scaling(train1,test_df1,train1_)) 
-# print(test_df1.head(), train1.head() )
+print(scaling(train1,test_df1,train1_)) 
+print(test_df1.head(), train1.head() )

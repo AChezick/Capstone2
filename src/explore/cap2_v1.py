@@ -16,8 +16,113 @@ event3 = pd.read_csv('/home/allen/Galva/capstones/capstone2/data/Train/Third_Hea
 patient_df = pd.read_csv('/home/allen/Galva/capstones/capstone2/data/Train/Patient_Profile.csv')
 
 #this one has target 
-pp = pd.read_csv('/home/allen/Galva/capstones/capstone2/patient_attendance.csv')
+# pp = pd.read_csv('/home/allen/Galva/capstones/capstone2/patient_attendance.csv')
+
+detail = pd.read_csv('/home/allen/Galva/capstones/capstone2/data/Train/Health_Camp_Detail.csv')
+
+
  
+
+all_camps = pd.concat([event1,event2,event3])
+all_camps['Outcome'] = 1
+
+
+ 
+
+
+
+train_set = pd.read_csv('/home/allen/Galva/capstones/capstone2/data/Train/Train.csv')
+test_set = pd.read_csv('/home/allen/Galva/capstones/capstone2/data/Train/test.csv')  
+
+
+
+
+
+
+
+train_IDs = {}
+test_IDs = {}
+overlap = {}
+patient_camp_reg = {}
+for i in train_set['Patient_ID'].values:
+    if i not in train_IDs:
+        train_IDs[i]=1
+    else:
+        train_IDs[i]+=1
+    if i not in overlap:
+        overlap[i]=1
+    
+for i in test_set['Patient_ID'].values:
+    if i not in test_IDs:
+        test_IDs[i]=1
+    else:
+        test_IDs[i]+=1
+    if i not in overlap:
+        overlap[i]=1
+    else:
+        overlap[i]+=1
+
+
+
+repeats = {}
+for k in train_set['Registration_Date'].values:
+    if k not in repeats:
+        repeats[k]=1
+    if k == None:
+        print('hi')
+print(repeats.keys())
+
+one_patient_df =train_set[train_set['Patient_ID'] == 489652 ]
+
+print(one_patient_df)
+
+
+
+
+
+
+# train_values= len(train_IDs.keys())
+# test_values = len(test_IDs.keys())
+# overlap_values = len(overlap.keys())
+
+# print( train_values  , 'is trainset length')
+# print(test_values , 'is test length')
+# print(overlap_values , 'length of overlap')
+
+# counter = 0
+# for key,val in overlap.items():
+#     if val > 1:
+#         counter +=1
+# print(counter) #10,864 patient IDs that have more than 1 count 
+
+
+# set_test_id = set(test_set['Patient_ID'].values)
+# set_train_id = set(train_set['Patient_ID'].values)
+
+# print(len(set_test_id) , len(set_train_id))
+# unionz = set_test_id.difference(set_train_id)
+# unionz2 = set_train_id.difference(set_test_id) 
+# print(len(unionz),len(unionz2))
+
+
+
+# set_test_camp = set(test_set['Health_Camp_ID'].values)
+# set_train_camp = set(train_set['Health_Camp_ID'].values)
+
+# print(len(set_test_camp) , len(set_train_camp)) 
+# unionzz = set_test_camp.union(set_train_camp)
+# unionzz2 = set_train_camp.difference(set_test_camp) 
+# print(len(unionzz) )
+ 
+
+
+
+
+
+
+
+
+
 
 
 
@@ -54,31 +159,31 @@ print(f'length of 1_3 is {len(s13)}') #length of 1_3 is 1161
 print(f'length of 2_3 is {len(s23)}') #length of 2_3 is 2198
 ''' 
 #looking for filling out stuff overlap : 
-pdf = pd.read_csv('/home/allen/Galva/capstones/capstone2/Patient_and_Target.csv')
-no_age = pdf[pdf['Age'] == "None"] 
+# pdf = pd.read_csv('/home/allen/Galva/capstones/capstone2/Patient_and_Target.csv')
+# no_age = pdf[pdf['Age'] == "None"] 
 #fe0 = pdf[ (pdf['Age'] == "None") and (pdf['Education'] == "None") ]
 #print(no_age.describe()) 
 #print(pdf['Event1_or_2'].sum())
 #combining data frames instead of doing lambdas
 
-def get_df_counts(columnzs):
-    dict_of_missing = {}
-    for i in columnzs:
-        i_ = pdf[ (pdf['Patient_ID'] != 0 ) & (pdf[i] == "None" ) ]
-        i_2 =set(i_['Patient_ID'].values)
-        dict_of_missing[i]=i_2
-    return dict_of_missing
+# def get_df_counts(columnzs):
+#     dict_of_missing = {}
+#     for i in columnzs:
+#         i_ = pdf[ (pdf['Patient_ID'] != 0 ) & (pdf[i] == "None" ) ]
+#         i_2 =set(i_['Patient_ID'].values)
+#         dict_of_missing[i]=i_2
+#     return dict_of_missing
         
-output = get_df_counts(columnzs= ['Age','Education_Score', 'Income']) 
+# output = get_df_counts(columnzs= ['Age','Education_Score', 'Income']) 
 
-age_set = output['Age']
-education_set = output['Education_Score']
-income_set = output['Income']
+# age_set = output['Age']
+# education_set = output['Education_Score']
+# income_set = output['Income']
 
-all_sets =set()
-all_sets.update(education_set)
-all_sets.update(income_set)
-all_sets.update(age_set)
+# all_sets =set()
+# all_sets.update(education_set)
+# all_sets.update(income_set)
+# all_sets.update(age_set)
 
 # def make_sets(x):
 
@@ -113,40 +218,40 @@ all_sets.update(age_set)
 # print(patient_df['Facebook_Shared'].sum())    886 
  
 #how much overlap in people who shared ? 
-subshare = patient_df[(patient_df['LinkedIn_Shared'] == 1) & (patient_df['Online_Follower'] ==1)]['Patient_ID'].values
-subshare2 = patient_df[(patient_df['Twitter_Shared'] == 1) & (patient_df['Facebook_Shared'] ==1)]['Patient_ID'].values
+#subshare = patient_df[(patient_df['LinkedIn_Shared'] == 1) & (patient_df['Online_Follower'] ==1)]['Patient_ID'].values
+#subshare2 = patient_df[(patient_df['Twitter_Shared'] == 1) & (patient_df['Facebook_Shared'] ==1)]['Patient_ID'].values
 # print(len(subshare)) #448
 # print(len(subshare2)) #442 
 
 #FIRST ATTEMPT WITH LOGISTIC AND GETTING RID OF NANs 
-sus1 = set(subshare).difference(set(subshare2))
-patient_df['City_Type'].fillna(value = 'Z', inplace=True)
+#sus1 = set(subshare).difference(set(subshare2))
+#patient_df['City_Type'].fillna(value = 'Z', inplace=True)
 
 # patient_df['Age'].fillna(value = patient_df['Age'].mean(), inplace=True)
-sd={}
-for i in patient_df['Employer_Category'].values:
-    if i not in sd:
-        sd[i]=1
-    else:
-        sd[i]+=1
+#sd={}
+#for i in patient_df['Employer_Category'].values:
+ #   if i not in sd:
+#        sd[i]=1
+ #   else:
+    #    sd[i]+=1
+#
 
+# patient_df1 = patient_df.copy()
 
-patient_df1 = patient_df.copy()
+# m = {'Software Industry': 1, 'BFSI':2 , 'Education':3 , 'Others':4 , 'Technology': 5, 'Consulting':6 , 'Manufacturing':7, 'Health':8, 'Retail':9,  'Transport': 10 , 'Broadcasting': 11, 'Food':12 , 'Telecom': 13, 'Real Estate':14}
+# patient_df1['Job_Type'] = patient_df1['Employer_Category'].map(m) 
+# patient_df1['Job_Type'].fillna(value = 9999, inplace=True)
 
-m = {'Software Industry': 1, 'BFSI':2 , 'Education':3 , 'Others':4 , 'Technology': 5, 'Consulting':6 , 'Manufacturing':7, 'Health':8, 'Retail':9,  'Transport': 10 , 'Broadcasting': 11, 'Food':12 , 'Telecom': 13, 'Real Estate':14}
-patient_df1['Job_Type'] = patient_df1['Employer_Category'].map(m) 
-patient_df1['Job_Type'].fillna(value = 9999, inplace=True)
+# def impute(x):
+#     for _ in x:
+#         if _ in [1,2,3,4,5,6,7,8,9]:
+#             return 1
+#         else:
+#             return 0
 
-def impute(x):
-    for _ in x:
-        if _ in [1,2,3,4,5,6,7,8,9]:
-            return 1
-        else:
-            return 0
+# patient_df1['Education_Score'].fillna(value=0, inplace=True) 
 
-patient_df1['Education_Score'].fillna(value=0, inplace=True) 
-
-patient_df1['Income'].fillna(value=0, inplace=True)
+# patient_df1['Income'].fillna(value=0, inplace=True)
 
 
 # patient_df1_edu = pd.Series(patient_df1['Education_Score'].values  )
