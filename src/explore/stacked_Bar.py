@@ -7,7 +7,7 @@ plt.rcParams['figure.dpi'] = 200
 df = pd.read_csv('/home/allen/Galva/capstones/capstone2/src/explore/ready12_24_train.csv') 
 from matplotlib import rc
 rc('font', weight='bold')
-print(df.head(3))
+
 df_delta_first_reg, df_delta_reg_end, df_Camp_Length, df_interaction_regreister_delta = df.copy() , df.copy() ,df.copy(), df.copy()
 
 def make_cols1(dataframe): # will also input the column name ***
@@ -16,11 +16,11 @@ def make_cols1(dataframe): # will also input the column name ***
     '''
 # check other function for updating df # 
 
-    columnz = ['delta_first_start'] # *** will be 
+    columnz = ['delta_reg_end'] # *** will be 
 
     for i in columnz: # for each item in the column
 
-        n = list(np.arange(-550,1375,175)) # for dfirst_start
+        n = list(np.arange(0,500,20)) # for dfirst_start
         counter1 =0
         counter2 =1
         df_with_colz = dataframe.copy() # create copy of dataframe
@@ -134,19 +134,20 @@ def get_counts(dataframe):
     get counts for y_target for each column in the list
     '''
     lst = list(dataframe.columns)
+    print(lst)
     nums = [] 
     df_ = dataframe
     for i in lst:
-        if i != 'City_Type':
-            get_0 = df_.loc[(df_['y_target'] == 0) & (df_[i] == 1 ) ] 
-            get_1 = df_.loc[ (df_['y_target'] == 1) & (df_[i] == 1 ) ] 
-            ap = (i,( len(get_0), len(get_1)) )
-            nums.append(ap)
-        else: #City Type is non-binary 
-            get_0 = df_.loc[(df_['y_target'] == 0) & (df_[i] != 1 ) ] 
-            get_1 = df_.loc[ (df_['y_target'] == 1) & (df_[i] != 1 ) ] 
-            ap = (i,( len(get_0), len(get_1)) )
-            nums.append(ap)
+        # if i != 'City_Type':
+        get_0 = df_.loc[(df_['y_target'] == 0) & (df_[i] == 1 ) ] 
+        get_1 = df_.loc[ (df_['y_target'] == 1) & (df_[i] == 1 ) ] 
+        ap = (i,( len(get_0), len(get_1)) )
+        nums.append(ap)
+        # else: #City Type is non-binary 
+        #     get_0 = df_.loc[(df_['y_target'] == 0) & (df_[i] != 1 ) ] 
+        #     get_1 = df_.loc[ (df_['y_target'] == 1) & (df_[i] != 1 ) ] 
+        #     ap = (i,( len(get_0), len(get_1)) )
+        #     nums.append(ap)
 
 
     return nums
@@ -162,16 +163,14 @@ def create_graph(dataframe): # as of 1/1/21 need to edit which columns are being
     'Category1_y', 'Unnamed: 0_y', 'Unnamed: 0.1_y', 'Patient_ID_y', 'Online_Follower_y', 
     'Event1_or_2_y', 'Health Score', 'Number_of_stall_visited', 'Last_Stall_Visited_Number', 
     'Camp_length', 'delta_first_reg', 'interaction_regreister_delta', 'delta_first_start', 'delta_reg_end', 
-    'Camp_Length', '-500 to -250', '-250 to 0', '0 to 250', '250 to 500', '500 to 750', '750 to 1000', 
-    '1000 to 1250', '1250 to 1500', '1500 to 1750', '1750 to 2000', '2000 to 2250', '2250 to 2500', 
-    '2500 to 2750', '2750 to 3000', '3000 to 3250', '3250 to 3500', '3500 to 3750', '3750 to 4000', 
-    '4000 to 4250', '4250 to 4500'] 
+    'Camp_Length', ] 
+    
 
     dataframe_  = dataframe.drop(to_dropp, axis=1)
     countz = get_counts(dataframe_)
-
-    bars1 = [x[1][1] for x in countz ] 
-    bars2 = [x[1][1] for x in countz ] 
+     
+    bars1 = [x[1][1] for x in countz] 
+    bars2 = [x[1][1] for x in countz] 
 
     bars = np.add(bars1, bars2).tolist()
     r = [str(i) for i in bars1  ]
@@ -184,9 +183,12 @@ def create_graph(dataframe): # as of 1/1/21 need to edit which columns are being
     plt.bar(r, bars2, bottom=bars1, color='#557f2d', edgecolor='white', width=barWidth)
     
     # Custom X axis
-    plt.xticks(r, names, fontweight='bold')
-    plt.xlabel("group")
-    plt.xticks(rotation=95) 
+    plt.title(label = 'City Location Splits')
+    #plt.xticks(r , names, fontweight='bold')
+    plt.xlabel("Feature")
+    plt.ylabel("Number of Patients")
+    plt.xticks(rotation=65) 
+    plt.legend( ('Did Attend', 'Did NOT Attend')) 
     # Show graphic
     plt.show()
     return plt.show()   
@@ -194,11 +196,20 @@ def create_graph(dataframe): # as of 1/1/21 need to edit which columns are being
 
 
 if __name__ == '__main__':
-    #colz_first_reg = make_cols1(dataframe = df_delta_first_reg ) 
+    colz_first_reg = make_cols1(dataframe = df_delta_reg_end ) 
     '''call this f(x) for each graph to be made''' 
     #colz_delta_first_reg = make_cols2(dataframe = df_delta_first_reg)
 
-    colz_delt_reg_end = make_cols2(dataframe = df_delta_reg_end)
-    colz_int_reg_delta = make_inter_reg(df_interaction_regreister_delta) 
-    first_try =  create_graph(colz_delt_reg_end )
-    print(first_try)
+    # colz_delt_reg_end = make_cols2(dataframe = df_delta_reg_end)
+    # colz_int_reg_delta = make_inter_reg(df_interaction_regreister_delta) 
+    # first_try =  create_graph(colz_int_reg_delta)
+     
+    # something = make_cols3(df_Camp_Length)
+
+    print(create_graph(colz_first_reg))
+'''
+'-500 to -250', '-250 to 0', '0 to 250', '250 to 500', '500 to 750', '750 to 1000', 
+    '1000 to 1250', '1250 to 1500', '1500 to 1750', '1750 to 2000', '2000 to 2250', '2250 to 2500', 
+    '2500 to 2750', '2750 to 3000', '3000 to 3250', '3250 to 3500', '3500 to 3750', '3750 to 4000', 
+    '4000 to 4250', '4250 to 4500'
+'''

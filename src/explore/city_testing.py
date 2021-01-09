@@ -108,7 +108,14 @@ def run_test_typeC(dataframe):
         n_jobs=-1, l1_ratio=None) 
     
     predictions = logmodel.predict(X_test)
+    proba = logmodel.predict_proba(X_test)[:,1]
+    
+    log_thresh1, log_thresh2, log_thresh3 = proba>=0.35 , proba>=0.45 , proba>=.55
+
     print(classification_report(y_test,predictions))
+    print(confusion_matrix(y_test,log_thresh1 ), 'thresh1')
+    print(confusion_matrix(y_test,log_thresh2 ), 'THRESH2*******************')
+    print(confusion_matrix(y_test,log_thresh3 ), '3333')
     return None 
 
 def final_test(X_train, y_train, X_holdout, y_holdout,Classifier, **kwargs):
@@ -135,11 +142,22 @@ if __name__ == '__main__':
     df2517 = df_test[df_test['City_Type']==2517]
     df816 = df_test[df_test['City_Type']==816] 
 
+    df_one = df_test[ (df_test['Second']== 0) & (df_test['Third']==0) ]
+    df_two = df_test[df_test['Second']== 1]
+    df_three = df_test[df_test['Third']== 1]
+
+    event_list = [df_one,df_two,df_three]
     city_list = [df23384,df1216,df1036,df1704,df2662,df1729,df1217,df1352,df2517,df816 ]
-    for i in city_list:
-        #get = run_test_typeC(i)
-        get2 = run_test_typeB(i)
-        print(f'this is the output {get2}', len(i))
+    # for i in city_list:
+    #     
+    #     get = run_test_typeB(i)
+          #get2 = run_test_typeC(i)
+    #     print(f'this is the output {get2}', len(i))
+
+    for i in event_list:
+        #get_it = run_test_typeB(i)
+        get_it2 = run_test_typeC(i)
+        print(f'this is the output {get_it2}', len(i))
      
 
 

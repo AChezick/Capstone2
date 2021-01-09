@@ -92,10 +92,12 @@ def run_test_typeB(X_testz,y_trainz): # THIS NEEDS TO be split for train and tes
     predsD , preds2D = xg_probaz  >= .5 , xg_probaz   >= .4
 
     print(classification_report(y_testD,xg_preds) )
-    xgD_disp = plot_roc_curve(xg_reg, X_testD, y_testD)
+    print(classification_report(y_testD,preds2D ))
+    
+    xgd_disp = plot_roc_curve(xg_reg, X_testD, y_testD)
     plt.show()
 
-    print(classification_report(y_testD,preds2D ))
+    
     return None 
 
 def run_test_typeD(X_testz,y_trainz):

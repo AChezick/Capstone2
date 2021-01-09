@@ -34,7 +34,7 @@ def create_holdout(dataframe ):
     Create holdout dataframe 
     '''
     y = dataframe.pop('y_target')
-    del dataframe['y_target']
+    #del dataframe['y_target']
     X = dataframe 
     X_train, X_holdout, y_train, y_holdout = train_test_split(X, y, 
                                                         shuffle=False,
