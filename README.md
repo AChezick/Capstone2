@@ -18,6 +18,18 @@ train.zip contains 6 different csv files apart from the data dictionary as descr
 
 **Health_Camp_Detail.csv** – File containing HealthCampId, CampStartDate, CampEndDate and Category details of each camp.
 
+---
+
+| Health_Camp_ID | Camp_Start_Date | Camp_End_Date | Category1 | Category2 | Category3 |
+|----------------|-----------------|---------------|-----------|-----------|-----------|
+| 6560           | 16-Aug-03       | 20-Aug-03     | First     | B         | 2         |
+| 6530           | 16-Aug-03       | 28-Oct-03     | First     | C         | 2         |
+| 6544           | 03-Nov-03       | 15-Nov-03     | First     | F         | 1         |
+| 6585           | 22-Nov-03       | 05-Dec-03     | First     | E         | 2         |
+| 6561           | 30-Nov-03       | 18-Dec-03     | First     | E         | 1         |
+
+---
+
 **Train.csv** – File containing registration details for all the test camps. This includes PatientID, HealthCampID, RegistrationDate and a few anonymized variables as on registration date.
 
 ---
