@@ -18,16 +18,17 @@ from sklearn.metrics import plot_roc_curve
 #from sklearn.cross_validation import StratifiedKFold
 from sklearn.datasets import make_classification
 from sklearn.feature_selection import RFECV
-from sklearn.ensemble.partial_dependence import partial_dependence, plot_partial_dependence
+from sklearn.inspection import plot_partial_dependence 
 import xgboost as xgb
-from xgboost import XGBClassifier 
+from xgboost import XGBClassifier     
 from sklearn.metrics import mean_squared_error
 
 df = pd.read_csv('/home/allen/Galva/capstones/capstone2/src/explore/ready12_24_train.csv')  
+df_plain = pd.read_csv('/home/allen/Galva/capstones/capstone2/Notebooks/plain_df_to_test.csv')
 
 from preprocessing import drop_cols , one_hot_encoding , scale
 data = drop_cols(df) # drop cols
-dataframe_1 = scale(data) #Scale all features that are not binary 
+dataframe_1 = scale(data) #Scale all features that are not binary  
 
 import matplotlib.pyplot as plt
 from statsmodels.tools import add_constant
@@ -47,12 +48,12 @@ def create_holdout(dataframe ):
 
     return X_train, X_holdout, y_train, y_holdout
 
-def run_test_typeA(X_testz,y_trainz): # this test might have to be done differently than the other two for the holdout aspect 
+def run_test_typeA(X_train,y_train): # this test might have to be done differently than the other two for the holdout aspect 
     '''
     Remove columns, print list of columns, drop columns, run model
     ''' 
-    y = y_trainz
-    x = X_testz
+    y = y_train
+    x = X_train
     #data_dmatrix = xgb.DMatrix(data=x,label=y) 
     X_traina, X_testa, y_traina, y_testa = train_test_split(x, y, test_size=0.2, random_state=101) 
     
@@ -69,7 +70,7 @@ def run_test_typeA(X_testz,y_trainz): # this test might have to be done differen
 
     return None 
 
-def run_test_forest(X_testz,y_trainz): # THIS NEEDS TO be split for train and test somehow .
+def run_test_forest(X_train,y_train): # THIS NEEDS TO be split for train and test somehow .
     '''
     run the test
     '''
@@ -105,13 +106,13 @@ def run_test_forest(X_testz,y_trainz): # THIS NEEDS TO be split for train and te
 
 
 
-def run_test_boost(X_testz,y_trainz):
+def run_test_boost(X_train,y_train):
     '''
     run an XDG Classifier  
     '''
     g_classifier =GradientBoostingClassifier() 
-    y = y_trainz
-    x = X_testz
+    y = y_train
+    x = X_train
 
     num_estimators = [20,50,100,200]
     criterion = ['friedman_mse', 'mse']
@@ -178,16 +179,19 @@ def final_test(X_train, y_train, X_holdout, y_holdout,Classifier,kwargs = {}):
     Execute trained model on holdout data, return results 
     '''
     final_model= Classifier(**kwargs)
-    
     final_model.fit(X_train, y_train)
+ 
     y_predict= final_model.predict(X_holdout)
     score=final_model.score(X_holdout, y_holdout)
     precision=precision_score(y_holdout, y_predict)
     recall=recall_score(y_holdout, y_predict)
     conf_matrix = confusion_matrix(y_holdout, y_predict)
     dict_={"score": score, "precision": precision, 'recall':recall, 'confusion_matrix': conf_matrix}
-    plot = plot_partial_dependence(final_model, features=[5,6,7],feature_names = ['delta_first_reg',
-           'delta_first_start', 'delta_reg_end'], X = X_holdout)
+    # features=[5,6,7],feature_names = ['delta_first_reg','delta_first_start', 'delta_reg_end'], X = X_holdout)
+    features = [5,6,7] 
+    plot = plot_partial_dependence(final_model,X_holdout,features) 
+    plt.show()  
+    print(plot)
     return (f'for {Classifier} the final model with optimized hyperparameters results in {dict_}', dict_.items())
 
 def graph_or_table():
@@ -198,12 +202,14 @@ def graph_or_table():
 if __name__ == '__main__':
 
     df_encode = one_hot_encoding(dataframe_1, columns = ['City_Type','Category1_x','Category2','Category3','Job_Type', 'online_score'])
-    df_encode1 = df_encode.copy() 
-    df_test = df_encode1.drop(['City_Type','Category1_x','Category2','Category3','Job_Type', 'online_score'],axis=1)
-    df_test1, df_test2 = df_test.copy() , df_test.copy()
+    df_encode1 = df_encode.drop(['City_Type','Category1_x','Category2','Category3','Job_Type','online_score'],axis=1) 
+     
+    df_encode1 = df_encode1.drop([1,2,3,4,'delta_first_reg', 'interaction_regreister_delta','delta_first_start','delta_reg_end','Camp_Length'],axis=1) 
+     
+    df_test1, df_test2 = df_encode1.copy() , df_encode1.copy()
 
-    X_train, X_holdout, y_train, y_holdout= create_holdout(df_test) 
-
+    X_train, X_holdout, y_train, y_holdout= create_holdout(df_test1) 
+     
     # randomforest_bestparams , randomforest_bestscore = run_test_forest(X_train, y_train)
     # randomforest_finalmodel = final_test(X_train, y_train, X_holdout, y_holdout,RandomForestClassifier,randomforest_bestparams)
  
@@ -212,13 +218,13 @@ if __name__ == '__main__':
 
     log_bestparams, log_bestscore = run_log_reg(X_train, y_train)
     log_finalmodel = final_test(X_train, y_train, X_holdout, y_holdout, LogisticRegression , log_bestparams )
-    print(log_bestparams, log_bestscore   ,log_finalmodel )
-     
-
+    print(log_finalmodel  )
+      
+ 
 
     # print(run_test_typeA(X_train,y_train))
     #print(run_test_typeB(X_train,y_train))
-    #print(run_test_typeD(X_train,y_train))
+    #print(run_test_typeD(X_train,y_train)) 'delta_first_reg','interaction_regreister_delta','delta_first_start','delta_reg_end','Camp_Length',
 
     
  
@@ -227,3 +233,4 @@ if __name__ == '__main__':
 
      
     
+#,

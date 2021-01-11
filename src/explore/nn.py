@@ -58,7 +58,7 @@ model.add(Dense(1, activation='sigmoid'))
 # Compile model
 model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
 # Fit the model
-history = model.fit(X, Y, validation_split=0.25, epochs=80, batch_size=15, verbose=0)
+history = model.fit(X, Y, validation_split=0.2, epochs=80, batch_size=15, verbose=0)
 # list all data in history
 print(history.history.keys())
 # summarize history for accuracy

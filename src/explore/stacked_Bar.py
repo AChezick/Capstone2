@@ -168,9 +168,9 @@ def create_graph(dataframe): # as of 1/1/21 need to edit which columns are being
 
     dataframe_  = dataframe.drop(to_dropp, axis=1)
     countz = get_counts(dataframe_)
-     
+    print(countz) 
     bars1 = [x[1][1] for x in countz] 
-    bars2 = [x[1][1] for x in countz] 
+    bars2 = [x[1][0] for x in countz] 
 
     bars = np.add(bars1, bars2).tolist()
     r = [str(i) for i in bars1  ]

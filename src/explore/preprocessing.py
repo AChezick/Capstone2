@@ -16,7 +16,7 @@ def drop_cols(df):
     drop_thez=[ 'Patient_ID_x', 'Health_Camp_ID', 'Registration_Date', 'Category1_y','Camp_Start_Date2', 
     'Camp_End_Date2', 'patient_event', 'Unnamed: 0_x','Unnamed: 0.1_x', 'Online_Follower_x', 'First_Interaction'
     ,'Employer_Category' , 'Event1_or_2_x' ,'Category1_y', 'Unnamed: 0_y', 'Unnamed: 0.1_y', 'Patient_ID_y',
-    'Online_Follower_y', 'Event1_or_2_y','Health Score', 'Camp_length',
+    'Online_Follower_y', 'Event1_or_2_y','Health Score', 
     'Number_of_stall_visited', 'Last_Stall_Visited_Number']
 
     df_ = df.drop(drop_thez, axis =1)
@@ -27,8 +27,11 @@ def scale(df):
     '''
     Scale columns that are non-ordinal 
     '''
-    columnz = ['Var1','Var2', 'Var3', 'Var4', 'Var5', 'Camp_Length', 'delta_reg_end',
-    'delta_first_reg','interaction_regreister_delta', 'delta_first_start']
+    columnz = ['Var1','Var2', 'Var3', 'Var4', 'Var5', 
+       'Camp Start Date - Registration Date',
+       'Registration Date - First Interaction',
+       'Camp Start Date - First Interaction',
+       'Camp End Date - Registration Date', 'Camp Length']
 
     for i in columnz:
         i_ = df[i].to_frame() 
