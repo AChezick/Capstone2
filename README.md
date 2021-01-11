@@ -139,7 +139,7 @@ Thus, feature engineering was instrumental in improving the model.
 
 #### One Hot Encoding
 
-I used one hot enocding on several of the categorical features. 
+I used one hot enocding on several of the categorical features. Several of the models reported 9999.0 - as a  result from a one-hot encoding. 
 
 --- 
 
