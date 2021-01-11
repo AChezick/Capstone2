@@ -30,7 +30,7 @@ train.zip contains 6 different csv files apart from the data dictionary as descr
 
 ---
 
-**Train.csv** – File containing registration details for all the test camps. This includes PatientID, HealthCampID, RegistrationDate and a few anonymized variables as on registration date.
+**Train.csv** , **Test.csv** – Both files have similar layouts, containing registration details for all the test camps. This includes PatientID, HealthCampID, RegistrationDate and a few anonymized variables as on registration date. Test.csv – File containing registration details for all the camps done after 1st April 2006. This includes PatientID, HealthCampID, RegistrationDate and a few anonymized variables as on registration date. 
 
 ---
 
@@ -57,7 +57,7 @@ train.zip contains 6 different csv files apart from the data dictionary as descr
 
  ---      
 
-**First_Health_Camp_Attended.csv** – This file contains details about people who attended health camp of first format. This includes Donation (amount) & Health_Score of the person.
+**First_Health_Camp_Attended.csv** & **Second_Health_Camp_Attended.csv** – These files contain details about people who attended health camp of first format. This includes Donation (amount) & Health_Score of the person.
 
 --- 
 
@@ -71,11 +71,23 @@ train.zip contains 6 different csv files apart from the data dictionary as descr
 
 ---
 
-**Second_Health_Camp_Attended.csv** - This file contains details about people who attended health camp of second format. This includes Health_Score of the person.
+ - This file contains details about people who attended health camp of second format. This includes Health_Score of the person.
 
 **Third_Health_Camp_Attended.csv** - This file contains details about people who attended health camp of third format. This includes Numberofstallvisited & LastStallVisitedNumber.
 
-**Test.csv** – File containing registration details for all the camps done after 1st April 2006. This includes PatientID, HealthCampID, RegistrationDate and a few anonymized variables as on registration date. 
+--- 
+
+| Patient_ID | Health_Camp_ID | Number_of_stall_visited | Last_Stall_Visited_Number |
+|------------|----------------|-------------------------|---------------------------|
+| 517875     | 6527           | 3                       | 1                         |
+| 504692     | 6578           | 1                       | 1                         |
+| 504692     | 6527           | 3                       | 1                         |
+| 493167     | 6527           | 4                       | 4                         |
+| 510954     | 6528           | 2                       | 2                         |
+
+---
+
+
 
 ### EDA
 
