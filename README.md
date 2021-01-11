@@ -117,9 +117,10 @@ Given that each patient could attend more than one event, it was necessary to cr
 | Health Camp ID 6578 | Patient ID 489652  | Primary Key 4896526578  |
 |---------------------|--------------------|-------------------------|
 
-Creating this primary key was helpful in combining information and creating additional time features;  meaningful data was spread among several csv files. 
+Creating this primary key was helpful in combining information and creating additional time features; meaningful data was spread among several csv files. 
 ![]( https://github.com/AChezick/Capstone2/blob/main/images/images2/primary_key.png ) 
- 
+
+
 ### Feature Engineering 
 
 Training the model with only the five anonymized features results in very poor performance.
@@ -135,6 +136,22 @@ For comparison here is the rest of the distribution for Var1 & Var5.  Without kn
 ![]( https://github.com/AChezick/Capstone2/blob/main/images/images2/non_zerovar1_5.png ) 
 
 Thus, feature engineering was instrumental in improving the model. 
+
+#### One Hot Encoding
+
+I used one hot enocding on several of the categorical features. 
+
+--- 
+
+| Var1 | Var2 | Var3 | Var4 | Var5 | y_target | Camp Start Date - Registration Date | Registration Date - First Interaction | Camp Start Date - First Interaction | Camp End Date - Registration Date | Camp Length | 1036 | 1216 | 1217 | 1352 | 1704 | 1729 | 2517 | 2662 | 23384 | Second | Third | B | C | D | E | F | G | 2100 | 2.0 | 3.0 | 4.0 | 5.0 | 6.0 | 7.0 | 8.0 | 9.0 | 10.0 | 11.0 | 12.0 | 13.0 | 14.0 | 9999.0 | 1 | 2 | 3 | 4 |
+|------|------|------|------|------|----------|-------------------------------------|---------------------------------------|-------------------------------------|-----------------------------------|-------------|------|------|------|------|------|------|------|------|-------|--------|-------|---|---|---|---|---|---|------|-----|-----|-----|-----|-----|-----|-----|-----|------|------|------|------|------|--------|---|---|---|---|
+| 4.0  | 0.0  | 0.0  | 0.0  | 2.0  | 1.0      | -25.0                               | 278                                   | 253                                 | 34                                | 59          | 0    | 0    | 0    | 0    | 0    | 0    | 0    | 0    | 1     | 0      | 1     | 0 | 0 | 0 | 0 | 0 | 1 | 1    | 0   | 0   | 0   | 0   | 0   | 0   | 0   | 0   | 0    | 0    | 0    | 0    | 0    | 1      | 0 | 0 | 0 | 0 |
+| 0.0  | 0.0  | 0.0  | 0.0  | 0.0  | 0.0      | -24.0                               | 99                                    | 75                                  | 161                               | 185         | 0    | 0    | 0    | 0    | 0    | 0    | 0    | 0    | 1     | 0      | 0     | 0 | 0 | 0 | 0 | 1 | 0 | 1    | 0   | 0   | 0   | 0   | 0   | 0   | 0   | 0   | 0    | 0    | 0    | 0    | 0    | 1      | 0 | 0 | 0 | 0 |
+| 4.0  | 0.0  | 0.0  | 0.0  | 2.0  | 0.0      | -60.0                               | 355                                   | 295                                 | 711                               | 771         | 0    | 0    | 0    | 0    | 0    | 0    | 0    | 0    | 1     | 0      | 0     | 0 | 0 | 0 | 0 | 1 | 0 | 1    | 0   | 0   | 0   | 0   | 0   | 0   | 0   | 0   | 0    | 0    | 0    | 0    | 0    | 1      | 0 | 0 | 0 | 0 |
+--- 
+
+
+
 
 ### Features from Dates
 
@@ -153,12 +170,6 @@ The additional features provided by MedCamp were imbalanced, co-linear, or missi
 ![]( https://github.com/AChezick/Capstone2/blob/main/images/images2/attendance_catgegorical.png ) 
 
 
-
-
-Additionally most columns are sparsely populated.  
-![]( https://github.com/AChezick/Capstone2/blob/main/images/hist_online_features.png ) 
-
-
 ---
 
 
@@ -173,10 +184,12 @@ Given the goal is to ensure all patients have a good experience , there has to b
 ![]( https://github.com/AChezick/Capstone2/blob/main/images/roc_all%20models.png ) 
 
 
+![]( https://github.com/AChezick/Capstone2/blob/main/images/images2/pde_campLength.png ) 
+
 ---
  
 
 ### 
 
-#### Models to try
-Since this data is not descriptive black-box models are OK to use. Optimization of a neural network may produce good results. 
+#### Future Work
+Since this data is not descriptive black-box models are OK to use. Optimization of a neural network may produce good results. I used tensorflow and keras and was able to achieve similar results to other models with minimal training. However, I am confident that these scores can improve by using a grid search and other optimization techniques. 
