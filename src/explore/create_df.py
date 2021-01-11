@@ -130,7 +130,29 @@ if __name__ == '__main__':
  
     dated = to_date(concat1) # dates for all 20,555 patient_attends 
     dated_patient = to_date_patient(impute_online ) 
-    print(dated_patient.info())
+    d1,d2,d3 = {},{},{}
+    for i in dated['Age'].values:
+        if i not in d1:
+            d1[i]=1
+        else:
+            d1[i]+=1
+    for i in dated['Education_Score'].values:
+        if i not in d2:
+            d2[i]=1
+        else:
+            d2[i]+=1    
+    for i in dated['Income'].values:
+        if i not in d3:
+            d3[i] =1
+        else:
+            d3[i]+=1
+    print(d1,d2,d3)
+
+    age_and_edu = dated[(dated['Age'] ==0) & (dated['Education_Score']==0)]
+    print(len(age_and_edu))
+
+
+
     # dated.to_csv('dec21.csv', index=False) # as at 10am 12/22 dec21.csv is all patients
     #dated_patient.to_csv('patient_dec24.csv', index=False)
 

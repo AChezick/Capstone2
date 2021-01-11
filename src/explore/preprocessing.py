@@ -7,7 +7,8 @@ from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 scaler =  StandardScaler()
 pd.set_option('display.max_columns', None) 
-#df = pd.read_csv('/home/allen/Galva/capstones/capstone2/src/explore/ready12_24_train.csv') 
+df1 = pd.read_csv('/home/allen/Galva/capstones/capstone2/src/explore/ready12_24_train.csv') 
+df=df1.copy() 
 def drop_cols(df):
     '''
     Drop columns 
@@ -46,7 +47,7 @@ def one_hot_encoding(df, columns):
     '''
     hot_df = df.copy()
     for i in columns:
-        dummies = pd.get_dummies(df[i], drop_first=True)
+        dummies = pd.get_dummies(df[i], drop_second=True)
         hot_df = pd.concat([hot_df, dummies[:]], axis=1)
 
     #hot_df = hot_df.drop(columns,axis=1)
@@ -55,6 +56,5 @@ def one_hot_encoding(df, columns):
 if __name__ =="__main__":
     dropped = drop_cols(df) 
     scaled_df = scale(dropped)
-    #df_encode = one_hot_encoding(scaled_df, columns = ['City_Type','Category1_x','online_score','Category2','Category3', 'Job_Type'])
-    print(df_encode)
+  
  

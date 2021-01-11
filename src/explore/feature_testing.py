@@ -40,6 +40,7 @@ def create_holdout(dataframe ):
     '''
     Create holdout dataframe 
     '''
+    dataframe.y_target = dataframe.y_target.astype(int)
     y = dataframe.pop('y_target')
     #del dataframe['y_target']
     X = dataframe 
