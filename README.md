@@ -128,7 +128,7 @@ Training the model with only the five anonymized features results in very poor p
 
 For the two anonymized features (Var1 , Var5) that had the highest feature weights, most of the counts were zero value. 
 
-![] ( https://github.com/AChezick/Capstone2/blob/main/images/images2/var1_5_Zero.png ) 
+![]( https://github.com/AChezick/Capstone2/blob/main/images/images2/var1_5_Zero.png ) 
 
 For comparison here is the rest of the distribution for Var1 & Var5.  Without knowing what either of these features map to, I decided not to drop them for modeling purposes.  
 
@@ -148,15 +148,10 @@ I used the primary key to track the unique patient events and consolidate import
 |   | Camp End Date - Registration Date     |
 |   | Camp Length                           | 
 
+The additional features provided by MedCamp were imbalanced, co-linear, or missing. For example Age, Income, Education Score had less than 2,000 values and most patients who had one of these features had the other 3. Therefore, imputing the average value onto the other 35,000 patients would not be helpful. 
 
+![]( https://github.com/AChezick/Capstone2/blob/main/images/images2/attendance_catgegorical.png ) 
 
-
-![]( https://github.com/AChezick/Capstone2/blob/main/images/attendance_counts.png ) 
-
-
-
-The additional features provided by MedCamp were imbalanced and co-linear.  
-![]( https://github.com/AChezick/Capstone2/blob/main/images/all_stacked_bar1.png ) 
 
 
 
@@ -173,22 +168,9 @@ Given the goal is to ensure all patients have a good experience , there has to b
 
 --- 
 
-#### Results from the Logistic Regression after creating features, one-hot encoding, scaling 
+#### Results after creating features, one-hot encoding, scaling 
 
-| Random Forest 200 Trees | Accuracy | Precision | Recall | f1-Score |
-|--------------------------------|----------|-----------|--------|----------|
-| NO Attendance                  | .62      | .69       | .49    | .57      |
-| Yes Attendance                 | .62      | .57       | .76    | .65      | 
-
-#### Results from PCA 
-![]( https://github.com/AChezick/Capstone2/blob/main/images/PCA_7.png ) 
-
-| Logistic Regression alpha = .56 | Accuracy | Precision | Recall | f1-Score |
-|---------------------------------|----------|-----------|--------|----------|
-| NO Attendance                   | .65      | .61       | .92    | .74      |
-| Yes Attendance                  | .65      | .80       | .36    | .49      |
-
-
+![]( https://github.com/AChezick/Capstone2/blob/main/images/roc_all%20models.png ) 
 
 
 ---
@@ -197,4 +179,4 @@ Given the goal is to ensure all patients have a good experience , there has to b
 ### 
 
 #### Models to try
-Since this data is not descriptive black-box models are OK to use. Optimization of a neural network may produce good results.
+Since this data is not descriptive black-box models are OK to use. Optimization of a neural network may produce good results. 
