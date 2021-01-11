@@ -186,6 +186,10 @@ Given the goal is to ensure all patients have a good experience , there has to b
 
 ![]( https://github.com/AChezick/Capstone2/blob/main/images/images2/pde_campLength.png ) 
 
+The Date features ended up improving scores.
+
+![]( https://github.com/AChezick/Capstone2/blob/main/images/feature_core_rough.png ) 
+
 ---
  
 
