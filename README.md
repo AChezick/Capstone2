@@ -117,16 +117,41 @@ Given that each patient could attend more than one event, it was necessary to cr
 | Health Camp ID 6578 | Patient ID 489652  | Primary Key 4896526578  |
 |---------------------|--------------------|-------------------------|
 
-Creating this primary key was helpful in combining information and creating additional time features;  meaningful data was spread among several csv files. 
-<primry key.png> 
- 
+Creating this primary key was helpful in combining information and creating additional time features; meaningful data was spread among several csv files. 
+![]( https://github.com/AChezick/Capstone2/blob/main/images/images2/primary_key.png ) 
+
+
 ### Feature Engineering 
 
 Training the model with only the five anonymized features results in very poor performance.
 
 ![]( https://github.com/AChezick/Capstone2/blob/main/images/non_feature_all_models.png )
 
+For the two anonymized features (Var1 , Var5) that had the highest feature weights, most of the counts were zero value. 
+
+![]( https://github.com/AChezick/Capstone2/blob/main/images/images2/var1_5_Zero.png ) 
+
+For comparison here is the rest of the distribution for Var1 & Var5.  Without knowing what either of these features map to, I decided not to drop them for modeling purposes.  
+
+![]( https://github.com/AChezick/Capstone2/blob/main/images/images2/non_zerovar1_5.png ) 
+
 Thus, feature engineering was instrumental in improving the model. 
+
+#### One Hot Encoding
+
+I used one hot enocding on several of the categorical features. Several of the models reported 9999.0 - as a  result from a one-hot encoding. 
+
+--- 
+
+| Var1 | Var2 | Var3 | Var4 | Var5 | y_target | Camp Start Date - Registration Date | Registration Date - First Interaction | Camp Start Date - First Interaction | Camp End Date - Registration Date | Camp Length | 1036 | 1216 | 1217 | 1352 | 1704 | 1729 | 2517 | 2662 | 23384 | Second | Third | B | C | D | E | F | G | 2100 | 2.0 | 3.0 | 4.0 | 5.0 | 6.0 | 7.0 | 8.0 | 9.0 | 10.0 | 11.0 | 12.0 | 13.0 | 14.0 | 9999.0 | 1 | 2 | 3 | 4 |
+|------|------|------|------|------|----------|-------------------------------------|---------------------------------------|-------------------------------------|-----------------------------------|-------------|------|------|------|------|------|------|------|------|-------|--------|-------|---|---|---|---|---|---|------|-----|-----|-----|-----|-----|-----|-----|-----|------|------|------|------|------|--------|---|---|---|---|
+| 4.0  | 0.0  | 0.0  | 0.0  | 2.0  | 1.0      | -25.0                               | 278                                   | 253                                 | 34                                | 59          | 0    | 0    | 0    | 0    | 0    | 0    | 0    | 0    | 1     | 0      | 1     | 0 | 0 | 0 | 0 | 0 | 1 | 1    | 0   | 0   | 0   | 0   | 0   | 0   | 0   | 0   | 0    | 0    | 0    | 0    | 0    | 1      | 0 | 0 | 0 | 0 |
+| 0.0  | 0.0  | 0.0  | 0.0  | 0.0  | 0.0      | -24.0                               | 99                                    | 75                                  | 161                               | 185         | 0    | 0    | 0    | 0    | 0    | 0    | 0    | 0    | 1     | 0      | 0     | 0 | 0 | 0 | 0 | 1 | 0 | 1    | 0   | 0   | 0   | 0   | 0   | 0   | 0   | 0   | 0    | 0    | 0    | 0    | 0    | 1      | 0 | 0 | 0 | 0 |
+| 4.0  | 0.0  | 0.0  | 0.0  | 2.0  | 0.0      | -60.0                               | 355                                   | 295                                 | 711                               | 771         | 0    | 0    | 0    | 0    | 0    | 0    | 0    | 0    | 1     | 0      | 0     | 0 | 0 | 0 | 0 | 1 | 0 | 1    | 0   | 0   | 0   | 0   | 0   | 0   | 0   | 0   | 0    | 0    | 0    | 0    | 0    | 1      | 0 | 0 | 0 | 0 |
+--- 
+
+
+
 
 ### Features from Dates
 
@@ -140,20 +165,9 @@ I used the primary key to track the unique patient events and consolidate import
 |   | Camp End Date - Registration Date     |
 |   | Camp Length                           | 
 
+The additional features provided by MedCamp were imbalanced, co-linear, or missing. For example Age, Income, Education Score had less than 2,000 values and most patients who had one of these features had the other 3. Therefore, imputing the average value onto the other 35,000 patients would not be helpful. 
 
-
-
-![]( https://github.com/AChezick/Capstone2/blob/main/images/attendance_counts.png ) 
-
-
-
-The additional features provided by MedCamp were imbalanced and co-linear.  
-![]( https://github.com/AChezick/Capstone2/blob/main/images/all_stacked_bar1.png ) 
-
-
-
-Additionally most columns are sparsely populated.  
-![]( https://github.com/AChezick/Capstone2/blob/main/images/hist_online_features.png ) 
+![]( https://github.com/AChezick/Capstone2/blob/main/images/images2/attendance_catgegorical.png ) 
 
 
 ---
@@ -165,28 +179,21 @@ Given the goal is to ensure all patients have a good experience , there has to b
 
 --- 
 
-#### Results from the Logistic Regression after creating features, one-hot encoding, scaling 
+#### Results after creating features, one-hot encoding, scaling 
 
-| Random Forest 200 Trees | Accuracy | Precision | Recall | f1-Score |
-|--------------------------------|----------|-----------|--------|----------|
-| NO Attendance                  | .62      | .69       | .49    | .57      |
-| Yes Attendance                 | .62      | .57       | .76    | .65      | 
-
-#### Results from PCA 
-![]( https://github.com/AChezick/Capstone2/blob/main/images/PCA_7.png ) 
-
-| Logistic Regression alpha = .56 | Accuracy | Precision | Recall | f1-Score |
-|---------------------------------|----------|-----------|--------|----------|
-| NO Attendance                   | .65      | .61       | .92    | .74      |
-| Yes Attendance                  | .65      | .80       | .36    | .49      |
+![]( https://github.com/AChezick/Capstone2/blob/main/images/roc_all%20models.png ) 
 
 
+![]( https://github.com/AChezick/Capstone2/blob/main/images/images2/pde_campLength.png ) 
 
+The Date features ended up improving scores.
+
+![]( https://github.com/AChezick/Capstone2/blob/main/images/feature_core_rough.png ) 
 
 ---
  
 
 ### 
 
-#### Models to try
-Since this data is not descriptive black-box models are OK to use. Optimization of a neural network may produce good results.
+#### Future Work
+Since this data is not descriptive black-box models are OK to use. Optimization of a neural network may produce good results. I used tensorflow and keras and was able to achieve similar results to other models with minimal training. However, I am confident that these scores can improve by using a grid search and other optimization techniques. 
