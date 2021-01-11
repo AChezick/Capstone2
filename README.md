@@ -148,9 +148,12 @@ I used one hot enocding on several of the categorical features. Several of the m
 | 4.0  | 0.0  | 0.0  | 0.0  | 2.0  | 1.0      | -25.0                               | 278                                   | 253                                 | 34                                | 59          | 0    | 0    | 0    | 0    | 0    | 0    | 0    | 0    | 1     | 0      | 1     | 0 | 0 | 0 | 0 | 0 | 1 | 1    | 0   | 0   | 0   | 0   | 0   | 0   | 0   | 0   | 0    | 0    | 0    | 0    | 0    | 1      | 0 | 0 | 0 | 0 |
 | 0.0  | 0.0  | 0.0  | 0.0  | 0.0  | 0.0      | -24.0                               | 99                                    | 75                                  | 161                               | 185         | 0    | 0    | 0    | 0    | 0    | 0    | 0    | 0    | 1     | 0      | 0     | 0 | 0 | 0 | 0 | 1 | 0 | 1    | 0   | 0   | 0   | 0   | 0   | 0   | 0   | 0   | 0    | 0    | 0    | 0    | 0    | 1      | 0 | 0 | 0 | 0 |
 | 4.0  | 0.0  | 0.0  | 0.0  | 2.0  | 0.0      | -60.0                               | 355                                   | 295                                 | 711                               | 771         | 0    | 0    | 0    | 0    | 0    | 0    | 0    | 0    | 1     | 0      | 0     | 0 | 0 | 0 | 0 | 1 | 0 | 1    | 0   | 0   | 0   | 0   | 0   | 0   | 0   | 0   | 0    | 0    | 0    | 0    | 0    | 1      | 0 | 0 | 0 | 0 |
+
 --- 
 
+The additional features provided by MedCamp were imbalanced, co-linear, or missing. For example Age, Income, Education Score had less than 2,000 values and most patients who had one of these features had the other 3. Therefore, imputing the average value onto the other 35,000 patients would not be helpful. 
 
+![]( https://github.com/AChezick/Capstone2/blob/main/images/images2/attendance_catgegorical.png ) 
 
 
 ### Features from Dates
@@ -164,10 +167,6 @@ I used the primary key to track the unique patient events and consolidate import
 |   | Camp Start Date - First Interaction   |
 |   | Camp End Date - Registration Date     |
 |   | Camp Length                           | 
-
-The additional features provided by MedCamp were imbalanced, co-linear, or missing. For example Age, Income, Education Score had less than 2,000 values and most patients who had one of these features had the other 3. Therefore, imputing the average value onto the other 35,000 patients would not be helpful. 
-
-![]( https://github.com/AChezick/Capstone2/blob/main/images/images2/attendance_catgegorical.png ) 
 
 
 ---
@@ -183,10 +182,11 @@ Given the goal is to ensure all patients have a good experience , there has to b
 
 ![]( https://github.com/AChezick/Capstone2/blob/main/images/roc_all%20models.png ) 
 
+As shown above all models achelved a similar ROC score. 
 
 ![]( https://github.com/AChezick/Capstone2/blob/main/images/images2/pde_campLength.png ) 
 
-The Date features ended up improving scores.
+The Date features ended up improving scores for all models. Additionally, for all but some iterations of Random Forests, the date/times features would show among top feature importances. 
 
 ![]( https://github.com/AChezick/Capstone2/blob/main/images/feature_core_rough.png ) 
 
@@ -196,4 +196,10 @@ The Date features ended up improving scores.
 ### 
 
 #### Future Work
-Since this data is not descriptive black-box models are OK to use. Optimization of a neural network may produce good results. I used tensorflow and keras and was able to achieve similar results to other models with minimal training. However, I am confident that these scores can improve by using a grid search and other optimization techniques. 
+Since this data is not descriptive black-box models are OK to use. Optimization of a neural network may produce good results. I used tensorflow and keras and was able to achieve similar results to other models with minimal training. 
+
+![]( https://github.com/AChezick/Capstone2/blob/main/images/images2/BasicNN.png )
+
+However, I am confident that these scores can improve by using a grid search and other optimization techniques. 
+
+![]( https://github.com/AChezick/Capstone2/blob/main/images/images2/BasicNN_loss.png ) 
