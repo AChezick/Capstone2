@@ -118,14 +118,39 @@ Given that each patient could attend more than one event, it was necessary to cr
 |---------------------|--------------------|-------------------------|
 
 Creating this primary key was helpful in combining information and creating additional time features;  meaningful data was spread among several csv files. 
+<primry key.png> 
+ 
+### Feature Engineering 
+
+Training the model with only the five anonymized features results in very poor performance.
+
+![]( https://github.com/AChezick/Capstone2/blob/main/images/non_feature_all_models.png )
+
+Thus, feature engineering was instrumental in improving the model. 
+
+### Features from Dates
+
+I used the primary key to track the unique patient events and consolidate important information into csv that could be used for training and testing. The following features were created:
+
+|   | Feature Name (Days)                   |
+|---|---------------------------------------|
+|   | Registration Date - First Interaction |
+|   | Camp Start Date - Registration Date   |
+|   | Camp Start Date - First Interaction   |
+|   | Camp End Date - Registration Date     |
+|   | Camp Length                           | 
 
 
 
 
 ![]( https://github.com/AChezick/Capstone2/blob/main/images/attendance_counts.png ) 
 
+
+
 The additional features provided by MedCamp were imbalanced and co-linear.  
 ![]( https://github.com/AChezick/Capstone2/blob/main/images/all_stacked_bar1.png ) 
+
+
 
 Additionally most columns are sparsely populated.  
 ![]( https://github.com/AChezick/Capstone2/blob/main/images/hist_online_features.png ) 
@@ -136,7 +161,7 @@ Additionally most columns are sparsely populated.
 
 ### Modeling 
 
-Given my goal is to ensure all patients have a good experience , there has to be extra supplies. However, having accurate predictions means we can be confident in having just enough extra supplies thus covering both goals. 
+Given the goal is to ensure all patients have a good experience , there has to be extra supplies. However, having accurate predictions means we can be confident in having just enough extra supplies thus covering both goals. 
 
 --- 
 
@@ -161,8 +186,7 @@ Given my goal is to ensure all patients have a good experience , there has to be
 ---
  
 
-### Next Steps
-There are more features which can be extracted from the raw data which might be helpful. Specifically aspects of when someone signed up for an event and if they attended. 
+### 
 
 #### Models to try
-Since this data is not descriptive black-box models are OK to use. Implementing and optimization a neural network is likely to produce good results; XDGBoost is also likely to improve prediction score. 
+Since this data is not descriptive black-box models are OK to use. Optimization of a neural network may produce good results.
