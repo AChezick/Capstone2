@@ -91,13 +91,20 @@ train.zip contains 6 different csv files apart from the data dictionary as descr
 
 ### EDA
 
-There were imbalanced classes among potential health fair attendees. However, this ratio ended up balanced within split and the train test ratios were smaller.
-There were 18,000 non-attendees and 16000 successful attendees. Thus 8,000 patients were in both the train and test group. Additionally, it is important to note that some patients attended more than one MedCamp health event.  
+There were imbalanced classes among potential health fair attendees. Additionally, it is important to note that some patients attended more than one MedCamp health event.  
 
-| 37633 Patients | Total | Train | Test  | Overlap in Train/Test |
-|----------------|-------|-------|-------|--------------------------|
-| Yes Attended   | 26565 | 45275 | 16743 | 28532                    |
-| No             | 11068 | 30003 | 18506 | 11497                    | 
+--- 
+
+| 37633   | Unique Patient IDs                                 |
+|---------|----------------------------------------------------|
+| 20,534  | Count of Patients Attending a Health Camp          |
+| 15,011  | Unique Patients Attending at least one Health Camp |
+| 102,000 | Patient-Event Registrations                        |
+| ~ 20%   | Historic Attendance Rate                           |
+
+---
+
+
 
 ![]( https://github.com/AChezick/Capstone2/blob/main/images/attendance_counts.png ) 
 
