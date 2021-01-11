@@ -89,20 +89,36 @@ train.zip contains 6 different csv files apart from the data dictionary as descr
 
 
 
-### EDA
+## EDA
 
-There were imbalanced classes among potential health fair attendees. Additionally, it is important to note that some patients attended more than one MedCamp health event.  
+There were imbalanced classes among potential health camp attendees. Additionally, it is important to note that some patients attended more than one MedCamp health event.  
 
 --- 
 
 | 37633   | Unique Patient IDs                                 |
 |---------|----------------------------------------------------|
+| 65      | Unique Health Camps                                |
 | 20,534  | Count of Patients Attending a Health Camp          |
 | 15,011  | Unique Patients Attending at least one Health Camp |
 | 102,000 | Patient-Event Registrations                        |
 | ~ 20%   | Historic Attendance Rate                           |
+| 3       | Classes or Types of Health Camps                   |
 
 ---
+
+### Creating Target Variable Y
+
+According to the description on Kaggle ,MedCamp wanted to know the probability that a patient would successfully attend a health-fair event. For the first two camp types success was defined as getting a health score. For the third event-type success was going to at least one booth. 
+
+#### Primary Key
+
+Given that each patient could attend more than one event, it was necessary to create a primary key for each patient & Health Camp combination by concatenating of the Patient and Camp ID.  
+
+| Health Camp ID 6578 | Patient ID 489652  | Primary Key 4896526578  |
+|---------------------|--------------------|-------------------------|
+
+Creating this primary key was helpful in combining information and creating additional time features;  meaningful data was spread among several csv files. 
+
 
 
 
