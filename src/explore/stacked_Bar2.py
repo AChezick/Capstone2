@@ -15,10 +15,9 @@ def make_cols_binary(dataframe): # will also input the column name ***
     '''
     create columns for histogram
     '''
-    columnz = [ '9999.0', '23384','Second','Third','1036', '1216', '1217', '1352',
-       '1704', '1729', '2517', '2662', '23384', 'B', 'C', 'D', 'E', 'F', 'G',
-       '2100', '2.0', '3.0', '4.0', '5.0', '6.0', '7.0', '8.0', '9.0', '10.0',
-       '11.0', '12.0', '13.0', '14.0',]  
+    #print()
+    columnz = [ 'B', 'C', 'D', 'E', 'F', 'G'
+       ]  
     df_with_colz = dataframe.copy() # create copy of dataframe
     for i in columnz: # for each item in the column
 
@@ -80,11 +79,11 @@ def get_counts(dataframe):
        '280 to 300 Var5', '0 to 1 Var ','2  Var1', '3 Var1','4 to 10 Var1', '11 to 19 Var1',  
             '20 to 39 Var1','40 to 59 Var1', '60 to 79 Var1', '80 to 99 Var1', 
             '100 to 119 Var1','120 to 139 Var1', '140 to 159 Var1'
-
+        '9999.0', '23384', 'Third','1036', '1216', '1217', '1352',
+       '1704', '1729', '2517', '2662', '23384',
     '''
-    lst =  [ '9999.0', '23384', 'Third','1036', '1216', '1217', '1352',
-       '1704', '1729', '2517', '2662', '23384', 'B', 'C', 'D', 'E', 'F', 'G',
-       '2100','Second','Third']  
+    lst =  [  'B', 'C', 'D', 'E', 'F', 'G',
+       ]  
 
     lst2 = ['9999.0', '23384', 'Third','1036', '1216', '1217', '1352',
        '1704', '1729', '2517', '2662', '23384', 'B', 'C', 'D', 'E', 'F', 'G',

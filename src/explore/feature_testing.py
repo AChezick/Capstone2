@@ -35,7 +35,6 @@ dataframe_1 = scale(data) #Scale all features that are not binary
 
 import matplotlib.pyplot as plt
 
-
 def create_holdout(dataframe ):
     '''
     Create holdout dataframe 
@@ -90,10 +89,11 @@ def run_test_typeB(dataframe):
                     num_boost_round=100,early_stopping_rounds=100, metrics='auc', as_pandas=True, seed=123)
     xg_reg = xgb.train(params=params, dtrain=data_dmatrix, num_boost_round=10)
     print(cv_results[95:])
-    xgb.plot_importance(xg_reg, grid=False,max_num_features=6,xlabel='Feature Score' )
+    xgb.plot_importance(xg_reg, title = None ,importance_type="weight", grid=False,max_num_features=6,xlabel='Feature Score', ylabel= None, height=.7)
     
     plt.rcParams['figure.figsize'] = [10, 10]
     plt.rcParams['figure.dpi'] = 300 
+    
     plt.show()
 
     xgb.fit(X_test,y_test) 
@@ -157,7 +157,7 @@ if __name__ == '__main__':
     
     
     # THESE ARE WORKING #
-    df_test.to_csv('train_4_model.csv', index = False)
+    #df_test.to_csv('train_4_model.csv', index = False)
     #print(make_X_y(dataframe = df_test))
     # print(run_test_typeC(dataframe = df_test1a ))
     # print(run_test_typeC(dataframe = df_test))

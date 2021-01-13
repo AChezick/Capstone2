@@ -13,8 +13,22 @@ def drop_cols(df):
     '''
     Drop columns 
     '''
+    # Health_Camp_ID 
+    drop_thez=[ 'Patient_ID_x',  'Registration_Date', 'Category1_y','Camp_Start_Date2', 
+    'Camp_End_Date2', 'patient_event', 'Unnamed: 0_x','Unnamed: 0.1_x', 'Online_Follower_x', 'First_Interaction'
+    ,'Employer_Category' , 'Event1_or_2_x' ,'Category1_y', 'Unnamed: 0_y', 'Unnamed: 0.1_y', 'Patient_ID_y',
+    'Online_Follower_y', 'Event1_or_2_y','Health Score', 
+    'Number_of_stall_visited', 'Last_Stall_Visited_Number']
 
-    drop_thez=[ 'Patient_ID_x', 'Health_Camp_ID', 'Registration_Date', 'Category1_y','Camp_Start_Date2', 
+    df_ = df.drop(drop_thez, axis =1)
+    return df_
+
+def drop_cols_specific(df):
+    '''
+    Drop columns 
+    '''
+    #Health_Camp_ID 
+    drop_thez=[ 'Patient_ID_x', 'Registration_Date', 'Category1_y','Camp_Start_Date2', 
     'Camp_End_Date2', 'patient_event', 'Unnamed: 0_x','Unnamed: 0.1_x', 'Online_Follower_x', 'First_Interaction'
     ,'Employer_Category' , 'Event1_or_2_x' ,'Category1_y', 'Unnamed: 0_y', 'Unnamed: 0.1_y', 'Patient_ID_y',
     'Online_Follower_y', 'Event1_or_2_y','Health Score', 
@@ -47,10 +61,14 @@ def one_hot_encoding(df, columns):
     '''
     hot_df = df.copy()
     for i in columns:
-        dummies = pd.get_dummies(df[i], drop_second=True)
-        hot_df = pd.concat([hot_df, dummies[:]], axis=1)
+        if i != 'Category2':
+            dummies = pd.get_dummies(df[i], drop_first=True)
+            hot_df = pd.concat([hot_df, dummies[:]], axis=1)
+        else:
+            dummies = pd.get_dummies(df[i], drop_first=False)
+            hot_df = pd.concat([hot_df, dummies[:]], axis=1)
 
-    #hot_df = hot_df.drop(columns,axis=1)
+    del hot_df['B']
     return hot_df 
 
 if __name__ =="__main__":
