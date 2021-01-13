@@ -118,7 +118,7 @@ Given that each patient could attend more than one event, it was necessary to cr
 |---------------------|--------------------|-------------------------|
 
 Creating this primary key was helpful in combining information and creating additional time features; meaningful data was spread among several csv files. 
-![]( https://github.com/AChezick/Capstone2/blob/main/images/images2/primary_key.png ) 
+![]( https://github.com/AChezick/Capstone2/blob/main/images/images2/primary_key2.png )
 
 
 ### Feature Engineering 
@@ -158,7 +158,11 @@ The additional features provided by MedCamp were imbalanced, co-linear, or missi
 
 ### Features from Dates
 
-I used the primary key to track the unique patient events and consolidate important information into csv that could be used for training and testing. The following features were created:
+I used the primary key to track the unique patient events and consolidate important information into csv that could be used for training and testing. 
+
+![]( https://github.com/AChezick/Capstone2/blob/main/images/images2/primary_key.png ) 
+
+The following features were created:
 
 |   | Feature Name (Days)                   |
 |---|---------------------------------------|
