@@ -36,6 +36,7 @@ data2 = drop_cols_specific(df) #drop cols for camp testing
 dataframe_1 = scale(data) #Scale all features that are not binary 
 dataframe_2 = scale(data2) 
 
+
 def create_(dataframe ):
     '''
     Create holdout dataframe 
@@ -101,8 +102,11 @@ def run_test_typeC(dataframe): # might need to rescale / hotencode / drop those
     '''
     y = dataframe.pop('y_target')
     X = dataframe 
-    camp_ID = X.Health_Camp_ID.max()  
+    camp_ID  = X.Health_Camp_ID.max()
+    camp_ID_lst_ = X.Health_Camp_ID.values  
+    camp_ID_lst = set(camp_ID_lst_)
     del X['Health_Camp_ID'] 
+    #del X['City_Type'] 
     X_train, X_test, y_train,y_test = train_test_split(
     X, y , test_size = 0.2, random_state=101)
 
@@ -117,20 +121,20 @@ def run_test_typeC(dataframe): # might need to rescale / hotencode / drop those
     proba = logmodel.predict_proba(X_test)[:,1]
     
     log_thresh1, log_thresh2, log_thresh3 = proba>=0.35 , proba>=0.45 , proba>=.55
-
+    log_thresh4 = proba>=.65
     
     mat1 = confusion_matrix(y_test,log_thresh1 ) 
     mat2 = confusion_matrix(y_test,log_thresh2 ) 
     mat3 = confusion_matrix(y_test,log_thresh3 ) 
+    mat4 = confusion_matrix(y_test,log_thresh4 ) 
 
-    y_counts = sum([1 for x in y_test.values if x ==1])
+    y_counts_test = sum([1 for x in y_test.values if x ==1])
+    y_counts_train = sum([1 for x in y_train.values if x ==1])
 
     conf_matrix1,conf_matrix2,conf_matrix3 = [],[],[]
-
-  
-    
-    test_size = len(X_test)
-    return [str(camp_ID), mat1[0][1],mat1[1][1], y_counts , test_size ] #array of ratio, total_ytarget, total size , camp length , 
+    test_size =len(X_test)
+    train_size =len(X_train)
+    return [str(camp_ID), mat4[0][1],mat4[1][1], y_counts_test , y_counts_train , test_size , train_size] #array of ratio, total_ytarget, total size , camp length , 
 
 def final_test(X_train, y_train, X_holdout, y_holdout,Classifier, **kwargs):
     '''
@@ -144,22 +148,20 @@ def graph_or_table():
     '''
 
 if __name__ == '__main__':
-    hot_code2 = one_hot_encoding(hot_code, columns = ['Category1_x','Category2','Category3','Job_Type', 'online_score', 'City_Type'])
-    hot_code2.to_csv('hot_code_NO_scale.csv',index=False)
-    print(hot_code2)
-    # df_encode= one_hot_encoding(dataframe_1, columns = ['Category1_x','Category2','Category3','Job_Type', 'online_score']) # for testing differnt cities dont drop City_Type
-    # df_encode2= one_hot_encoding(dataframe_2, columns = ['Category1_x','Category2','Category3','Job_Type', 'online_score'])
-
-    # df_encode1 = df_encode.copy() 
-    # df_encode4 = df_encode2.copy() 
-
-    # df_test = df_encode1.drop(['Category1_x','Category2','Category3','Job_Type', 'online_score'],axis=1)
-    # df_test1 = df_test.copy()  
-
-    # df_test2 = df_encode4.drop(['Category1_x','Category2','Category3','Job_Type', 'online_score'],axis=1)
-    # df_test4 = df_test2.copy() 
     
- 
+    df_encode= one_hot_encoding(dataframe_1, columns = ['Category1_x','Category2','Category3','Job_Type', 'online_score','City_Type']) # for testing differnt cities dont drop City_Type
+    df_encode2= one_hot_encoding(dataframe_2, columns = ['Category1_x','Category2','Category3','Job_Type', 'online_score','City_Type']) #, 'City_Type'
+    
+    df_encode1 = df_encode.copy() 
+    df_encode4 = df_encode2.copy() 
+
+    df_test = df_encode1.drop(['Category1_x','Category2','Category3','Job_Type', 'online_score','City_Type'],axis=1) #,'City_Type'
+    df_test1 = df_test.copy()  
+
+    df_test2 = df_encode4.drop(['Category1_x','Category2','Category3','Job_Type', 'online_score','City_Type'],axis=1)
+    df_test4 = df_test2.copy() 
+    
+    
     # df23384 = df_test[df_test['City_Type']==23384]
     # df1216 = df_test[df_test['City_Type']==1216]
     # df1036 = df_test[df_test['City_Type']==1036]
@@ -172,47 +174,46 @@ if __name__ == '__main__':
     # df816 = df_test[df_test['City_Type']==816] 
 
     # df_one = df_test[ (df_test['Second']== 0) & (df_test['Third']==0) ]
-    # df_two = df_test[df_test['Second']== 1]
+    # df_two = df_test[df_test['Second']== 'B']
     # df_three = df_test[df_test['Third']== 1]
 
     # event_list = [df_one,df_two,df_three]
     # city_list = [(df23384,23384),(df1216,1216),(df1036,1036),(df1704,1704),(df2662,2662),
     # (df1729,1729),(df1217,1217),(df1352,1352),(df2517,2517),(df816,816) ]
-    # camp_list = [6578, 6532, 6543, 6580, 6570, 6542, 6571, 6527, 6526, 6539, 6528,
-    #     6555, 6541, 6523, 6538, 6549, 6586, 6554, 6529, 6540, 6534, 6535, 6561, 6585, 
-    #     6536, 6562, 6537, 6581, 6524, 6587, 6557, 6546, 6569, 6564, 6575, 6552, 6558, 
-    #     6530, 6560, 6531, 6544, 6565, 6553, 6563]
-    # resultz_dict = {} 
-    # for i in camp_list:
-    #     get = df_test4[df_test4['Health_Camp_ID'] == i] #make data_frame for analysis 
-    #     get_y_counts = get[get['y_target']==1] # get count for total number of attends 
-    #     size = len(get)  # obtain size of data_frame 
-    #     test = run_test_typeC(get) # create object that has results from data_frame testing
-    #     i_ = str(i)
-    #     resultz_dict[i_] = test
-    # print(resultz_dict)
+    camp_list = [6578, 6532, 6543, 6580, 6570, 6542, 6571, 6527, 6526, 6539, 6528,
+        6555, 6541, 6523, 6538, 6549, 6586, 6554, 6529, 6540, 6534, 6535, 6561, 6585, 
+        6536, 6562, 6537, 6581, 6524, 6587, 6557, 6546, 6569, 6564, 6575, 6552, 6558, 
+        6530, 6560, 6531, 6544, 6565, 6553, 6563]
+    resultz_dict = {} 
+    for i in camp_list:
+        get = df_test4[df_test4['Health_Camp_ID'] == i] #make data_frame for analysis 
+        test = run_test_typeC(get) # create object that has results from data_frame testing
+        i_ = str(i)
+        resultz_dict[i_] = test
+    print(resultz_dict)
     
-    # camp_df = pd.DataFrame.from_dict(resultz_dict, orient='index', columns = ['Health_Camp_ID',
-    #     'False Positive', 'False Negative', 'Y Count', 'Test Size'])
-    # camp_df.to_csv('results_by_Camp.csv',index=False)
+    camp_df = pd.DataFrame.from_dict(resultz_dict, orient='index', columns = ['Health_Camp_ID',
+        'False Positive', 'False Negative', 'y_counts_test' , 'y_counts_train' , 'test_size' , 'train_size'])
+    camp_df.to_csv('results_by_Camp_t4.csv',index=False)
 
 
 
     # result_by_city_dict = {}
     # for i in city_list:
     #     get = i[0] #make data_frame for analysis 
-    #     print(get.City_Type.unique)
+    #     print(type(get))
     #     get_y_counts = get[get['y_target']==1] # get count for total number of attends 
     #     size = len(get)  # obtain size of data_frame 
     #     test = run_test_typeC(get) # create object that has results from data_frame testing
-    #     i_ = str(i_[0])
+    #     i_ = str(i[0])
     #     result_by_city_dict[i_] = test
-    # print(result_by_city_dict)
+    #     print(test)
+    # #print(result_by_city_dict.values())
      
 
     # city_list = pd.DataFrame.from_dict(result_by_city_dict, orient='index', columns = ['Health_Camp_ID',
-    # 'False Positive', 'False Negative', 'Y Count', 'Test Size'])
-    # city_list.to_csv('results_by_CITY.csv',index=False)
+    # 'False Positive', 'False Negative', 'y_counts_test' , 'y_counts_train' , 'test_size' , 'train_size'])
+    # city_list.to_csv('results_by_CITY_t1.csv',index=False)
 
     # result_by_TYPE_dict = {}
     # for i in event_list:
@@ -221,13 +222,13 @@ if __name__ == '__main__':
     #     size = len(get)  # obtain size of data_frame 
     #     test = run_test_typeC(get) # create object that has results from data_frame testing
     #     i_ = str(i)
-    #     result_by_city_dict[i_] = test
-    # print(result_by_city_dict)
+    #     result_by_TYPE_dict[i_] = test
+    # print(result_by_TYPE_dict)
      
 
-    # city_list = pd.DataFrame.from_dict(result_by_city_dict, orient='index', columns = [ 'Health_Camp_ID',
+    # event_type_list = pd.DataFrame.from_dict(result_by_TYPE_dict, orient='index', columns = [ 'Health_Camp_ID',
     # 'False Positive', 'False Negative', 'Y Count', 'Test Size'])
-    # city_list.to_csv('results_by_CITY')
+    # event_type_list.to_csv('results_by_TYPE_thresh1.csv',index=False)
 
      
     # for i in event_list:
@@ -248,4 +249,11 @@ if __name__ == '__main__':
     #                 conf_matrix1.append(ii) #list. append num
     #         results_dict[i]=conf_matrix1
     # print(results_dict)
+
+
+
+
     # 
+    # hot_code2 = one_hot_encoding(hot_code, columns = ['Category1_x','Category2','Category3','Job_Type', 'online_score', 'City_Type'])
+    # hot_code2.to_csv('hot_code_NO_scale.csv',index=False)
+    # print(hot_code2)
