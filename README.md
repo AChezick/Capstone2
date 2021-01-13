@@ -108,7 +108,7 @@ There were imbalanced classes among potential health camp attendees. Additionall
 
 ### Creating Target Variable Y
 
-According to the description on Kaggle ,MedCamp wanted to know the probability that a patient would successfully attend a health-fair event. For the first two camp types success was defined as getting a health score. For the third event-type success was going to at least one booth. 
+According to the description on Kaggle, MedCamp wanted to know the probability that a patient would successfully attend a health-fair event. For the first two camp types success was defined as getting a health score. For the third event-type success was going to at least one booth. The data from MedCamp was from several years and preliminary EDA showed that each patient could attend more than one Camp. Thus, to correctly create a target feature I needed to know the Camp ID,Patient ID, and if they successfully went to that event.
 
 #### Primary Key
 
