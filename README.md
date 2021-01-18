@@ -129,7 +129,7 @@ Training the model with only the five anonymized features results in very poor p
 
 For the two anonymized features (Var1 , Var5) that had the highest feature weights, most of the counts were zero value. 
 
-![]( https://github.com/AChezick/Capstone2/blob/main/images/images2/var1_5_Zero.png ) 
+![]( https://github.com/AChezick/Capstone2/blob/main/images/images2/var1_5_Zero_.png ) 
 
 For comparison here is the rest of the distribution for Var1 & Var5.  Without knowing what either of these features map to, I decided not to drop them for modeling purposes.  
 
