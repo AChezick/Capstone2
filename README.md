@@ -177,8 +177,7 @@ The following features were created:
 
 
 ### Modeling 
-
-Given the goal is to ensure all patients have a good experience , there has to be extra supplies. However, having accurate predictions means we can be confident in having just enough extra supplies thus covering both goals. 
+Given the goal is to ensure all patients have an individualized health experience , there has to be specific supplies. Having accurate predictions means we can be confident in having the correct supplies and accomplishing  the goal for improving health through individualized interventions. 
 
 --- 
 
@@ -186,13 +185,13 @@ Given the goal is to ensure all patients have a good experience , there has to b
 
 ![]( https://github.com/AChezick/Capstone2/blob/main/images/roc_all%20models.png ) 
 
-As shown above all models achelved a similar ROC score. 
+As shown above all models achelved a similar ROC score. However, when we take the number of false negatives and false positives into consideration going with the XG Boost model is the best choice. 
 
 ![]( https://github.com/AChezick/Capstone2/blob/main/images/images2/pde_campLength.png ) 
 
 The Date features ended up improving scores for all models. Additionally, for all but some iterations of Random Forests, the date/times features would show among top feature importances. 
 
-![]( https://github.com/AChezick/Capstone2/blob/main/images/feature_core_rough.png ) 
+![]( https://github.com/AChezick/Capstone2/blob/main/images/feature_importance_XG2.png ) 
 
 ---
  
