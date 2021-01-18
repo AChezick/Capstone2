@@ -66,15 +66,15 @@ def combine(x):
  
     return x ##  
 
-def patient_merging(x):
+def patient_merging(dataframe):
     '''
     Merge train and Patient_info on Patient_ID
     '''
-    x_copy = x.copy() 
+    dataframe_copy = dataframe.copy() 
     patient_df_  = patient_df.copy()  
-    x_copy.Patient_ID = x_copy.Patient_ID.astype(int)
-    x_copied = pd.merge(x_copy,patient_df_ , how='outer', on ='Patient_ID')
-    return x_copied
+    dataframe_copy.Patient_ID = dataframe_copy.Patient_ID.astype(int)
+    dataframe_copied = pd.merge(dataframe_copy,patient_df_ , how='outer', on ='Patient_ID')
+    return dataframe_copied
 
 def to_date(dataframe):
     '''
@@ -84,7 +84,7 @@ def to_date(dataframe):
     # dataframe['Registration_Date'] = pd.to_datetime(dataframe['Registration_Date'], format="%d-%b-%y")
     return dataframe
 
-def merger(x):
+def merger(dataframe):
     '''
     merge train and attendance  
     edit_y values
@@ -95,86 +95,86 @@ def merger(x):
        'Education_Score', 'Age', 'First_Interaction', 'City_Type', 'Camp_Start_Date',
        'Employer_Category', 'Job_Type',  'online_score', 'Camp_End_Date',
        'Donation', 'Health_Score', 'Unnamed: 4', 'Health_Camp_ID'], axis=1) 
-    x['patient_event']= x.patient_event.fillna(0)
-    x.patient_event = x.patient_event.astype(int)
+    dataframe['patient_event']= dataframe.patient_event.fillna(0)
+    dataframe.patient_event = dataframe.patient_event.astype(int)
     attends_df_.patient_event = attends_df_.patient_event.astype(int)
 
-    x = pd.merge(x, attends_df_ ,how='outer', on='patient_event')
-    x['y_target'] = x['y_target'].replace(to_replace = 'None', value=np.nan).fillna(0)
-    x_ = x[x['patient_event'].notna()]
+    dataframe = pd.merge(dataframe, attends_df_ ,how='outer', on='patient_event')
+    dataframe['y_target'] = dataframe['y_target'].replace(to_replace = 'None', value=np.nan).fillna(0)
+    x_ = dataframe[dataframe['patient_event'].notna()]
     return x_
 
-def drop_cols(x):
+def drop_cols(dataframe):
     '''
     dropping columns for test file
     -Adding time features 
     '''
     cols_2_drop = [
     'LinkedIn_Shared','Twitter_Shared', 'Facebook_Shared', 'Income', 'Education_Score', 'Age']
-    x = x.drop(cols_2_drop, axis=1)
+    dataframe = dataframe.drop(cols_2_drop, axis=1)
 
     #x['Camp_Start_Date2'] = pd.to_datetime(x['Camp_Start_Date2'], format="%d-%m-%y")
-    x['Registration_Date'] = pd.to_datetime(x['Registration_Date'])
-    x['First_Interaction'] = pd.to_datetime(x['First_Interaction'])
+    dataframe['Registration_Date'] = pd.to_datetime(dataframe['Registration_Date'])
+    dataframe['First_Interaction'] = pd.to_datetime(dataframe['First_Interaction'])
 
-    x['delta_first_reg'] = x['Camp_Start_Date2'] - x['Registration_Date'] #Check start - regrister
-    x['delta_first_reg'] = x['delta_first_reg'].dt.days
+    dataframe['delta_first_reg'] = dataframe['Camp_Start_Date2'] - dataframe['Registration_Date'] #Check start - regrister
+    dataframe['delta_first_reg'] = dataframe['delta_first_reg'].dt.days
 
-    x['interaction_regreister_delta'] = x['Registration_Date'] - x['First_Interaction'] #check regrister - interaction 
-    x['delta_first_start'] = x['Camp_Start_Date2'] - x['First_Interaction'] # Check  startdate - first interaction 
+    dataframe['interaction_regreister_delta'] = dataframe['Registration_Date'] - dataframe['First_Interaction'] #check regrister - interaction 
+    dataframe['delta_first_start'] = dataframe['Camp_Start_Date2'] - dataframe['First_Interaction'] # Check  startdate - first interaction 
     
-    x['delta_reg_end'] = x['Camp_End_Date2'] - x['Registration_Date']
-    return x 
+    dataframe['delta_reg_end'] = dataframe['Camp_End_Date2'] - dataframe['Registration_Date']
+    return dataframe 
 
-def impute_missing_vals(x):
+def impute_missing_vals(dataframe):
     '''
     For Category1 
     y_target.fillna(), fill rest of dates with subtraction 
     - removing string part , keeping only int
     '''
-    x['Camp_Length'] =  x['Camp_End_Date2'] - x['Camp_Start_Date2']
+    dataframe['Camp_Length'] =  dataframe['Camp_End_Date2'] - dataframe['Camp_Start_Date2']
     
-    return x
+    return dataframe
 
-def keep_ints(x):
+def keep_ints(dataframe):
     '''
     Start Conversion for Data_Time features into usable object:
     ['delta_first_start','interaction_regreister_delta','Camp_Length']
     '''
-    x.delta_first_start = x.delta_first_start.astype(str)
-    xi = x.delta_first_start.values
+    dataframe.delta_first_start = dataframe.delta_first_start.astype(str)
+    xi = dataframe.delta_first_start.values
     xi_ = [] 
 
     for i in xi:
         xi_.append(''.join([x for x in i if x in '-1234567890']) )
 
-    x.interaction_regreister_delta = x.interaction_regreister_delta.astype(str)
-    xii = x.interaction_regreister_delta.values
+    dataframe.interaction_regreister_delta = dataframe.interaction_regreister_delta.astype(str)
+    xii = dataframe.interaction_regreister_delta.values
     xii_ = [] 
 
     for i in xii:
         xii_.append(''.join([x for x in i if x in '-1234567890']) )
 
-    x.Camp_Length = x.Camp_Length.astype(str)
-    xiii = x.Camp_Length.values
+    dataframe.Camp_Length = dataframe.Camp_Length.astype(str)
+    xiii = dataframe.Camp_Length.values
     xiii_ = [] 
 
     for i in xiii:
         xiii_.append(''.join([x for x in i if x in '-1234567890']) )
 
-    x.delta_reg_end = x.delta_reg_end.astype(str)
-    xiiii = x.delta_reg_end.values
+    dataframe.delta_reg_end = dataframe.delta_reg_end.astype(str)
+    xiiii = dataframe.delta_reg_end.values
     xiiii_ = [] 
 
     for i in xiiii:
         xiiii_.append(''.join([x for x in i if x in '-1234567890']) )
 
 
-    x['Camp_Length'] = xiii_
-    x['interaction_regreister_delta'] = xii_
-    x['delta_first_start'] = xi_ 
-    x['delta_reg_end'] = xiiii_
-    return x 
+    dataframe['Camp_Length'] = xiii_
+    dataframe['interaction_regreister_delta'] = xii_
+    dataframe['delta_first_start'] = xi_ 
+    dataframe['delta_reg_end'] = xiiii_
+    return dataframe 
 
 
 if __name__ == '__main__':

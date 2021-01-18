@@ -15,13 +15,14 @@ df3 = df2.drop(drop_thez, axis =1)
 
 
 camp_info = pd.read_csv('/home/allen/Galva/capstones/capstone2/data/Health_Camp_Detail.csv')
-fuck = {}
+
+cat3_values = {}
 for i in camp_info['Category3'].values:
-    if i not in fuck:
-        fuck[i]=1
+    if i not in cat3_values:
+        cat3_values[i]=1
     else:
-        fuck[i] +=1
-print(fuck)
+        cat3_values[i] +=1
+print(cat3_values)
 
 
 def one_hot_encoding(dataframe, columns):

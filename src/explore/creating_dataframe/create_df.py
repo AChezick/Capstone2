@@ -11,7 +11,7 @@ df_city = pd.read_csv('/home/allen/Galva/capstones/capstone2/data/D7.csv')
 
 def impute_city(patient):
     '''
-    Edit column for City_Type
+    Edit column for City_Type, impute missing values
     '''
     dict_of_cities = {}
     for i in df_city['City_Type'].values:

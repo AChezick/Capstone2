@@ -144,12 +144,12 @@ def run_test_typeD(dataframe):
     return None 
 
 
-def run_test_typeC(X_testz,y_trainz):
+def run_test_typeC(X_testc,y_trainc):
     '''
     do part 2 _ maybe optomize  ? 
     '''
-    y = y_trainz
-    X = X_testz 
+    y = y_trainc
+    X = X_testc 
     X_trainc, X_testc, y_trainc,y_testc = train_test_split(
     X, y , test_size = 0.2, random_state=101)
 

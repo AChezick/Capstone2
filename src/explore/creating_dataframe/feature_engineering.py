@@ -26,15 +26,3 @@ if __name__ == '__main__':
     df_and_city = impute_city(x=df)
     print(df_and_city['City_Type'])
 
-
-# Goal with this file is to create different features to test for added value
-# Might test and then remove 
-# Saving different versions of csv? or pd to data frame
-# 
-
-
-
-# Ideas for features 
-# Participation Score (later to be hot encoded)
-# Number of events attended prior to this one 
-# 
