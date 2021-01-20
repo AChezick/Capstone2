@@ -198,7 +198,22 @@ The Date features ended up improving scores for all models. Additionally, for al
 
 ### 
 
-#### Future Work
+#### Post-Hoc
+
+The global attendance rate was 20%. The training and validation attendance rate was 27%. However, 5/10 camp locations had an attendance rate between 32.2% and 33.8%. The highest attendance rate was just over 70%. 
+
+
+There was much diversity among Health Camp Attendance Rates:
+1. The size of the Health Camp. 
+2. Among groups of the same size
+
+![]( https://github.com/AChezick/Capstone2/blob/main/images/images2/test_size_attendsRate_CAMP.png )
+
+There is a correlation and outlier among Health Camp Attendance Rates:
+1. Camp Location
+
+![]( https://github.com/AChezick/Capstone2/blob/main/images/images2/test_size_attendsRate_city.png ) 
+
 Since this data is not descriptive black-box models are OK to use. Optimization of a neural network may produce good results. I used tensorflow and keras and was able to achieve similar results to other models with minimal training. 
 
 ![]( https://github.com/AChezick/Capstone2/blob/main/images/images2/BasicNN.png )
