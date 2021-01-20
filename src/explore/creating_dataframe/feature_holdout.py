@@ -8,12 +8,13 @@ from sklearn.pipeline import make_pipeline
 from sklearn.preprocessing import StandardScaler
 
 from sklearn.metrics import classification_report, accuracy_score, precision_score, recall_score, confusion_matrix, classification
-from sklearn.model_selection import train_test_split ,  RandomizedSearchCV
+from sklearn.model_selection import train_test_split ,  RandomizedSearchCV,ParameterGrid,GridSearchCV
 from sklearn.ensemble import GradientBoostingClassifier
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.linear_model import LogisticRegression
 from sklearn.svm import SVC 
 from sklearn.metrics import plot_roc_curve
+from sklearn.neighbors import KNeighborsClassifier
 
 #from sklearn.cross_validation import StratifiedKFold
 from sklearn.datasets import make_classification
@@ -23,17 +24,17 @@ import xgboost as xgb
 from xgboost import XGBClassifier     
 from sklearn.metrics import mean_squared_error
 
-df = pd.read_csv('/home/allen/Galva/capstones/capstone2/src/explore/ready12_24_train.csv')  
-df_plain = pd.read_csv('/home/allen/Galva/capstones/capstone2/Notebooks/plain_df_to_test.csv')
-df_no_scale = pd.read_csv('/home/allen/Galva/capstones/capstone2/src/explore/hot_code_NO_scale.csv')
+df = pd.read_csv('/home/allen/Galva/capstones/capstone2/data/ready12_24_train.csv')  
 
-del df_no_scale['Health_Camp_ID']
-del df_no_scale['Category1_x']
-del df_no_scale['Category2']
+# df_plain = pd.read_csv('/home/allen/Galva/capstones/capstone2/Notebooks/plain_df_to_test.csv')
+
+# del df_no_scale['Health_Camp_ID']
+# del df_no_scale['Category1_x']
+# del df_no_scale['Category2']
 
 from preprocessing import drop_cols , one_hot_encoding , scale
-# data = drop_cols(df) # drop cols
-# dataframe_1 = scale(data) #Scale all features that are not binary  
+data = drop_cols(df) # drop cols
+dataframe_1 = scale(data) #Scale all features that are not binary  
 
 import matplotlib.pyplot as plt
 from statsmodels.tools import add_constant
@@ -87,8 +88,6 @@ def run_test_forest(X_train,y_train): # THIS NEEDS TO be split for train and tes
     randomforest_bestparams = random_search.best_params_
     randomforest_bestscore =  random_search.best_score_
     return randomforest_bestparams, randomforest_bestscore 
-
-
 
 def run_test_boost(X_train,y_train):
     '''
@@ -158,6 +157,42 @@ def run_log_reg(X_testz,y_trainz,solver=['liblinear']):
     log_bestscore =  log_search.best_score_
     return log_bestparams, log_bestscore 
 
+
+def run_test_knn(df_encode1):  
+    '''
+    run the test
+    '''
+    # classifier = KNeighborsClassifier()
+    # # parameters to investigate
+ 
+    # # dictionary containing the parameters
+    # param_grid = {'n_neighbors': [9,10,11],
+    #           'weights':['uniform','distance'],
+    #           'metric': ['euclidean','manhattan']}
+    # # hyperparameter tuning parameter search methodology
+    # gs = GridSearchCV(classifier, 
+    #                                param_grid, 
+    #                                scoring='accuracy',
+    #                                cv=3,
+    #                                n_iter=200,
+    #                                verbose=1,
+    #                                return_train_score=True,
+    #                                n_jobs=-1)
+    # gs_results = gs.fit(X_train, y_train)
+    # # print the bestparameters and the best recall score
+    # knn_bestparams = gs_results.best_params_
+    # knn_bestscore =  gs_results.best_score_ 
+    yk = df_encode1.pop('y_target')
+    Xk = df_encode1 
+
+    X_traink, X_testk, y_traink, y_testk = train_test_split(Xk, yk, random_state=42)
+    knn = KNeighborsClassifier(n_neighbors=10)
+    knn.fit(X_traink,y_traink)
+    pred = knn.predict(X_testk)
+    cm = confusion_matrix(y_testk,pred)
+    cr = classification_report(y_testk,pred)
+    return cm , cr  
+
 def final_test(X_train, y_train, X_holdout, y_holdout,Classifier,kwargs = {}):
     '''
     Execute trained model on holdout data, return results 
@@ -172,10 +207,10 @@ def final_test(X_train, y_train, X_holdout, y_holdout,Classifier,kwargs = {}):
     conf_matrix = confusion_matrix(y_holdout, y_predict)
     dict_={"score": score, "precision": precision, 'recall':recall, 'confusion_matrix': conf_matrix}
     # features=[5,6,7],feature_names = ['delta_first_reg','delta_first_start', 'delta_reg_end'], X = X_holdout)
-    features = [5,6,7] 
-    plot = plot_partial_dependence(final_model,X_holdout,features) 
-    plt.show()  
-    print(plot)
+    # features = [10,11,12] 
+    # plot = plot_partial_dependence(final_model,X_holdout,features) 
+    # plt.show()  
+    # print(plot)
     return (f'for {Classifier} the final model with optimized hyperparameters results in {dict_}', dict_.items())
 
 def graph_or_table():
@@ -184,31 +219,37 @@ def graph_or_table():
     '''
 
 if __name__ == '__main__':
-    print('hi')
+     
 
-    df_encode = one_hot_encoding(dataframe_1, columns = ['City_Type','Category1_x','Category2','Category3','Job_Type', 'online_score'])
-    df_encode1 = df_encode.drop(['City_Type','Category1_x','Category2','Category3','Job_Type','online_score'],axis=1) 
+    df_encode = one_hot_encoding(dataframe_1, columns = ['City_Type2_x','Category 1','Category 2','Category 3','Job Type_x', 'online_score'])
+    df_encode1 = df_encode.drop(['City_Type2_x','Category 1','Category 2','Category 3','Job Type_x','online_score'],axis=1) 
      
-    df_encode1 = df_encode1.drop([1,2,3,4,'delta_first_reg', 'interaction_regreister_delta','delta_first_start','delta_reg_end','Camp_Length'],axis=1) 
+    # #df_encode1.to_csv('/home/allen/Galva/capstones/capstone2/data/hot_drop_21.csv')  
+    # # df_encode1 = df_encode1.drop([1,2,3,4,'Camp Start Date - Registration Date',
+    # #    'Registration Date - First Interaction',
+    # #    'Camp Start Date - First Interaction',
+    # #    'Camp End Date - Registration Date', 'Camp Length'],axis=1) 
      
-    df_test1, df_test2 = df_encode1.copy() , df_encode1.copy()
-
-    X_train, X_holdout, y_train, y_holdout= create_holdout(df_no_scale ) 
+    # df_test1, df_test2 = df_encode1.copy() , df_encode1.copy()
+    # print(df_test1)
+    # X_train, X_holdout, y_train, y_holdout= create_holdout(df_encode1) 
      
-    randomforest_bestparams , randomforest_bestscore = run_test_forest(X_train, y_train)
-    randomforest_finalmodel = final_test(X_train, y_train, X_holdout, y_holdout,RandomForestClassifier,randomforest_bestparams)
+    # # # randomforest_bestparams , randomforest_bestscore = run_test_forest(X_train, y_train)
+    # # # randomforest_finalmodel = final_test(X_train, y_train, X_holdout, y_holdout,RandomForestClassifier,randomforest_bestparams)
  
-    gboost_bestparams,gboost_bestscore = run_test_boost(X_train, y_train)
-    gboosting_final = final_test(X_train, y_train, X_holdout, y_holdout, GradientBoostingClassifier, gboost_bestparams)
+    # # # gboost_bestparams,gboost_bestscore = run_test_boost(X_train, y_train)
+    # # # gboosting_final = final_test(X_train, y_train, X_holdout, y_holdout, GradientBoostingClassifier, gboost_bestparams)
 
-    log_bestparams, log_bestscore = run_log_reg(X_train, y_train)
-    log_finalmodel = final_test(X_train, y_train, X_holdout, y_holdout, LogisticRegression , log_bestparams )
-    print( gboosting_final ,randomforest_finalmodel )
+    # # log_bestparams, log_bestscore = run_log_reg(X_train, y_train)
+    # # log_finalmodel = final_test(X_train, y_train, X_holdout, y_holdout, LogisticRegression , log_bestparams )
+
+    knn_bestscore, knn_best_params = run_test_knn(df_encode1)
+    #knn_finalmodel = final_test(X_train, y_train, X_holdout, y_holdout, KNeighborsClassifier , knn_bestparams )
+
+    print( knn_bestscore,knn_best_params)
       
  
 
 
             
-
-     
-    
+ 

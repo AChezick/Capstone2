@@ -2,7 +2,7 @@ import pandas as pd
 import numpy as np 
 pd.set_option('display.max_columns', None) 
 
-patient = pd.read_csv('/home/allen/Galva/capstones/capstone2/data/patient_attendance.csv') 
+patient = pd.read_csv('/home/allen/Galva/capstones/capstone2/data/Train/Patient_Profile.csv') 
 event1 = pd.read_csv('/home/allen/Galva/capstones/capstone2/data/Train/First_Health_Camp_Attended.csv')
 event2 = pd.read_csv('/home/allen/Galva/capstones/capstone2/data/Train/Second_Health_Camp_Attended.csv')
 event3 = pd.read_csv('/home/allen/Galva/capstones/capstone2/data/Train/Third_Health_Camp_Attended.csv')
@@ -21,6 +21,28 @@ def impute_city(patient):
             dict_of_cities[i]+=1
 
     patient['City_Type2'] = df_city['City_Type'].map(dict_of_cities)
+    return patient 
+
+def impute_Job(patient):
+    '''
+    Edit column for City_Type, impute missing values
+    '''
+    patient.Employer_Category = patient.Employer_Category.astype(str)
+    
+    patient['Employer_Category'] = patient['Employer_Category'].replace(to_replace = 'None', value=np.nan).fillna(0)
+    to_change = patient['Employer_Category'].values 
+    to_change_ = []
+    for i in to_change:
+        if i != 'nan':
+            to_change_.append(i)
+        else:
+            to_change_.append('9999')
+
+    
+    patient['Job Type'] = to_change_
+    print(patient.info())
+
+     
     return patient 
 
 def impute_online_score(patient):
@@ -117,9 +139,12 @@ def to_date_patient(patient): # might not need since its already attached to eac
 
 if __name__ == '__main__':
     impute_citi = impute_city( patient )
-    impute_online = impute_online_score(impute_citi)
-    print(impute_citi.info(), impute_citi.head(10))
+    impute_jobs = impute_Job(impute_citi)
+    impute_online = impute_online_score(impute_jobs)
+    print(impute_online.head(20))
+   
     #patient2 = make_target_patient(patient)
+
     event1,event2,event3 = make_target(event1) , make_target(event2) , make_target(event3)
 
     event1_, event2_,event3_= make_combo(dataframe=event1) , make_combo(dataframe=event2) , make_combo(dataframe=event3)
@@ -130,30 +155,30 @@ if __name__ == '__main__':
  
     dated = to_date(concat1) # dates for all 20,555 patient_attends 
     dated_patient = to_date_patient(impute_online ) 
-    d1,d2,d3 = {},{},{}
-    for i in dated['Age'].values:
-        if i not in d1:
-            d1[i]=1
-        else:
-            d1[i]+=1
-    for i in dated['Education_Score'].values:
-        if i not in d2:
-            d2[i]=1
-        else:
-            d2[i]+=1    
-    for i in dated['Income'].values:
-        if i not in d3:
-            d3[i] =1
-        else:
-            d3[i]+=1
-    print(d1,d2,d3)
+    # d1,d2,d3 = {},{},{}
+    # for i in dated['Age'].values:
+    #     if i not in d1:
+    #         d1[i]=1
+    #     else:
+    #         d1[i]+=1
+    # for i in dated['Education_Score'].values:
+    #     if i not in d2:
+    #         d2[i]=1
+    #     else:
+    #         d2[i]+=1    
+    # for i in dated['Income'].values:
+    #     if i not in d3:
+    #         d3[i] =1
+    #     else:
+    #         d3[i]+=1
+     
 
-    age_and_edu = dated[(dated['Age'] ==0) & (dated['Education_Score']==0)]
-    print(len(age_and_edu))
+    # age_and_edu = dated[(dated['Age'] ==0) & (dated['Education_Score']==0)]
+    # #print(len(age_and_edu))
 
 
 
-    # dated.to_csv('dec21.csv', index=False) # as at 10am 12/22 dec21.csv is all patients
-    #dated_patient.to_csv('patient_dec24.csv', index=False)
+    dated.to_csv('/home/allen/Galva/capstones/capstone2/data/attends_df.csv', index=False) # as at 10am 12/22 dec21.csv is all patients
+    dated_patient.to_csv('/home/allen/Galva/capstones/capstone2/data/patient_dec24.csv', index=False)
 
  

@@ -20,14 +20,14 @@ import xgboost as xgb
 from xgboost import XGBClassifier
 from sklearn.metrics import mean_squared_error
 
-df = pd.read_csv('/home/allen/Galva/capstones/capstone2/src/explore/ready12_24_train.csv')  
-df["Camp Start Date - Registration Date"] = df['delta_first_reg']
-df[ "Registration Date - First Interaction"] = df['interaction_regreister_delta']
-df["Camp Start Date - First Interaction"]=df['delta_first_start']
-df["Camp End Date - Registration Date"]=df['delta_reg_end']
-df['Camp Length'] = df['Camp_Length']
-rename=['delta_first_reg','delta_reg_end','Camp_Length','interaction_regreister_delta','delta_first_start', 'Camp_length']
-df =df.drop(rename,axis=1)
+df = pd.read_csv('/home/allen/Galva/capstones/capstone2/data/ready12_24_train.csv')  
+# df["Camp Start Date - Registration Date"] = df['delta_first_reg']
+# df[ "Registration Date - First Interaction"] = df['interaction_regreister_delta']
+# df["Camp Start Date - First Interaction"]=df['delta_first_start']
+# df["Camp End Date - Registration Date"]=df['delta_reg_end']
+# df['Camp Length'] = df['Camp_Length']
+# rename=['delta_first_reg','delta_reg_end','Camp_Length','interaction_regreister_delta','delta_first_start', 'Camp_length']
+# df =df.drop(rename,axis=1)
 
 from preprocessing import drop_cols , one_hot_encoding , scale
 data = drop_cols(df) # drop cols
@@ -51,6 +51,24 @@ def create_holdout(dataframe ):
     return X_train, X_holdout, y_train, y_holdout
 
 def run_test_typeA(dataframe): # this test might have to be done differently than the other two for the holdout aspect 
+    '''
+    Remove columns, print list of columns, drop columns, run model
+    '''
+    y = dataframe.pop('y_target')
+    x = dataframe
+    data_dmatrix = xgb.DMatrix(data=x,label=y) 
+    X_train, X_test, y_train, y_test = train_test_split(x, y, test_size=0.5, random_state=101) 
+    
+    svc = SVC(random_state=42)
+    svc.fit(X_test, y_test)
+    svc_preds = svc.predict(X_test)
+
+    print(classification_report(y_test,svc_preds) )
+    svc_disp = plot_roc_curve(svc, X_test, y_test)
+    plt.show()
+
+
+def run_test_typeK(dataframe): # this test might have to be done differently than the other two for the holdout aspect 
     '''
     Remove columns, print list of columns, drop columns, run model
     '''

@@ -3,8 +3,8 @@ import numpy as np
 pd.set_option('display.max_columns', None) 
 train = pd.read_csv('/home/allen/Galva/capstones/capstone2/data/Train/Train.csv')
 test = pd.read_csv('/home/allen/Galva/capstones/capstone2/data/Train/test.csv')
-attends_df = pd.read_csv('dec21.csv')
-patient_df = pd.read_csv('patient_dec24.csv')
+attends_df = pd.read_csv('/home/allen/Galva/capstones/capstone2/data/attends_df.csv')
+patient_df = pd.read_csv('/home/allen/Galva/capstones/capstone2/data/patient_dec24.csv')
 camp_info = pd.read_csv('/home/allen/Galva/capstones/capstone2/data/Health_Camp_Detail.csv')
 
 def impute_camp_info(dataframe):
@@ -79,9 +79,10 @@ def patient_merging(dataframe):
 def to_date(dataframe):
     '''
     Convert date columns to date_time & create Length of event feature 
+    impute missing column values for Employer_Category
     '''
     dataframe['Registration_Date'].fillna('10-may-93', inplace=True) 
-    # dataframe['Registration_Date'] = pd.to_datetime(dataframe['Registration_Date'], format="%d-%b-%y")
+
     return dataframe
 
 def merger(dataframe):
@@ -93,7 +94,7 @@ def merger(dataframe):
     attends_df_= attends_df_.drop([
        'LinkedIn_Shared', 'Twitter_Shared', 'Facebook_Shared', 'Income',
        'Education_Score', 'Age', 'First_Interaction', 'City_Type', 'Camp_Start_Date',
-       'Employer_Category', 'Job_Type',  'online_score', 'Camp_End_Date',
+       'Employer_Category',   'online_score', 'Camp_End_Date',
        'Donation', 'Health_Score', 'Unnamed: 4', 'Health_Camp_ID'], axis=1) 
     dataframe['patient_event']= dataframe.patient_event.fillna(0)
     dataframe.patient_event = dataframe.patient_event.astype(int)
@@ -178,6 +179,7 @@ def keep_ints(dataframe):
 
 
 if __name__ == '__main__':
+    
     train, test = impute_camp_info(train), impute_camp_info(test)
     #print(train.info() , test.info())
     train , test = impute_missing_dates(train) , impute_missing_dates(test)
@@ -192,9 +194,29 @@ if __name__ == '__main__':
     train_final2, test_final2 = keep_ints(train_final) , keep_ints(test_final)
     
     checker = train_final2[train_final2['Health_Camp_ID'].notnull()]
-    print(checker.info(), checker.describe())
+    #print(checker.info(), checker.describe())
     #checker_  = convert_date_part2(checker) #, convert_date_part2(test_final2)
-    #checker.to_csv('ready12_24_train.csv', index = False)
+    checker["Camp Start Date - Registration Date"] = checker['delta_first_reg']
+    checker[ "Registration Date - First Interaction"] = checker['interaction_regreister_delta']
+    checker["Camp Start Date - First Interaction"]=checker['delta_first_start']
+    checker["Camp End Date - Registration Date"]=checker['delta_reg_end']
+    checker['Camp Length'] = checker['Camp_Length']
+    checker['Category 1'] = checker['Category1_x'] 
+    checker['Category 2'] = checker['Category2_x'] 
+    checker['Category 3'] = checker['Category3_x'] 
+
+    too_drop=['delta_first_reg', 'Job Type_y',
+       'interaction_regreister_delta', 'delta_first_start', 'delta_reg_end',
+       'Camp_Length','Category1_x','Category2_x','Category3_x']
+    checker2 = checker.drop(too_drop,axis=1)
+    
+    from preprocessing import drop_cols_specific
+
+    checker3 = drop_cols_specific(checker2)
+  
+    
+     
+    #checker3.to_csv('/home/allen/Galva/capstones/capstone2/data/ready12_24_train.csv', index = False)
 
 
 

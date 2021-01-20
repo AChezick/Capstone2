@@ -8,6 +8,7 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.metrics import classification_report
 from sklearn.metrics import confusion_matrix 
 from sklearn.model_selection import train_test_split 
+from sklearn.neighbors import KNeighborsClassifier
 
 from sklearn.svm import SVC
 from sklearn.metrics import plot_roc_curve
@@ -20,7 +21,7 @@ import xgboost as xgb
 from xgboost import XGBClassifier
 from sklearn.metrics import mean_squared_error
 
-df = pd.read_csv('/home/allen/Galva/capstones/capstone2/src/explore/ready12_24_train.csv')  
+df = pd.read_csv('/home/allen/Galva/capstones/capstone2/data/ready12_24_train.csv')  
 
 from preprocessing import drop_cols , one_hot_encoding , scale
 # data = drop_cols(df) # drop cols
@@ -28,7 +29,7 @@ from preprocessing import drop_cols , one_hot_encoding , scale
 
 import matplotlib.pyplot as plt
 
-df_no_scale = pd.read_csv('/home/allen/Galva/capstones/capstone2/src/explore/hot_code_NO_scale.csv')
+df_no_scale = pd.read_csv('/home/allen/Galva/capstones/capstone2/src/explore/temp_csv/hot_code_NO_scale.csv')
 
 del df_no_scale['Health_Camp_ID']
 del df_no_scale['Category1_x']
@@ -164,20 +165,40 @@ def run_test_typeC(X_testc,y_trainc):
     confs_output = confusion_matrix(y_testc,predictions) 
     return confs_output  
 
+def run_test_typek(dataframe):
+    '''
+    do part 2 _ maybe optomize  ? 
+    '''
+    
+    y = dataframe.pop('y_target')
+    X = dataframe 
+    X_traink, X_testk, y_traink,y_testk = train_test_split(
+    X, y , test_size = 0.2, random_state=101)
+
+    knn = KNeighborsClassifier(n_neighbors=10)
+    knn.fit(X_traink,y_traink)
+    pred = knn.predict(X_testk)
+    print(confusion_matrix(y_testk,pred))
+    print(classification_report(y_testk,pred))
+    
+    confs_output = confusion_matrix(y_testk,pred ) 
+    return confs_output  
+
 if __name__ == '__main__':
 
-    df_encode = one_hot_encoding(dataframe_1, columns = ['City_Type','Category1_x','Category2','Category3','Job_Type', 'online_score'])
-    df_encode1 = df_encode.copy() 
+    # df_encode = one_hot_encoding(dataframe_1, columns = ['City_Type','Category1_x','Category2','Category3','Job_Type', 'online_score'])
+    # df_encode1 = df_encode.copy() 
 
-    df_test = df_encode1.drop(['City_Type','Category1_x','Category2','Category3','Job_Type', 'online_score'],axis=1)
+    # df_test = df_encode1.drop(['City_Type','Category1_x','Category2','Category3','Job_Type', 'online_score'],axis=1)
      
-    df_test1, df_test2 = df_test.copy() , df_test.copy()
+    # df_test1, df_test2 = df_test.copy() , df_test.copy()
 
-    X_train, X_holdout, y_train, y_holdout= create_holdout(df_no_scale) 
+    #X_train, X_holdout, y_train, y_holdout= create_holdout(df_no_scale) 
  
-    print(run_test_typeA(X_train,y_train))
-    print(run_test_typeB(X_train,y_train))
+    # print(run_test_typeA(X_train,y_train))
+    # print(run_test_typeB(X_train,y_train))
     print(run_test_typeD(df_no_scale))
+    print(run_test_typek(df_no_scale))
 
             
 
