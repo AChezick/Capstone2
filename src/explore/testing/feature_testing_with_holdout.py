@@ -92,17 +92,17 @@ def run_test_typeB(X_testz,y_trainz): # THIS NEEDS TO be split for train and tes
     plt.rcParams['figure.dpi'] = 200 
     plt.show()
 
-    # xg_reg.fit(X_trainD,y_trainD, early_stopping_rounds=10, eval_metric='auc', eval_set=[X_testD,y_testD])
-    # xg_preds = xg_reg.predict(X_testD)
-    # xg_probaz = xg_reg.predict_proba(X_testD)[:,1] 
+    xg_reg.fit(X_trainD,y_trainD, early_stopping_rounds=10, eval_metric='auc', eval_set=[X_testD,y_testD])
+    xg_preds = xg_reg.predict(X_testD)
+    xg_probaz = xg_reg.predict_proba(X_testD)[:,1] 
 
-    # predsD , preds2D = xg_probaz  >= .5 , xg_probaz   >= .4
+    predsD , preds2D = xg_probaz  >= .5 , xg_probaz   >= .4
 
-    # print(classification_report(y_testD,xg_preds) )
-    # print(classification_report(y_testD,preds2D ))
+    print(classification_report(y_testD,xg_preds) )
+    print(classification_report(y_testD,preds2D ))
     
-    # xgd_disp = plot_roc_curve(xg_reg, X_testD, y_testD)
-    # plt.show()
+    xgd_disp = plot_roc_curve(xg_reg, X_testD, y_testD)
+    plt.show()
 
     
     return cv_results
@@ -127,7 +127,7 @@ def run_test_typeD(dataframe):
 
     xg_reg1_predict = xg_reg1.predict(X_testD) #(0/1 associated with .5)
     xg_reg1_proba = xg_reg1.predict_proba(X_testD)[:,1]
-    #print(xg_reg1_proba, 'this is the predict proba')
+ 
     preds_xg1_thresh1 =xg_reg1_proba>=0.5
     preds2_xg1_thresh2 = xg_reg1_proba>=0.35
 
@@ -186,17 +186,17 @@ def run_test_typek(dataframe):
 
 if __name__ == '__main__':
 
-    # df_encode = one_hot_encoding(dataframe_1, columns = ['City_Type','Category1_x','Category2','Category3','Job_Type', 'online_score'])
-    # df_encode1 = df_encode.copy() 
+    df_encode = one_hot_encoding(dataframe_1, columns = ['City_Type','Category1_x','Category2','Category3','Job_Type', 'online_score'])
+    df_encode1 = df_encode.copy() 
 
-    # df_test = df_encode1.drop(['City_Type','Category1_x','Category2','Category3','Job_Type', 'online_score'],axis=1)
+    df_test = df_encode1.drop(['City_Type','Category1_x','Category2','Category3','Job_Type', 'online_score'],axis=1)
      
-    # df_test1, df_test2 = df_test.copy() , df_test.copy()
+    df_test1, df_test2 = df_test.copy() , df_test.copy()
 
-    #X_train, X_holdout, y_train, y_holdout= create_holdout(df_no_scale) 
+    X_train, X_holdout, y_train, y_holdout= create_holdout(df_no_scale) 
  
-    # print(run_test_typeA(X_train,y_train))
-    # print(run_test_typeB(X_train,y_train))
+    print(run_test_typeA(X_train,y_train))
+    print(run_test_typeB(X_train,y_train))
     print(run_test_typeD(df_no_scale))
     print(run_test_typek(df_no_scale))
 
@@ -204,6 +204,6 @@ if __name__ == '__main__':
 
      
     
-    # THESE ARE WORKING #
-    # df_test.to_csv('train_4_model.csv', index = False)
+    THESE ARE WORKING #
+    df_test.to_csv('train_4_model.csv', index = False)
      

@@ -52,7 +52,7 @@ def run_test_typeA(dataframe):
     #del X['City_Type2_x'] 
     
 
-    X_trainD, X_testD, y_trainD, y_testD = train_test_split(X, y, test_size=0.3, random_state=101) 
+    X_trainD, X_testD, y_trainD, y_testD = train_test_split(X, y, test_size=0.2, random_state=101) 
      
     data_dmatrix_train = xgb.DMatrix(data=X_trainD,label=y_trainD)  
     data_dmatrix_test = xgb.DMatrix(data=X_testD,label=y_testD) 
@@ -172,29 +172,29 @@ if __name__ == '__main__':
     df_test = df_encode1.drop(['Category 1','Category 2','Category 3','Job Type_x', 'online_score','City_Type2_x'],axis=1) #,'City_Type2_x'
     df_test1 = df_test.copy()  
     print(df_test1.columns)
-    #df_test2 = df_encode4.drop(['Category1_x','Category2','Category3','Job_Type', 'online_score','City_Type2_x'],axis=1)
-    #df_test4 = df_test2.copy() 
+    df_test2 = df_encode4.drop(['Category1_x','Category2','Category3','Job_Type', 'online_score','City_Type2_x'],axis=1)
+    df_test4 = df_test2.copy() 
     
     
-    # df23384 = df_test[df_test['City_Type']==23384]
-    # df1216 = df_test[df_test['City_Type']==1216]
-    # df1036 = df_test[df_test['City_Type']==1036]
-    # df1704 = df_test[df_test['City_Type']==1704]
-    # df2662 = df_test[df_test['City_Type']==2662]
-    # df1729 = df_test[df_test['City_Type']==1729]
-    # df1217 = df_test[df_test['City_Type']==1217]
-    # df1352 = df_test[df_test['City_Type']==1352] 
-    # df2517 = df_test[df_test['City_Type']==2517]
-    # df816 = df_test[df_test['City_Type']==816] 
+    df23384 = df_test[df_test['City_Type']==23384]
+    df1216 = df_test[df_test['City_Type']==1216]
+    df1036 = df_test[df_test['City_Type']==1036]
+    df1704 = df_test[df_test['City_Type']==1704]
+    df2662 = df_test[df_test['City_Type']==2662]
+    df1729 = df_test[df_test['City_Type']==1729]
+    df1217 = df_test[df_test['City_Type']==1217]
+    df1352 = df_test[df_test['City_Type']==1352] 
+    df2517 = df_test[df_test['City_Type']==2517]
+    df816 = df_test[df_test['City_Type']==816] 
 
-    # df_one = df_test[ (df_test['Second']== 0) & (df_test['Third']==0) ]
-    # df_two = df_test[df_test['Second']== 'B']
-    # df_three = df_test[df_test['Third']== 1]
+    df_one = df_test[ (df_test['Second']== 0) & (df_test['Third']==0) ]
+    df_two = df_test[df_test['Second']== 'B']
+    df_three = df_test[df_test['Third']== 1]
 
-    # event_list = [df_one,df_two,df_three]
+    event_list = [df_one,df_two,df_three]
 
-    # city_list = [(df23384,23384),(df1216,1216),(df1036,1036),(df1704,1704),(df2662,2662),
-    #             (df1729,1729),(df1217,1217),(df1352,1352),(df2517,2517),(df816,816) ]
+    city_list = [(df23384,23384),(df1216,1216),(df1036,1036),(df1704,1704),(df2662,2662),
+                (df1729,1729),(df1217,1217),(df1352,1352),(df2517,2517),(df816,816) ]
 
     camp_list = [6578, 6532, 6543, 6580, 6570, 6542, 6571, 6527, 6526, 6539, 6528,
         6555, 6541, 6523, 6538, 6549, 6586, 6554, 6529, 6540, 6534, 6535, 6561, 6585, 
@@ -214,22 +214,3 @@ if __name__ == '__main__':
     camp_df.to_csv('/home/allen/Galva/capstones/capstone2/data/data_by_feature/results_by_Camp_t2.csv',index=False)
 
 
-
-    # result_by_city_dict = {}
-    # for i in city_list:
-    #     get = i[0] #make data_frame of each city type for deeper analysis 
-    #     print(type(get))
-    #     get_y_counts = get[get['y_target']==1] # get count for total number of attends 
-    #     size = len(get)  # obtain size of data_frame 
-    #     test = run_test_typeA(get) # create object that has results from data_frame testing
-    #     i_ = str(i[0])
-    #     result_by_city_dict[i_] = test
-    #     print(test)
-    # print(result_by_city_dict.values())
-     
-
-    # city_list = pd.DataFrame.from_dict(result_by_city_dict, orient='index', columns = ['Health_Camp_ID',
-    # 'False Positive', 'False Negative', 'y_counts_test' , 'y_counts_train' , 'test_size' , 'train_size'])
-    # city_list.to_csv('/home/allen/Galva/capstones/capstone2/data/data_by_feature/XG_CITY_t2_weight1.csv',index=False)
-
- 

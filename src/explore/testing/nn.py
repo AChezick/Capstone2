@@ -44,12 +44,14 @@ gpu_devices = tf.config.experimental.list_physical_devices('GPU')
 for device in gpu_devices:
     tf.config.experimental.set_memory_growth(device, True)
 
-checker = pd.read_csv('/home/allen/Galva/capstones/capstone2/data/ready12_24_train.csv') 
+checker = pd.read_csv('/home/allen/Galva/capstones/capstone2/src/explore/temp_csv/ready12_24_train.csv') 
 checker1 = checker.copy() 
-#print(checker1.columns, len(checker1.columns))
+print(checker1.columns, len(checker1.columns))
 
-X = checker1
-Y = checker1.pop('y_target')
+X = np.array(checker1)
+X = np.asarray(X).astype('float32')
+Y = np.array(checker1.pop('y_target'))
+Y = np.asarray(Y).astype('float32')
 
 model = Sequential()
 model.add(Dense(12, input_dim=46, activation='relu'))

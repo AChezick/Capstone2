@@ -223,30 +223,30 @@ if __name__ == '__main__':
 
     df_encode = one_hot_encoding(dataframe_1, columns = ['City_Type2_x','Category 1','Category 2','Category 3','Job Type_x', 'online_score'])
     df_encode1 = df_encode.drop(['City_Type2_x','Category 1','Category 2','Category 3','Job Type_x','online_score'],axis=1) 
-     
+    del df_encode['Health_Camp_ID'] 
     # #df_encode1.to_csv('/home/allen/Galva/capstones/capstone2/data/hot_drop_21.csv')  
-    # # df_encode1 = df_encode1.drop([1,2,3,4,'Camp Start Date - Registration Date',
-    # #    'Registration Date - First Interaction',
-    # #    'Camp Start Date - First Interaction',
-    # #    'Camp End Date - Registration Date', 'Camp Length'],axis=1) 
+    df_encode1 = df_encode1.drop([1,2,3,4,'Camp Start Date - Registration Date',
+       'Registration Date - First Interaction',
+       'Camp Start Date - First Interaction',
+       'Camp End Date - Registration Date', 'Camp Length'],axis=1) 
      
-    # df_test1, df_test2 = df_encode1.copy() , df_encode1.copy()
-    # print(df_test1)
-    # X_train, X_holdout, y_train, y_holdout= create_holdout(df_encode1) 
+    df_test1, df_test2 = df_encode1.copy() , df_encode1.copy()
+    print(df_test1)
+    X_train, X_holdout, y_train, y_holdout= create_holdout(df_encode1) 
      
-    # # # randomforest_bestparams , randomforest_bestscore = run_test_forest(X_train, y_train)
-    # # # randomforest_finalmodel = final_test(X_train, y_train, X_holdout, y_holdout,RandomForestClassifier,randomforest_bestparams)
+    randomforest_bestparams , randomforest_bestscore = run_test_forest(X_train, y_train)
+    randomforest_finalmodel = final_test(X_train, y_train, X_holdout, y_holdout,RandomForestClassifier,randomforest_bestparams)
  
-    # # # gboost_bestparams,gboost_bestscore = run_test_boost(X_train, y_train)
-    # # # gboosting_final = final_test(X_train, y_train, X_holdout, y_holdout, GradientBoostingClassifier, gboost_bestparams)
+    # gboost_bestparams,gboost_bestscore = run_test_boost(X_train, y_train)
+    # gboosting_final = final_test(X_train, y_train, X_holdout, y_holdout, GradientBoostingClassifier, gboost_bestparams)
 
     # # log_bestparams, log_bestscore = run_log_reg(X_train, y_train)
     # # log_finalmodel = final_test(X_train, y_train, X_holdout, y_holdout, LogisticRegression , log_bestparams )
 
-    knn_bestscore, knn_best_params = run_test_knn(df_encode1)
+    #knn_bestscore, knn_best_params = run_test_knn(df_encode1)
     #knn_finalmodel = final_test(X_train, y_train, X_holdout, y_holdout, KNeighborsClassifier , knn_bestparams )
 
-    print( knn_bestscore,knn_best_params)
+    print(randomforest_bestparams , randomforest_finalmodel )
       
  
 
