@@ -4,6 +4,7 @@ import pandas as pd
 pd.set_option('display.max_columns', None) 
 df =pd.read_csv('/home/allen/Galva/capstones/capstone2/data/D7.csv')
 df2 = pd.read_csv('/home/allen/Galva/capstones/capstone2/src/explore/ready12_24_train.csv') 
+camp_info = pd.read_csv('/home/allen/Galva/capstones/capstone2/data/Health_Camp_Detail.csv')
 
 drop_thez=[ 'Patient_ID_x', 'Health_Camp_ID', 'Registration_Date', 'Category1_y','Camp_Start_Date2', 
     'Camp_End_Date2', 'patient_event', 'Unnamed: 0_x','Unnamed: 0.1_x', 'Online_Follower_x', 'First_Interaction'
@@ -14,7 +15,7 @@ drop_thez=[ 'Patient_ID_x', 'Health_Camp_ID', 'Registration_Date', 'Category1_y'
 df3 = df2.drop(drop_thez, axis =1)
 
 
-camp_info = pd.read_csv('/home/allen/Galva/capstones/capstone2/data/Health_Camp_Detail.csv')
+
 
 cat3_values = {}
 for i in camp_info['Category3'].values:
