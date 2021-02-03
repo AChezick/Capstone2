@@ -9,7 +9,7 @@ camp_info = pd.read_csv('/home/allen/Galva/capstones/capstone2/data/Health_Camp_
 
 def impute_camp_info(dataframe):
     '''
-    Map categorical information from Health_Camp to it's ID
+    Map categorical information from Health_Camp file to Main df by Camp_ID
     '''
     camp_info.Category1 = camp_info.Category1.astype(str)
     camp_info.Category2 = camp_info.Category2.astype(str)
@@ -32,7 +32,7 @@ def impute_camp_info(dataframe):
 
 def impute_missing_dates(dataframe):
     ''' 
-    Merge Camp_Info with train and test 
+    Merge Camp_Info features with train/test dataframes via mapping
     '''
     
     camp_info['Camp_Start_Date'] = pd.to_datetime(camp_info['Camp_Start_Date'])
@@ -89,9 +89,9 @@ def to_date(dataframe):
 
 def merger(dataframe):
     '''
-    merge train and attendance  
-    edit_y values
-    ''' 'Unnamed: 0', 'Unnamed: 0.1', 'Patient_ID', 'Online_Follower'
+    -Merge train and attendance dataframes
+    -Remove overlap and NA values
+    '''  
     attends_df_ = attends_df.copy() 
     attends_df_= attends_df_.drop([
        'LinkedIn_Shared', 'Twitter_Shared', 'Facebook_Shared', 'Income',
@@ -110,7 +110,7 @@ def merger(dataframe):
 
 def drop_cols(dataframe):
     '''
-    dropping columns for test file
+    -Dropping columns for test file
     -Adding time features 
     '''
     cols_2_drop = [
@@ -142,8 +142,7 @@ def impute_missing_vals(dataframe):
 
 def keep_ints(dataframe):
     '''
-    Start Conversion for Data_Time features into usable object:
-    ['delta_first_start','interaction_regreister_delta','Camp_Length']
+    remove strings associated with Datatim object, keep ints, maintain value
     '''
     dataframe.delta_first_start = dataframe.delta_first_start.astype(str)
     xi = dataframe.delta_first_start.values
