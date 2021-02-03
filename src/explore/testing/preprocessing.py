@@ -73,6 +73,7 @@ def one_hot_encoding(df, columns):
     return hot_df 
 
 if __name__ =="__main__":
+    print(df.head())
     dropped = drop_cols(df) 
     scaled_df = scale(dropped)
   

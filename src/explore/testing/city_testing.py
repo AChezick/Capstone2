@@ -21,13 +21,7 @@ from xgboost import XGBClassifier
 from sklearn.metrics import mean_squared_error
 
 df = pd.read_csv('/home/allen/Galva/capstones/capstone2/data/ready12_24_train.csv')  
-# df["Camp Start Date - Registration Date"] = df['delta_first_reg']
-# df[ "Registration Date - First Interaction"] = df['interaction_regreister_delta']
-# df["Camp Start Date - First Interaction"]=df['delta_first_start']
-# df["Camp End Date - Registration Date"]=df['delta_reg_end']
-# df['Camp Length'] = df['Camp_Length']
-# rename=['delta_first_reg','delta_reg_end','Camp_Length','interaction_regreister_delta','delta_first_start', 'Camp_length']
-# df =df.drop(rename,axis=1)
+
 
 from preprocessing import drop_cols , one_hot_encoding , scale , drop_cols_specific
 #data = drop_cols(df) # drop cols
@@ -84,6 +78,51 @@ def run_test_typeA(dataframe):
      
     return [str(camp_ID), mat2[0][1],mat2[1][1], y_counts_test , y_counts_train , test_size , train_size] #array of ratio, total_ytarget, total size , camp length , 
 
+def run_test_typeAA(dataframe):
+    '''
+    run an XDG Classifier  
+    '''
+    y = dataframe.pop('y_target')
+    X = dataframe 
+ 
+    del X['Health_Camp_ID'] 
+    #del X['City_Type2_x'] 
+    
+    X_trainD, X_testD, y_trainD, y_testD = train_test_split(X, y, test_size=0.2, random_state=101) 
+
+    X_trainIDs, X_testIDs = X_trainD.pop('Patient ID'), X_testD.pop('Patient ID') #For Post-Hoc Tracking
+    y_trainIDs, y_testIDs = y_trainD.pop('Patient ID'), y_testD.pop('Patient ID')
+
+    data_dmatrix_train = xgb.DMatrix(data=X_trainD,label=y_trainD)  
+    data_dmatrix_test = xgb.DMatrix(data=X_testD,label=y_testD) 
+
+    xg_reg1 = XGBClassifier(objective ='binary:logistic', colsample_bytree = 0.3, learning_rate = 0.1,
+                max_depth = 8, alpha = 8, n_estimators = 12, eval_metric = 'auc', label_encoder=False,scale_pos_weight=2)
+
+    xg_reg1.fit(X_trainD,y_trainD) 
+
+    xg_reg1_predict = xg_reg1.predict(X_testD) #(0/1 associated with .5)
+    xg_reg1_proba = xg_reg1.predict_proba(X_testD)[:,1]
+     
+    preds_xg1_thresh1 =xg_reg1_proba>=0.5
+    preds2_xg1_thresh2 = xg_reg1_proba>=0.35
+
+    mat1 = confusion_matrix(y_testD,preds_xg1_thresh1 ) 
+    mat2 = confusion_matrix(y_testD,preds2_xg1_thresh2 ) 
+
+    y_counts_test = sum([1 for x in y_testD.values if x ==1])
+    y_counts_train = sum([1 for x in y_trainD.values if x ==1])
+
+    conf_matrix1,conf_matrix2  = [],[] 
+    test_size =len(X_testD)
+    train_size =len(X_trainD)
+
+    X_testD['prediction'] = xg_reg1_predict
+    X_testD['Proba'] = xg_reg1_proba
+    X_testD['y_target'] = y_testD 
+    X_testD['Patient ID'] = X_testIDs 
+
+    return X_testD    
 
 def run_test_typeB(dataframe):  
     '''

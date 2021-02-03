@@ -63,7 +63,9 @@ def combine(x):
 
     x['patient_event'] =  x['Patient_ID'] + x['Health_Camp_ID'] 
     x.patient_event = x.patient_event.astype(int)
- 
+
+
+
     return x ##  
 
 def patient_merging(dataframe):
@@ -103,6 +105,7 @@ def merger(dataframe):
     dataframe = pd.merge(dataframe, attends_df_ ,how='outer', on='patient_event')
     dataframe['y_target'] = dataframe['y_target'].replace(to_replace = 'None', value=np.nan).fillna(0)
     x_ = dataframe[dataframe['patient_event'].notna()]
+    
     return x_
 
 def drop_cols(dataframe):
@@ -175,6 +178,7 @@ def keep_ints(dataframe):
     dataframe['interaction_regreister_delta'] = xii_
     dataframe['delta_first_start'] = xi_ 
     dataframe['delta_reg_end'] = xiiii_
+
     return dataframe 
 
 
