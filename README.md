@@ -206,11 +206,11 @@ The global attendance rate was 20%. The training and validation attendance rate 
 #### There was much diversity among Health Camp Attendance Rates:
 ##### 1. The size of the Health Camp. 
 ##### 2. Among groups of the same size
+##### 3. Camp Location
 
-![]( https://github.com/AChezick/Capstone2/blob/main/images/images2/test_size_attendsRate_CAMP.png )
+![]( https://github.com/AChezick/Capstone2/blob/main/images/images2/scatter_camp2.png )
 
 #### There is a correlation and outlier among Health Camp Attendance Rates:
-##### 1. Camp Location
 
 ![]( https://github.com/AChezick/Capstone2/blob/main/images/images2/test_size_attendsRate_city.png ) 
 
