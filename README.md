@@ -12,6 +12,12 @@ Help MedCamp reduce wasteful spending AND maintain quality experiences of attend
 ## Data 
 This project, Healthcare Analytics, came from [Kaggle](https://www.kaggle.com/vin1234/janatahack-healthcare-analytics?select=Train) 
 
+--- 
+
+#### Anonymized Features 
+
+---
+
 ##### Kaggle Description 
 
 train.zip contains 6 different csv files apart from the data dictionary as described below:
@@ -30,7 +36,7 @@ train.zip contains 6 different csv files apart from the data dictionary as descr
 
 ---
 
-**Train.csv** , **Test.csv** – Both files have similar layouts, containing registration details for all the test camps. This includes PatientID, HealthCampID, RegistrationDate and a few anonymized variables as on registration date. Test.csv – File containing registration details for all the camps done after 1st April 2006. This includes PatientID, HealthCampID, RegistrationDate and a few anonymized variables as on registration date. 
+**Train.csv** , **Test.csv** – Both files have similar layouts, containing registration details for all the test camps. This includes PatientID, HealthCampID, RegistrationDate and a few anonymized variables as on registration date. Test.csv – File containing registration details for all the camps done after 1st April 2006. This includes PatientID, HealthCampID, RegistrationDate. 
 
 ---
 
