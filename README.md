@@ -16,6 +16,8 @@ This project, Healthcare Analytics, came from [Kaggle](https://www.kaggle.com/vi
 
 #### Anonymized Features 
 
+All data was anonymized. Protecting patient data is critical. However, it does make following this READ.md more difficult. I will be reorient the reader throughout! 
+
 ---
 
 ##### Kaggle Description 
@@ -133,17 +135,23 @@ Training the model with only the five anonymized features results in very poor p
 
 ![]( https://github.com/AChezick/Capstone2/blob/main/images/non_feature_all_models.png )
 
-For the two anonymized features (Var1 , Var5) that had the highest feature weights, most of the counts were zero value. 
+The two anonymized features that had the highest feature weights were Var1 , Var5. However, most of the counts for these features were zero value. 
 
 ![]( https://github.com/AChezick/Capstone2/blob/main/images/images2/var1_5_Zero_.png ) 
 
-For comparison here is the rest of the distribution for Var1 & Var5.  Without knowing what either of these features map to, I decided not to drop them for modeling purposes.  
+Here is the distribution for Var1 & Var5 for all the patients with non-zero values.  Without knowing what either of these features map to, I decided not to drop them for modeling purposes.  
 
 ![]( https://github.com/AChezick/Capstone2/blob/main/images/images2/non_zerovar1_5.png ) 
 
 Thus, feature engineering was instrumental in improving the model. 
 
-#### One Hot Encoding
+#### One Hot Encoding & Imputing 
+
+#### Categorical and Imputation 
+
+City and Employer Category were one-hot-encoded.
+
+
 
 I used one hot enocding on several of the categorical features. Several of the models reported 9999.0 - as a  result from a one-hot encoding. 
 
