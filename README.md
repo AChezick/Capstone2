@@ -151,13 +151,6 @@ I used one hot enocding on several of the categorical features.
 
 Nearly 23,500 patients were missing the Camp Location, which was anonymized with letters. However, I was able to use the primary key to link a patient with a camp. Then, using sets, I was able to confirm that each camp ID is only associated with a certain city value. Therefore, I was able to backtrack and impute missing city values for each patient.
 
-Since the cities were anonymized with letters and the Category2 features was also anonymized with letters I decided to change the hot encoding for cities to the number of unique patients associated with that city. Thus, columns and a '1' [1036,1216,1217,1704,1729,2517,23384,2662] indicate the patient was associated with the following n people (n = column).
-
-Letters map to the feature named ‘Category2’
-1,2,3,4 map to a patient’s online participation score (which is a sum of yes/1, no/0 counts for posting about MedCamp at Twitter, LinkedIn,Facebook, etc)
-2100 column maps to the feature named 'Category3' which only had two unique values 1100 & 2100.
-The value 9999.0 means that the patient did not indicate their job.
-
 To avoid co-lineraity, I imputed only 1 value for one feature: Employeer Category (i.e. Job Type) Several of the models reported 9999.0 - as a  result from a one-hot encoding. 
 
 --- 
