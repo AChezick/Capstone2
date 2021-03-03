@@ -14,9 +14,9 @@ This project, Healthcare Analytics, came from [Kaggle](https://www.kaggle.com/vi
 
 --- 
 
-#### Anonymized Features 
+#### Anonymized Features: All data was anonymized
 
-All data was anonymized. Protecting patient data is critical. However, it does make following this READ.md more difficult. I will be reorient the reader throughout! 
+Protecting patient data is critical. However, it does make following this READ.md more difficult. I will be reorient the reader throughout! 
 
 ---
 
@@ -79,8 +79,6 @@ train.zip contains 6 different csv files apart from the data dictionary as descr
 
 ---
 
- - This file contains details about people who attended health camp of second format. This includes Health_Score of the person.
-
 **Third_Health_Camp_Attended.csv** - This file contains details about people who attended health camp of third format. This includes Numberofstallvisited & LastStallVisitedNumber.
 
 --- 
@@ -109,7 +107,7 @@ There were imbalanced classes among potential health camp attendees. Additionall
 | 20,534  | Count of Patients Attending a Health Camp          |
 | 15,011  | Unique Patients Attending at least one Health Camp |
 | 102,000 | Patient-Event Registrations                        |
-| ~ 20%   | Historic Attendance Rate                           |
+| ~ 20%   | Global Attendance Rate                             |
 | 3       | Classes or Types of Health Camps                   |
 
 ---
@@ -149,15 +147,18 @@ Thus, feature engineering was instrumental in improving the model.
 
 #### Categorical and Imputation 
 
+I used one hot enocding on several of the categorical features. 
+
 Nearly 23,500 patients were missing the Camp Location, which was anonymized with letters. However, I was able to use the primary key to link a patient with a camp. Then, using sets, I was able to confirm that each camp ID is only associated with a certain city value. Therefore, I was able to backtrack and impute missing city values for each patient.
 
 Since the cities were anonymized with letters and the Category2 features was also anonymized with letters I decided to change the hot encoding for cities to the number of unique patients associated with that city. Thus, columns and a '1' [1036,1216,1217,1704,1729,2517,23384,2662] indicate the patient was associated with the following n people (n = column).
 
-City and Employer Category were one-hot encoded.
+Letters map to the feature named ‘Category2’
+1,2,3,4 map to a patient’s online participation score (which is a sum of yes/1, no/0 counts for posting about MedCamp at Twitter, LinkedIn,Facebook, etc)
+2100 column maps to the feature named 'Category3' which only had two unique values 1100 & 2100.
+The value 9999.0 means that the patient did not indicate their job.
 
-
-
-I used one hot enocding on several of the categorical features. Several of the models reported 9999.0 - as a  result from a one-hot encoding. 
+To avoid co-lineraity, I imputed only 1 value for one feature: Employeer Category (i.e. Job Type) Several of the models reported 9999.0 - as a  result from a one-hot encoding. 
 
 --- 
 
