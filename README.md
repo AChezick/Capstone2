@@ -12,11 +12,9 @@ Help MedCamp reduce wasteful spending AND maintain quality experiences of attend
 ## Data 
 This project, Healthcare Analytics, came from [Kaggle](https://www.kaggle.com/vin1234/janatahack-healthcare-analytics?select=Train) 
 
---- 
-
 #### Anonymized Features: All data was anonymized
 
-Protecting patient data is critical. However, it does make following this READ.md more difficult. I will be reorient the reader throughout! 
+Protecting patient data is critical. However, it does make following this READ.md more difficult. I will reorient the reader throughout! 
 
 ---
 
@@ -38,7 +36,7 @@ train.zip contains 6 different csv files apart from the data dictionary as descr
 
 ---
 
-**Train.csv** , **Test.csv** – Both files have similar layouts, containing registration details for all the test camps. This includes PatientID, HealthCampID, RegistrationDate and a few anonymized variables as on registration date. Test.csv – File containing registration details for all the camps done after 1st April 2006. This includes PatientID, HealthCampID, RegistrationDate. 
+**Train.csv** & **Test.csv** – Both files have similar layouts, containing registration details for all the test camps. This includes PatientID, HealthCampID, RegistrationDate and a few anonymized variables as on registration date. Test.csv – File containing registration details for all the camps done after 1st April 2006. This includes PatientID, HealthCampID, RegistrationDate. 
 
 ---
 
@@ -97,7 +95,7 @@ train.zip contains 6 different csv files apart from the data dictionary as descr
 
 ## EDA
 
-There were imbalanced classes among potential health camp attendees. Additionally, it is important to note that some patients attended more than one MedCamp health event.  
+There were imbalanced classes among potential health camp attendees; specifically for each geographic location and among camps occurring within that location showed... all had different attendance rates. Thus, simply estimating attendance based on a global or local history would lead to poor results. Additionally, it is important to note that some patients attended more than one MedCamp health event.  
 
 --- 
 
