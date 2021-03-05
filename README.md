@@ -127,7 +127,7 @@ Creating this primary key was helpful in combining information and creating addi
 ![]( https://github.com/AChezick/Capstone2/blob/main/images/images2/primary_key2.png )
 
 
-### Feature Engineering 
+### The need for Feature Engineering 
 
 Training the model with only the five anonymized features results in very poor performance.
 
@@ -145,13 +145,11 @@ Thus, feature engineering was instrumental in improving the model.
 
 #### One Hot Encoding & Imputing 
 
-#### Categorical and Imputation 
+#### Categorical Features and Imputation 
 
 I used one hot enocding on several of the categorical features. 
 
-Nearly 23,500 patients were missing the Camp Location, which was anonymized with letters. However, I was able to use the primary key to link a patient with a camp. Then, using sets, I was able to confirm that each camp ID is only associated with a certain city value. Therefore, I was able to backtrack and impute missing city values for each patient.
-
-To avoid co-lineraity, I imputed only 1 value for one feature: Employeer Category (i.e. Job Type) Several of the models reported 9999.0 - as a  result from a one-hot encoding. 
+Given that most patients had many missing values To avoid co-lineraity, I imputed only 1 value for one feature: Employeer Category (i.e. Job Type) Several of the models reported 9999.0 - as a  result from a one-hot encoding. 
 
 --- 
 
@@ -163,7 +161,12 @@ To avoid co-lineraity, I imputed only 1 value for one feature: Employeer Categor
 
 --- 
 
-The additional features provided by MedCamp were imbalanced, co-linear, or missing. For example Age, Income, Education Score had less than 2,000 values and most patients who had one of these features had the other 3. Therefore, imputing the average value onto the other 35,000 patients would not be helpful. 
+Nearly 23,500 patients were missing the Camp Location. However, I was able to use the primary key to link a patient with a camp. Then, using sets, I was able to confirm that each camp ID is only associated with a certain city value by checking for unions and intersections among CampIDs, PatientIDs and Camp Length that were spread among the csv files. Thus, I was able to backtrack and impute missing city values for each patient which did improve prediction scores.
+
+
+#### Numerical Features and Imputation 
+
+The numerical features provided by MedCamp were missing from most paitents. For example Age, Income and Education Score had less than 2,000 value each. Additionally, 90% of the patients were missing all three values. Therefore, imputing average values onto the other 35,000 patients for any numerical feature would create colinearity. 
 
 ![]( https://github.com/AChezick/Capstone2/blob/main/images/images2/attendance_catgegorical.png ) 
 
