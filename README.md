@@ -145,9 +145,9 @@ Thus, feature engineering was instrumental in improving the model.
 
 #### Categorical Features and Imputation 
 
-I used one hot enocding on several of the categorical features. 
+The categorical features include: City & Job Type. The binary categorical features pertained to if a patient shared their health fair attendance online through Twitter, LinkedIn, FaceBook, or were an online follower of MedCamp.
 
-Given that most patients had many missing values To avoid co-lineraity, I imputed only 1 value for one feature: Employeer Category (i.e. Job Type) Several of the models reported 9999.0 - as a  result from a one-hot encoding. 
+Most patients had many missing values for Job Type and other numerical features (discussed later). To avoid co-lineraity, I imputed 9999.0 for the missing values in the Job column.
 
 --- 
 
@@ -164,7 +164,7 @@ Nearly 23,500 patients were missing the Camp Location. However, I was able to us
 
 #### Numerical Features and Imputation 
 
-The numerical features provided by MedCamp were missing from most paitents. For example Age, Income and Education Score had less than 2,000 value each. Additionally, 90% of the patients were missing all three values. Therefore, imputing average values onto the other 35,000 patients for any numerical feature would create colinearity. 
+The numerical features provided by MedCamp were missing for most paitents. For example Age, Income and Education Score had less than 2,000 value each. Given that, 94% of the patients were missing all three values; imputing average values onto the other 35,000 patients for any numerical feature would be meaningless and create colinearity. 
 
 ![]( https://github.com/AChezick/Capstone2/blob/main/images/images2/attendance_catgegorical.png ) 
 
