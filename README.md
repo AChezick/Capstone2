@@ -211,7 +211,7 @@ The Date features ended up improving scores for all models. Additionally, for al
 
 ### 
 
-### Post-Hoc
+## Post-Hoc
 
 The global attendance rate was 20%. The training and validation attendance rate was 27%. However, 5/10 camp locations had an attendance rate between 32.2% and 33.8%. The highest attendance rate was just over 70%. 
 
@@ -227,6 +227,34 @@ The global attendance rate was 20%. The training and validation attendance rate 
 
 ![]( https://github.com/AChezick/Capstone2/blob/main/images/images2/test_size_attendsRate_city.png ) 
 
+#### Models Specifics: Disagreement on 'Which Patients will attend' 
+
+I created a new dataframe which contains the prediction and probability results for three of the models used in this project. 
+y_target_SUM is the total 'Score' or sum of predicted attendance (0 or 1) among all models and y_target. Top value = 4
+Y_count_allModels is the the sum of all predicted values for attendance (0 or 1) among the three models being analyzed here Top value = 3
+
+---
+
+|   | Unnamed: 0 | Var1 | Var2 | Var3 | Var4 | Var5 | Camp Start Date - Registration Date | Registration Date - First Interaction | Camp Start Date - First Interaction | Camp End Date - Registration Date | Camp Length | Second | Third | A | C | D | E | F | G | 2100 | 2.0 | 3.0 | 4.0 | 5.0 | 6.0 | 7.0 | 8.0 | 9.0 | 10.0 | 11.0 | 12.0 | 13.0 | 14.0 | 9999.0 | 1 | 2 | 3 | 4 | 1036 | 1216 | 1217 | 1352 | 1704 | 1729 | 2517 | 2662 | 23384 | Patient_ID | prediction | Proba      | y_target | proba_kNN | prediction_kNN | proba_sVC          | prediction_sVC | proba_xg   | prediction_xg | Y_count_allModels | Y_target_SUM |
+|---|------------|------|------|------|------|------|-------------------------------------|---------------------------------------|-------------------------------------|-----------------------------------|-------------|--------|-------|---|---|---|---|---|---|------|-----|-----|-----|-----|-----|-----|-----|-----|------|------|------|------|------|--------|---|---|---|---|------|------|------|------|------|------|------|------|-------|------------|------------|------------|----------|-----------|----------------|--------------------|----------------|------------|---------------|-------------------|--------------|
+| 0 | 0          | 0.0  | 0.0  | 0.0  | 0.0  | 0.0  | -119.0                              | 14                                    | -105                                | 66                                | 185         | 0      | 0     | 0 | 0 | 0 | 0 | 1 | 0 | 1    | 0   | 0   | 0   | 0   | 0   | 0   | 0   | 0   | 0    | 0    | 0    | 0    | 0    | 1      | 0 | 0 | 0 | 0 | 0    | 0    | 0    | 0    | 0    | 0    | 1    | 0    | 0     | 514789     | 0.0        | 0.2775604  | 0.0      | 0.0       | 0.0            | 0.1561240540625182 | 0.0            | 0.28253844 | 0.0           | 0.0               | 0.0          |
+| 1 | 1          | 0.0  | 0.0  | 0.0  | 0.0  | 0.0  | -410.0                              | 559                                   | 149                                 | 361                               | 771         | 0      | 0     | 0 | 0 | 0 | 0 | 1 | 0 | 1    | 0   | 0   | 0   | 0   | 0   | 0   | 0   | 0   | 0    | 0    | 0    | 0    | 0    | 1      | 0 | 0 | 0 | 0 | 0    | 0    | 0    | 0    | 0    | 0    | 0    | 0    | 1     | 508149     | 0.0        | 0.24640098 | 0.0      | 0.1       | 0.0            | 0.1557039638243477 | 0.0            | 0.23559786 | 0.0           | 0.0               | 0.0          |
+| 2 | 2          | 0.0  | 0.0  | 0.0  | 0.0  | 0.0  | -76.0                               | 262                                   | 186                                 | 113                               | 189         | 0      | 0     | 0 | 0 | 0 | 0 | 1 | 0 | 1    | 0   | 0   | 0   | 0   | 0   | 0   | 0   | 0   | 0    | 0    | 0    | 0    | 0    | 0      | 0 | 0 | 0 | 0 | 0    | 0    | 0    | 0    | 0    | 0    | 1    | 0    | 0     | 492650     | 0.0        | 0.33918345 | 0.0      | 0.2       | 0.0            | 0.1573992543873874 | 0.0            | 0.34879157 | 0.0           | 0.0               | 0.0          |
+| 3 | 3          | 0.0  | 0.0  | 0.0  | 0.0  | 0.0  | 53.0                                | 107                                   | 160                                 | 57                                | 4           | 1      | 0     | 1 | 0 | 0 | 0 | 0 | 0 | 1    | 0   | 0   | 0   | 0   | 0   | 0   | 0   | 0   | 0    | 0    | 0    | 0    | 0    | 1      | 0 | 0 | 0 | 0 | 0    | 0    | 0    | 0    | 0    | 0    | 0    | 0    | 1     | 511274     | 0.0        | 0.4557019  | 0.0      | 0.3       | 0.0            | 0.1542467704410321 | 0.0            | 0.43797377 | 0.0           | 0.0               | 0.0          |
+| 4 | 4          | 0.0  | 0.0  | 0.0  | 0.0  | 0.0  | 19.0                                | 11                                    | 30                                  | 58                                | 39          | 0      | 1     | 0 | 0 | 0 | 0 | 0 | 1 | 1    | 0   | 0   | 0   | 0   | 0   | 0   | 0   | 0   | 0    | 0    | 0    | 0    | 0    | 1      | 0 | 0 | 0 | 0 | 0    | 0    | 0    | 0    | 0    | 0    | 0    | 0    | 1     | 520795     | 1.0        | 0.5163712  | 0.0      | 0.4       | 0.0            | 0.5654859255622244 | 1.0            | 0.4760046  | 0.0           | 1.0               | 1.0          |
+
+--- 
+
+Upon closer examination there is disagreement among which patients will attend a health event. 
+
+Below are plots showing the probability each model assigned to a patient, if the patient actually attended (shown by color), and the number of models that predicted that patient would attend (0,1,2,3).
+
+![]( https://github.com/AChezick/Capstone2/blob/main/images/images2/ytarget_svcprobas.png ) 
+![]( https://github.com/AChezick/Capstone2/blob/main/images/images2/ytarget_knnprobas.png ) 
+![]( https://github.com/AChezick/Capstone2/blob/main/images/images2/ytarget_xgprobas.png ) 
+ 
+
+#### Tensorflow & Keras
 Since this data is not descriptive black-box models are OK to use. Optimization of a neural network may produce good results. I used tensorflow and keras and was able to achieve similar results to other models with minimal training. 
 
 ![]( https://github.com/AChezick/Capstone2/blob/main/images/images2/BasicNN.png )
