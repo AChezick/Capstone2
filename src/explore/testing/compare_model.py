@@ -28,23 +28,11 @@ def combine(lst):
 
     return new_df 
 
-def conditions(df):
-    y_target = df['y_target'].values
-    score = df['Y_count'].values
-    score_=[]
-    for i in score:
-        if i ==0:
-            score_.append(1)
-        else:
-            score_.append(0)
-    df['Y_target2'] = df['Y_count'] + score_
 
-    return df
-       
 def edit(df): 
     
     new_df = df.copy()
-    new_df['Y_count'] = df['prediction'] + df['prediction_k2'] + df['prediction_s2']+ df['prediction_xg']
+    new_df['Y_count_allModels'] = df['prediction_kNN'] + df['prediction_sVC']+ df['prediction_xg']
     #new_df['Y_count'].apply(lambda x: x+1 if df['y_target'] == 0 else x)
     # new_df.loc[(new_df['y_target'] ==0) & (new_df['y_Count']==3) ]
 #     new_df['all_models'] = np.where(
@@ -57,20 +45,34 @@ def edit(df):
     # assign letter or number based on 1-6
     return new_df 
 
+
+def conditions(df):
+    
+    score = df['y_target'].values
+    score_=[]
+    for i in score: 
+        if i ==1:
+            score_.append(1)
+        else:
+            score_.append(0)
+    df['Y_target_SUM'] = df['Y_count_allModels'] + score_ 
+
+    return df
+       
     
 def graph(new_df):
     to_print = pd.DataFrame({
 
-        'knn_predict' :new_df['prediction_k2'].values ,
+        'knn_predict' :new_df['prediction_kNN'].values ,
         'xg_predict'  : new_df['prediction_xg'].values ,
-        'src_predict ' : new_df['prediction_k2'].values,
-        'knn_proba' : new_df['proba_k2'].values,
+        'src_predict ' : new_df['prediction_sVC'].values,
+        'knn_proba' : new_df['proba_kNN'].values,
         'xg_proba'  : new_df['proba_xg'].values,
-        'src_proba' : new_df['proba_k2'].values
+        'src_proba' : new_df['proba_sVC'].values
     })
     #lines = to_print.plot.line()
     #plt.hist(x=new_df['Y_count'])
-    g = sns.relplot(data = new_df, x='Y_target2', y ='Y_count', col='y_target', palette = 'deep', kind='scatter')
+    g = sns.relplot(data = new_df, x='Y_target_SUM', y ='Y_count_allModels', col='y_target', palette = 'deep', kind='scatter')
       
     plt.show() 
     return None 
@@ -79,9 +81,9 @@ def graph(new_df):
 
 if __name__ == '__main__':
    # k2_,s2_,xg_=change_cols(k2),change_cols(s2),change_cols(ids)
-    combo_df = combine(lst=[k2,s2,xg , ['k2','s2','xg']] )
-    combo_df_=edit(combo_df)
-    print(combo_df)
+    combo_df = combine(lst=[k2,s2,xg , ['kNN','sVC','xg']] )
+    combo_df_= edit(combo_df)
+    #print(combo_df)
     combo_df1 = conditions(combo_df_)
     print(graph(combo_df1))
 
