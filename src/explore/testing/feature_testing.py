@@ -173,7 +173,7 @@ def graph_or_table():
     '''
 
 if __name__ == '__main__':
-
+ 
     df_encode = one_hot_encoding(dataframe_1, columns = ['City_Type2_x','Category 1','Category 2','Category 3','Job Type_x', 'online_score'])
     df_encode1 = df_encode.copy() 
 

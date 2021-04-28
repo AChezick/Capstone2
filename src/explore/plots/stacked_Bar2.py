@@ -4,8 +4,8 @@ pd.set_option('display.max_columns', None)
 import matplotlib.pyplot as plt 
 import seaborn as sns 
 plt.rcParams['figure.dpi'] = 200
-df = pd.read_csv('/home/allen/Galva/capstones/capstone2/src/explore/ready12_24_train.csv') 
-df_feat = pd.read_csv('/home/allen/Galva/capstones/capstone2/src/explore/train_4_model.csv')
+df = pd.read_csv('/home/allen/Galva/capstones/capstone2/data/ready12_24_train.csv') 
+df_feat = pd.read_csv('/home/allen/Galva/capstones/capstone2/data/train_4_model.csv')
 from matplotlib import rc
 rc('font' )
 
@@ -155,29 +155,4 @@ if __name__ == '__main__':
 
 
 
-# def make_inter_reg(dataframe):
-#     '''
-#     specific for unique range for the feature interaction_reg_delta
-#     '''
-#     df2_ = dataframe.copy() 
-     
-#     df2_['0 to 1 Var1'] =  df2_['Var1'].apply( lambda x: 1 if x <=1 else 0)
-#     df2_['2  Var1'] =  df2_['Var1'].apply( lambda x: 1 if x == 2 else 0)
-#     df2_['3 Var1'] =  df2_['Var1'].apply( lambda x: 1 if x == 3 else 0)
-#     df2_['4 to 10 Var1'] =  df2_['Var1'].apply( lambda x: 1 if x <=10 and x>= 4 else 0)
-#     df2_['11 to 19 Var1'] =  df2_['Var1'].apply( lambda x: 1 if x <=19 and x>= 11 else 0)
-#     df2_['20 to 39 Var1'] =  df2_['Var1'].apply( lambda x: 1 if x <39 and x>= 20 else 0)
-#     df2_['40 to 59 Var1'] =  df2_['Var1'].apply( lambda x: 1 if x <59 and x>= 40 else 0)
-#     df2_['60 to 79 Var1'] =  df2_['Var1'].apply( lambda x: 1 if x <79 and x>=60 else 0)
-#     df2_['80 to 99 Var1'] =  df2_['Var1'].apply( lambda x: 1 if x <99 and x>=80 else 0)
-#     df2_['100 to 119 Var1'] =  df2_['Var1'].apply( lambda x: 1 if x <119 and x>=100 else 0)
-#     df2_['120 to 139 Var1'] =  df2_['Var1'].apply( lambda x: 1 if x <139 and x>= 120 else 0)
-#     df2_['140 to 159 Var1'] =  df2_['Var1'].apply( lambda x: 1 if x <159 and x>= 140 else 0)
-     
-#     df2_['160 to 179 Var1'] =  df2_['Var1'].apply( lambda x: 1 if x <179 and x>= 160 else 0)
-#     df2_['180 to 199 Var1'] =  df2_['Var1'].apply( lambda x: 1 if x <199 and x>=180 else 0)
-#     df2_['200 to 219 Var1'] =  df2_['Var1'].apply( lambda x: 1 if x <219 and x>=200 else 0)
-#     df2_['220 to 239 Var1'] =  df2_['Var1'].apply( lambda x: 1 if x <239 and x>=220 else 0)
-#     df2_['240 to 259 Var1'] =  df2_['Var1'].apply( lambda x: 1 if x <259 and x>= 240 else 0)
-#     df2_['260 to 279 Var1'] =  df2_['Var1'].apply( lambda x: 1 if x <279 and x>= 260 else 0)
-#     df2_['280 to 299 Var1'] =  df2_['Var1'].apply( lambda x: 1 if x <299 and x>= 280 else 0)
+

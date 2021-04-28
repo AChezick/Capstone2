@@ -4,7 +4,7 @@ pd.set_option('display.max_columns', None)
 import matplotlib.pyplot as plt 
 import seaborn as sns 
 plt.rcParams['figure.dpi'] = 200
-df = pd.read_csv('/home/allen/Galva/capstones/capstone2/src/explore/ready12_24_train.csv') 
+df = pd.read_csv('/home/allen/Galva/capstones/capstone2/data/ready12_24_train.csv') 
 from matplotlib import rc
 rc('font', weight='bold')
 
@@ -33,7 +33,7 @@ def make_cols1(dataframe): # will also input the column name ***
             title = ii_ + ' ' + 'to' + ' ' + combo
  
             if counter1 == 0: # check for first value in range - boolean 
-                df_with_colz[title] = dataframe[i].apply(lambda x: 1 if x< counter1 else 0)
+                df_with_colz[title] = dataframe[i].apply(lambda x: 1 if x < counter1 else 0)
             if counter1 > 0:
                 ii_ = ii_ + str(r2)
                 df_with_colz[title] = dataframe[i].apply(lambda x: 1 if x< counter1 and x>=counter2 else 0 )
@@ -172,7 +172,7 @@ if __name__ == '__main__':
     colz_int_reg_delta = make_inter_reg(df_interaction_regreister_delta) 
     first_try =  create_graph(colz_int_reg_delta)
      
-    something = make_cols3(df_Camp_Length)
+    something = make_cols2(df_Camp_Length)
 
-    print(create_graph(colz_first_reg))
+    print(create_graph(colz_first_reg)) 
  

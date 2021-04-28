@@ -89,20 +89,24 @@ def run_test_typeAA(dataframe):
     #del X['City_Type2_x'] 
     
     X_trainD, X_testD, y_trainD, y_testD = train_test_split(X, y, test_size=0.2, random_state=101) 
+    print(X_trainD.columns )
+    #For Post-Hoc Tracking
+    del X_trainD['Patient_ID']
+    del X_testD['Patient_ID']
+    del y_trainD['Patient_ID']
+    del y_testD['Patient_ID']
 
-    X_trainIDs, X_testIDs = X_trainD.pop('Patient ID'), X_testD.pop('Patient ID') #For Post-Hoc Tracking
-    y_trainIDs, y_testIDs = y_trainD.pop('Patient ID'), y_testD.pop('Patient ID')
 
-    data_dmatrix_train = xgb.DMatrix(data=X_trainD,label=y_trainD)  
-    data_dmatrix_test = xgb.DMatrix(data=X_testD,label=y_testD) 
+    data_dmatrix_train = xgb.DMatrix(data=X_trainIDs,label=y_trainIDs)  
+    data_dmatrix_test = xgb.DMatrix(data=X_testIDs,label=y_testIDs) 
 
     xg_reg1 = XGBClassifier(objective ='binary:logistic', colsample_bytree = 0.3, learning_rate = 0.1,
                 max_depth = 8, alpha = 8, n_estimators = 12, eval_metric = 'auc', label_encoder=False,scale_pos_weight=2)
 
-    xg_reg1.fit(X_trainD,y_trainD) 
+    xg_reg1.fit(X_trainD, y_trainD)  
 
-    xg_reg1_predict = xg_reg1.predict(X_testD) #(0/1 associated with .5)
-    xg_reg1_proba = xg_reg1.predict_proba(X_testD)[:,1]
+    xg_reg1_predict = xg_reg1.predict(X_testD ) #(0/1 associated with .5)
+    xg_reg1_proba = xg_reg1.predict_proba(X_testD )[:,1]
      
     preds_xg1_thresh1 =xg_reg1_proba>=0.5
     preds2_xg1_thresh2 = xg_reg1_proba>=0.35
@@ -120,8 +124,8 @@ def run_test_typeAA(dataframe):
     X_testD['prediction'] = xg_reg1_predict
     X_testD['Proba'] = xg_reg1_proba
     X_testD['y_target'] = y_testD 
-    X_testD['Patient ID'] = X_testIDs 
-
+    #X_testD['Patient ID'] = X_testIDs 
+    # new_df =keep all of one , use nulls 
     return X_testD    
 
 def run_test_typeB(dataframe):  
@@ -160,13 +164,14 @@ def run_test_typeB(dataframe):
 def run_test_typeC(dataframe): # might need to rescale / hotencode / drop those
     '''
     do part 2 _ maybe optomize  ? 
+    Note as of 2/13 commenting out lines 171-175 for  post hoc and different encoding 
     '''
     y = dataframe.pop('y_target')
     X = dataframe 
-    camp_ID  = X.Health_Camp_ID.max()
-    camp_ID_lst_ = X.Health_Camp_ID.values  
-    camp_ID_lst = set(camp_ID_lst_)
-    del X['Health_Camp_ID'] 
+    # camp_ID  = X.Health_Camp_ID.max() 
+    # camp_ID_lst_ = X.Health_Camp_ID.values  
+    # camp_ID_lst = set(camp_ID_lst_)
+    #del X['Health_Camp_ID'] 
     #del X['City_Type2_x'] 
     X_train, X_test, y_train,y_test = train_test_split(
     X, y , test_size = 0.2, random_state=101, stratify=y)
@@ -197,7 +202,13 @@ def run_test_typeC(dataframe): # might need to rescale / hotencode / drop those
     test_size =len(X_test)
     train_size =len(X_train)
     print(classification_report(y_test,predictions))
-    return [str(camp_ID), mat1[0][1],mat1[1][1], y_counts_test , y_counts_train , test_size , train_size] #array of ratio, total_ytarget, total size , camp length , 
+
+       
+    X_test['prediction'] = predictions 
+    X_test['Proba'] = proba
+    X_test['y_target'] = y_test 
+
+    return X_test #[str(camp_ID), mat1[0][1],mat1[1][1], y_counts_test , y_counts_train , test_size , train_size] #array of ratio, total_ytarget, total size , camp length , 
 
 
 if __name__ == '__main__':

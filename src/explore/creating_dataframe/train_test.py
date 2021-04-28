@@ -1,5 +1,6 @@
 import pandas as pd 
 import numpy as np 
+import seaborn as sns
 pd.set_option('display.max_columns', None) 
 train = pd.read_csv('/home/allen/Galva/capstones/capstone2/data/Train/Train.csv')
 test = pd.read_csv('/home/allen/Galva/capstones/capstone2/data/Train/test.csv')
@@ -216,6 +217,7 @@ if __name__ == '__main__':
     from preprocessing import drop_cols_specific
 
     checker3 = drop_cols_specific(checker2)
-  
+    ax = sns.heatmap(checker3) #,
+    plt.show()
     
      
