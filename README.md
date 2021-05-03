@@ -245,14 +245,14 @@ Y_count_allModels is the the sum of all predicted values for attendance (0 or 1)
 
 --- 
 
-Upon closer examination there is disagreement among the models for which patients will attend a health event. It might be possible to gain useful insight be examining interesting patients: those which models agreed, disagreed, False Positives, False Negatives, etc.
+Upon closer examination there is disagreement among the models for which patients will attend a health event. It might be possible to gain useful insight be examining interesting patients: those which models agreed, disagreed, False Positives, False Negatives, etc.  
 
-Below are plots showing thefollowing: 
---A. The probability each model assigned to a patient, 
---B. If the patient actually attended (shown by color), 
---C. The number of models that predicted that patient would attend (0,1,2,3).
---D. The patient's overall score (which has two 'Perfect' scores: 0,4 Or lesser:  2,3  )
 
+Below are plots showing the following for each Patient: 
+* A. The probability each model assigned to a patient (y-axis) 
+* B. If the patient actually attended (shown by color)  
+* C. The overall score group for that patient (shown by the respective column the dot appears in) 
+ 
 ![]( https://github.com/AChezick/Capstone2/blob/main/images/images2/ytarget_svcprobas.png ) 
 ![]( https://github.com/AChezick/Capstone2/blob/main/images/images2/ytarget_knnprobas.png ) 
 ![]( https://github.com/AChezick/Capstone2/blob/main/images/images2/ytarget_xgprobas.png ) 
