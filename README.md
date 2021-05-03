@@ -245,16 +245,20 @@ Y_count_allModels is the the sum of all predicted values for attendance (0 or 1)
 
 --- 
 
-Upon closer examination there is disagreement among which patients will attend a health event. 
+Upon closer examination there is disagreement among the models for which patients will attend a health event. It might be possible to gain useful insight be examining interesting patients: those which models agreed, disagreed, False Positives, False Negatives, etc.
 
-Below are plots showing the probability each model assigned to a patient, if the patient actually attended (shown by color), and the number of models that predicted that patient would attend (0,1,2,3).
+Below are plots showing thefollowing: 
+--A. The probability each model assigned to a patient, 
+--B. If the patient actually attended (shown by color), 
+--C. The number of models that predicted that patient would attend (0,1,2,3).
+--D. The patient's overall score (which has two 'Perfect' scores: 0,4 Or lesser:  2,3  )
 
 ![]( https://github.com/AChezick/Capstone2/blob/main/images/images2/ytarget_svcprobas.png ) 
 ![]( https://github.com/AChezick/Capstone2/blob/main/images/images2/ytarget_knnprobas.png ) 
 ![]( https://github.com/AChezick/Capstone2/blob/main/images/images2/ytarget_xgprobas.png ) 
  
 
-#### Tensorflow & Keras
+#### Experimentation with Tensorflow & Keras
 Since this data is not descriptive black-box models are OK to use. Optimization of a neural network may produce good results. I used tensorflow and keras and was able to achieve similar results to other models with minimal training. 
 
 ![]( https://github.com/AChezick/Capstone2/blob/main/images/images2/BasicNN.png )
