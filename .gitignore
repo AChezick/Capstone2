@@ -25,4 +25,12 @@ temp_csv
 
 .ipynb_checkpoints/ 
 
- 
+city.py 
+stacked_Bar2.py 
+__pycache__
+
+x1.csv
+x2.csv 
+K2.csv
+S2.csv 
+del_me.py
