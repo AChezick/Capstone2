@@ -200,24 +200,26 @@ if __name__ == '__main__':
     checker = train_final2[train_final2['Health_Camp_ID'].notnull()]
     #print(checker.info(), checker.describe())
     #checker_  = convert_date_part2(checker) #, convert_date_part2(test_final2)
-    checker["Camp Start Date - Registration Date"] = checker['delta_first_reg']
-    checker[ "Registration Date - First Interaction"] = checker['interaction_regreister_delta']
-    checker["Camp Start Date - First Interaction"]=checker['delta_first_start']
-    checker["Camp End Date - Registration Date"]=checker['delta_reg_end']
-    checker['Camp Length'] = checker['Camp_Length']
-    checker['Category 1'] = checker['Category1_x'] 
-    checker['Category 2'] = checker['Category2_x'] 
-    checker['Category 3'] = checker['Category3_x'] 
+    checker_5421 = checker
+    checker_5421.to_csv('/home/allen/Galva/capstones/capstone2/data/placeholder/df_withdates.csv')
+    # checker["Camp Start Date - Registration Date"] = checker['delta_first_reg']
+    # checker[ "Registration Date - First Interaction"] = checker['interaction_regreister_delta']
+    # checker["Camp Start Date - First Interaction"]=checker['delta_first_start']
+    # checker["Camp End Date - Registration Date"]=checker['delta_reg_end']
+    # checker['Camp Length'] = checker['Camp_Length']
+    # checker['Category 1'] = checker['Category1_x'] 
+    # checker['Category 2'] = checker['Category2_x'] 
+    # checker['Category 3'] = checker['Category3_x'] 
 
-    too_drop=['delta_first_reg', 'Job Type_y',
-       'interaction_regreister_delta', 'delta_first_start', 'delta_reg_end',
-       'Camp_Length','Category1_x','Category2_x','Category3_x']
-    checker2 = checker.drop(too_drop,axis=1)
+    # too_drop=['delta_first_reg', 'Job Type_y',
+    #    'interaction_regreister_delta', 'delta_first_start', 'delta_reg_end',
+    #    'Camp_Length','Category1_x','Category2_x','Category3_x']
+    # checker2 = checker.drop(too_drop,axis=1)
     
-    from preprocessing import drop_cols_specific
+    # from preprocessing import drop_cols_specific
 
-    checker3 = drop_cols_specific(checker2)
-    ax = sns.heatmap(checker3) #,
-    plt.show()
+    # checker3 = drop_cols_specific(checker2)
+    # ax = sns.heatmap(checker3) #,
+    # plt.show()
     
      
