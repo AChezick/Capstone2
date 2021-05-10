@@ -1,4 +1,21 @@
 
+# 5/10/21
+'''
+AB_testing tab is currently under construction.
+
+by_date_camps.py is the main testing file
+postHOCAB.py is the modeling file 
+
+
+
+This script :
+-Some code will be used from this script to parse results, create data frames
+
+'''
+
+
+
+
 import pandas as pd 
 import numpy as np 
 import matplotlib.pyplot as plt 

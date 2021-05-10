@@ -1,3 +1,22 @@
+
+# 5/10/21
+'''
+AB_testing tab is currently under construction.
+
+by_date_camps.py is the main testing file
+postHOCAB.py is the modeling file 
+
+
+
+This script :
+1. Creates a list of Health Camps by Date, determines which health camp patients
+   can be used to train prediction models
+2. Two data frames are made by subsetting the main testing file 
+3. The Data frames are sent out for Thompson Samping 
+4. Bandit (the models) probabilities are updated as they are played 
+'''
+
+
 import pandas as pd 
 import numpy as np 
 import matplotlib.pyplot as plt 
@@ -62,11 +81,14 @@ def parse_results():
 
     return None
 
-def create_df(keys): #5/7 Main 'Function for AB puipeline' 
+def create_df(keys): #5/7 Main 'Function for AB pipeline' 
     '''
     Create train,test DFs from sorted camps
-    Send to testing out for AB testing
-    Keep track of results
+
+    Each Test Round:
+    Send test,train DF to models for training/results
+    Send results for AB testing
+    Keep track of results & Update models 
     '''
     model_bandits ={'xg':[1.0, .5, 2 ], 'svc':[1.0, .5, 2 ] , 'log': [1.0, .5, 2 ], 'avg':[1.0, .5, 2 ]}
     for item in keys:

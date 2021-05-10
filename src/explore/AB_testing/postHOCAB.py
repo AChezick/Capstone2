@@ -1,3 +1,21 @@
+
+# 5/10/21
+'''
+AB_testing tab is currently under construction.
+
+by_date_camps.py is the main testing file
+postHOCAB.py is the modeling file 
+
+
+
+This script :
+1. Takes in train DF to train (which is all patients & health camps ending before test_df starts)
+2. Each model's probabilities for patient attendance will be added as columns to the test_DF
+3. Test DF will be sent back for parsing in AB testing. 
+'''
+
+
+
 import pandas as pd 
 import numpy as np 
 pd.set_option('display.max_columns', None) 
