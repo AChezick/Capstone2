@@ -131,13 +131,9 @@ Training the model with only the five anonymized features results in very poor p
 
 ![]( https://github.com/AChezick/Capstone2/blob/main/images/non_feature_all_models.png )
 
-The two anonymized features that had the highest feature weights were Var1 , Var5. Interestingly however, most of the patients had a zero-value for these two features. 
+The two anonymized features that had the highest feature weights were Var1 , Var5. Interestingly however, most of the patients had a zero-value for these two features. Without knowing what 'var1' is, and given that only a few thousand patients had non-zero values, I decided not to drop or edit these features for modeling purposes. There is simply not enough context to apply domain knowledge for the features Var1 - Var5.
 
 ![]( https://github.com/AChezick/Capstone2/blob/main/images/images2/var1_5_Zero_.png ) 
-
-Here is the distribution for Var1 & Var5 for all the patients with non-zero values. Again, only a few thousand patients had non-zero values. Without knowing what either of these features map to, I decided not to drop or edit these features for modeling purposes.  There is simply not enough context to apply domain  knowledge for the features Var1 - Var5.
-
-![]( https://github.com/AChezick/Capstone2/blob/main/images/images2/non_zerovar1_5.png ) 
 
 Thus, feature engineering was instrumental in improving the model. 
 
