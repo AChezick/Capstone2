@@ -17,6 +17,7 @@ This script :
 
 
 import numpy as np
+from numpy.lib.type_check import _nan_to_num_dispatcher
 import pandas as pd 
 import scipy as scipy 
 import scipy.stats as stats 
@@ -31,7 +32,7 @@ from random import choice
 
 def create_bandit(x):
     '''
-    accepts an payoff % as input for a bandit 
+    accepts a payoff % as input for a bandit 
     creates array of zeros and ones to be chosen 
     '''
     onez = np.ones( int(x * 100))
@@ -40,6 +41,12 @@ def create_bandit(x):
     return bandit
 
 def get_bandits(xx ,nn,ratez):
+    '''
+    5/24 Updates
+                y_target  Patient_ID  SVC  svc_preds
+      row_var = [0.0        489652     0.0   0.190603] row_var == ratez 
+    '''
+
     x=xx.copy() # needs to be automated 
     r1,r2,r3 = ratez[0],ratez[1],ratez[2]
     get_a = create_bandit(r1)
@@ -100,12 +107,33 @@ def get_bandits(xx ,nn,ratez):
 
     return x    
 
-def experiment_numerical(params):
+def parse(df):
+    '''
+    input: data Frame
+    actions: del un needed columns 
+    returns: df
+    '''
+    to_del =  ['Unnamed: 0', 'Unnamed: 0.1', 'Health_Camp_ID', 'Var1', 'Var2', 'Var3',
+       'Var4', 'Var5',  'Camp Length', '1036', '1216', '1217',
+       '1352', '1704', '1729', '2517', '2662', '23384', 'BFSI', 'Broadcasting',
+       'Consulting', 'Education', 'Food', 'Health', 'Manufacturing', 'Others',
+       'Real Estate', 'Retail', 'Software Industry', 'Technology', 'Telecom',
+       'Transport', 'A', 'C', 'D', 'E', 'F', 'G', '2100', 'Second', 'Third',
+       '1', '2', '3', '4']
+    df_ = df.drop( to_del , axis=1)
+    return df_ 
+
+def experiment_numerical(dataframe,params):
+    '''
+    -recieves a dict & dict_of_results 
+    -iterates through DF and updates dict based on each trial 
+    - win rates will need to be separated 
+    '''
     exp_resultz = {}
     nn=1
-    ratez = params[1] #previous win rates
-     
-    x = params[0].copy() 
+    
+    ratez = [v[2] for k,v in params.items()] #previous win rates 
+    x = dataframe.copy() 
 
     for i in dataframe: # iterate through patients/trials 
                         # send entire row? or pointers to bandit function 
@@ -115,6 +143,16 @@ def experiment_numerical(params):
             exp_resultz.pop(i_ ) #remove last bandit , helps with view of current printout 
 
         output = get_bandits( x ,nn, ratez) #sending dict, trial_num, pay_outs --> to bandit funt
+        '''
+        Question: How does bandit play? 
+        Ans:
+        For each patient/trial the patient row is assigned to row_var 
+                    y_target  Patient_ID  SVC  svc_preds
+        row_var = [0.0        489652     0.0   0.190603] row_var == ratez 
+        Send row_var along with the dictionary (*below) to get_bandits 
+        *dict ={'xg':[1.0, .5, 2 ], 'svc':[1.0, .5, 2 ] , 'log': [1.0, .5, 2 ], 'avg':[1.0, .5, 2 ]} 
+        '''
+
         x = output #replace x with updates from get bandit 
         nn+=1  #update expermential count 
         exp_resultz[i]=[x] # add new pay_out version to dict
@@ -123,11 +161,13 @@ def experiment_numerical(params):
             ap,bp,cp = round((x['a'][0]/(x['a'][2])),2), round((x['b'][0]/(x['b'][2])),3) ,round((x['c'][0]/(x['c'][2])),3)
             indv_wins =  x['a'][0] ,x['b'][0] , x['c'][0]
             total_wins = x['a'][0] + x['b'][0] + x['c'][0]
-            return exp_resultz #indv_wins #['actual rates',ap,bp,cp ]#, 'total_wins',total_wins   ] # 
+            return exp_resultz  
 
 if __name__ == '__main__': 
-     
-    print( experiment_numerical(params = [ {'a':[1.0, .5, 2 ], 'b':[1.0, .5, 2 ], 'c': [1.0, .5, 2 ]} , [ 0.03, 0.05, 0.08] ] ))
+    df = pd.read_csv('/home/allen/Galva/capstones/capstone2/src/explore/temp_csv/thomps.csv') 
+    print(df)
+    print(parse(df))
+    #print( experiment_numerical(params = [ {'a':[1.0, .5, 2 ], 'b':[1.0, .5, 2 ], 'c': [1.0, .5, 2 ]} , [ 0.03, 0.05, 0.08] ] ))
   
 ''' 
 5/6/21
@@ -143,6 +183,10 @@ patient_2
 .
 .
 len(df) = num trials
+
+
+5/24
+- Create a parsing function to clean DF and then send through testing pipline 
 
 '''
 
