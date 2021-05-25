@@ -27,41 +27,38 @@ import random
 from scipy.stats import beta
 
 from random import choice   
+ 
 
-#r1,r2,r3 = .13 , .02 , .08  
-
-def create_bandit(x):
-    '''
-    accepts a payoff % as input for a bandit 
-    creates array of zeros and ones to be chosen 
-    '''
-    onez = np.ones( int(x * 100))
-    zeroz= np.zeros(100-int(x * 100))
-    bandit = np.hstack((onez,zeroz))
-    return bandit
-
-def get_bandits(xx ,nn,ratez):
+def get_bandits(x ,nn,ratez):
     '''
     5/24 Updates
                 y_target  Patient_ID  SVC  svc_preds
       row_var = [0.0        489652     0.0   0.190603] row_var == ratez 
+
+    - I think instead create_bandit , get_abc would point to that model in the row_var
+    - Here is where I can create 'consenious bandit' = majority vote 
+                    <need 3 or 5 bandits or random.chocie for tie breaker>
+
+    x_former_DF_row_var = {'svc': [1, 3, 2], 'log': [4, 3, 2], 'y_target': [0, 0, 1]}
     '''
 
-    x=xx.copy() # needs to be automated 
-    r1,r2,r3 = ratez[0],ratez[1],ratez[2]
-    get_a = create_bandit(r1)
-    get_b = create_bandit(r2)
-    get_c = create_bandit(r3)
+    xx= ratez.copy() # needs to be automated | removing making a cop 5/25 bc of error reporting 
+     
+    get_a = x['a'][nn] # using nn_trial as index
+    get_b = x['b'][nn]
+    get_c = x['c'][nn] #+ ratez['svc'] # if sum >= majority, 1 else 0 
+     # get_true = xx['y_target'].values # Not needed? 5/25 
     best_rate = 0 
     check_key = 'z' 
     trial = nn   
 
-    for key,value in x.items() : # for each bandit calc new bandit win percentage 
+    for key,value in ratez.items() : # for each bandit calc new bandit win percentage 
  
         if trial%2==0:
             wins,rate,plays = value[0],value[1],value[2] 
             winz_rate = np.random.beta(wins,plays)
             new_rate = round(winz_rate,2)
+
             if new_rate < rate:  
                 new_rate = rate - .0005 #impose small pentality 
                 #print(new_rate, key, 'for sanity this is new_rate & key in x.items()') 
@@ -75,37 +72,35 @@ def get_bandits(xx ,nn,ratez):
             best_rate = new_rate
             check_key = key 
            
-        x[key]=[wins,new_rate , plays ] #building new list to iterate     
+        xx[key]=[wins,new_rate , plays ] #building new list to iterate     
         
-    check_ = x.get(check_key)     #get key to access values of best win rate for pull         
+    check_ = xx.get(check_key)     #get key to access values of best win rate for pull         
  
-    if check_key == 'a': 
-        get = random.choice(get_a) #pull bandit will be get output from dataframe
-        # get = find patient ID in DF and point to model's prediction 0/1 
-
+    if check_key == 'a': # if model 'a' is the best so far check it's prediction 
+        get = get_a # 'pull' bandit will be get model's prediction 
         check_[0] += get # updating 2nd value for bandit A  
         check_[2] +=1 
-        x[check_key] = check_ 
+        xx[check_key] = check_ 
         trial+=1
-        return x 
+        return xx 
   
     if check_key=='b':
-        get = random.choice(get_b)
+        get = get_b
         check_[0] += get # updating 2nd value for bandit B
         check_[2] +=1 
-        x[check_key] = check_ 
+        xx[check_key] = check_ 
         trial += 1 
-        return x 
+        return xx 
 
     else:
-        get = random.choice(get_c)
+        get =  get_c 
         check_[0] += get 
         check_[2] +=1 
-        x[check_key] = check_ 
+        xx[check_key] = check_ 
         trial+=1 
-        return x
+        return xx
 
-    return x    
+    return xx    
 
 def parse(df):
     '''
@@ -121,9 +116,14 @@ def parse(df):
        'Transport', 'A', 'C', 'D', 'E', 'F', 'G', '2100', 'Second', 'Third',
        '1', '2', '3', '4']
     df_ = df.drop( to_del , axis=1)
+
+    df_['a'] = df['SVC']
+    df_['b'] = np.ones(len(df))
+    df_['c'] = df['SVC'].apply(lambda x: 1)
+    print(df_.head(2))
     return df_ 
 
-def experiment_numerical(dataframe,params):
+def experiment_numerical(dataframe,params={'a':[1.0, .5, 2 ] , 'b':[1.0, .5, 2 ] , 'c': [1.0, .5, 2 ]}):
     '''
     -recieves a dict & dict_of_results 
     -iterates through DF and updates dict based on each trial 
@@ -132,17 +132,17 @@ def experiment_numerical(dataframe,params):
     exp_resultz = {}
     nn=1
     
-    ratez = [v[2] for k,v in params.items()] #previous win rates 
-    x = dataframe.copy() 
+    ratez = [v[1] for k,v in params.items()] #previous win rates * might need to pass all of params
+    ratez2 = params
+    for index in range(len(dataframe['Patient_ID'].values)): # iterate through patients/trials 
 
-    for i in dataframe: # iterate through patients/trials 
-                        # send entire row? or pointers to bandit function 
-        i_ =i -1
+        i_ = index-1
+        if i_>2:
+            exp_resultz.pop(i_)
 
-        if i>2:
-            exp_resultz.pop(i_ ) #remove last bandit , helps with view of current printout 
-
-        output = get_bandits( x ,nn, ratez) #sending dict, trial_num, pay_outs --> to bandit funt
+        
+        x = dataframe.to_dict() # 5/25 maybe send entire dict and use trial number to point to index for patient_ID
+        output = get_bandits( x ,nn, ratez2) #sending dict, trial_num, pay_outs --> to bandit funt
         '''
         Question: How does bandit play? 
         Ans:
@@ -153,20 +153,21 @@ def experiment_numerical(dataframe,params):
         *dict ={'xg':[1.0, .5, 2 ], 'svc':[1.0, .5, 2 ] , 'log': [1.0, .5, 2 ], 'avg':[1.0, .5, 2 ]} 
         '''
 
-        x = output #replace x with updates from get bandit 
+        ratez2 = output #replace x with updates from get bandit 
         nn+=1  #update expermential count 
-        exp_resultz[i]=[x] # add new pay_out version to dict
-
+        exp_resultz[index]=output # add new pay_out version to dict
+        
         if nn == len(dataframe):
-            ap,bp,cp = round((x['a'][0]/(x['a'][2])),2), round((x['b'][0]/(x['b'][2])),3) ,round((x['c'][0]/(x['c'][2])),3)
-            indv_wins =  x['a'][0] ,x['b'][0] , x['c'][0]
-            total_wins = x['a'][0] + x['b'][0] + x['c'][0]
+            ap,bp,cp = round((ratez2['a'][0]/(ratez2['a'][2])),2), round((ratez2['b'][0]/(ratez2['b'][2])),3) ,round((ratez2['c'][0]/(ratez2['c'][2])),3)
+            indv_wins =  ratez2['a'][0] ,ratez2['b'][0] , ratez2['c'][0]
+            total_wins = ratez2['a'][0] + ratez2['b'][0] + ratez2['c'][0]
             return exp_resultz  
 
 if __name__ == '__main__': 
     df = pd.read_csv('/home/allen/Galva/capstones/capstone2/src/explore/temp_csv/thomps.csv') 
     print(df)
-    print(parse(df))
+    parsed = parse(df) 
+    print(experiment_numerical(parsed , params={'a':[1.0, .5, 2 ] , 'b':[1.0, .5, 2 ] , 'c': [1.0, .5, 2 ]})) 
     #print( experiment_numerical(params = [ {'a':[1.0, .5, 2 ], 'b':[1.0, .5, 2 ], 'c': [1.0, .5, 2 ]} , [ 0.03, 0.05, 0.08] ] ))
   
 ''' 

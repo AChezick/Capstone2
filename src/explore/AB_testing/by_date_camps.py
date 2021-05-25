@@ -96,7 +96,7 @@ def create_df(df, keys): #5/7 Main 'Function for AB pipeline'
 
     df1 = df.copy()
     df2 = df.copy() 
-     
+                # ={  'svc':[1.0, .5, 2 ]   'avg':[1.0, .5, 2 ]}
     model_bandits ={'xg':[1.0, .5, 2 ], 'svc':[1.0, .5, 2 ] , 'log': [1.0, .5, 2 ], 'avg':[1.0, .5, 2 ]}
     model_check = [] #Del this line eventually / EXCHANGE FOR making pickle files 
     win_rates = [v[2] for k,v in model_bandits.items()]
