@@ -262,3 +262,12 @@ Since this data is not descriptive black-box models are OK to use. Optimization 
 However, I am confident that these scores can improve by using a grid search and other optimization techniques. 
 
 ![]( https://github.com/AChezick/Capstone2/blob/main/images/images2/BasicNN_loss.png ) 
+
+
+## ~ AB Testing in /src
+
+*Under construction
+
+My plan is to conduct a mock analysis of 'model prediction' with limited data and no date features. A 'What if' we used only previous camp data to train the above models in real time? Which would perform best as a bandit?!?
+
+
