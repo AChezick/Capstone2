@@ -42,12 +42,11 @@ def get_bandits(x ,nn,ratez):
     x_former_DF_row_var = {'svc': [1, 3, 2], 'log': [4, 3, 2], 'y_target': [0, 0, 1]}
     '''
 
-    xx= ratez.copy() # needs to be automated | removing making a cop 5/25 bc of error reporting 
+    xx= ratez.copy()  
      
     get_a = x['a'][nn] # using nn_trial as index
     get_b = x['b'][nn]
     get_c = x['c'][nn] #+ ratez['svc'] # if sum >= majority, 1 else 0 
-     # get_true = xx['y_target'].values # Not needed? 5/25 
     best_rate = 0 
     check_key = 'z' 
     trial = nn   
@@ -118,8 +117,8 @@ def parse(df):
     df_ = df.drop( to_del , axis=1)
 
     df_['a'] = df['SVC']
-    df_['b'] = np.ones(len(df))
-    df_['c'] = df['SVC'].apply(lambda x: 1)
+    df_['b'] = df['XG']
+    df_['c'] = df['log_preds'] 
     print(df_.head(2))
     return df_ 
 
@@ -164,7 +163,7 @@ def experiment_numerical(dataframe,params={'a':[1.0, .5, 2 ] , 'b':[1.0, .5, 2 ]
             return exp_resultz  
 
 if __name__ == '__main__': 
-    df = pd.read_csv('/home/allen/Galva/capstones/capstone2/src/explore/temp_csv/thomps.csv') 
+    df = pd.read_csv('/home/allen/Galva/capstones/capstone2/src/explore/temp_csv/thomps2.csv') 
     print(df)
     parsed = parse(df) 
     print(experiment_numerical(parsed , params={'a':[1.0, .5, 2 ] , 'b':[1.0, .5, 2 ] , 'c': [1.0, .5, 2 ]})) 

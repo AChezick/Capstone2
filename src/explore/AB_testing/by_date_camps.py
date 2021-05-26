@@ -113,7 +113,7 @@ def create_df(df, keys): #5/7 Main 'Function for AB pipeline'
             
             do_modeling = run_tests(test_df,train_df) # This should be parsed before sending to do_testing
             model_check.append(do_modeling)
-            # do_modeling.to_csv('/home/allen/Galva/capstones/capstone2/src/explore/temp_csv/thomps.csv') # Help with next phase 
+            do_modeling.to_csv('/home/allen/Galva/capstones/capstone2/src/explore/temp_csv/thomps2.csv') # Help with next phase 
             # parser = parse_results(do_modeling)
             
             #do_testing = experiment_numerical(model_bandits , parser )
