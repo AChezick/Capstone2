@@ -47,6 +47,8 @@ def get_bandits(x ,nn,ratez):
     get_a = x['a'][nn] # using nn_trial as index
     get_b = x['b'][nn]
     get_c = x['c'][nn] #+ ratez['svc'] # if sum >= majority, 1 else 0 
+    # get_d = x['d'][nn]
+    # get_e = x['e'][nn]
     best_rate = 0 
     check_key = 'z' 
     trial = nn   
@@ -91,6 +93,20 @@ def get_bandits(x ,nn,ratez):
         trial += 1 
         return xx 
 
+    # if check_key=='d':
+    #     get = get_d
+    #     check_[0] += get # updating 2nd value for bandit B
+    #     check_[2] +=1 
+    #     xx[check_key] = check_ 
+    #     trial += 1 
+    #     return xx 
+    # if check_key=='e':
+    #     get = get_e
+    #     check_[0] += get # updating 2nd value for bandit B
+    #     check_[2] +=1 
+    #     xx[check_key] = check_ 
+    #     trial += 1 
+    #     return xx 
     else:
         get =  get_c 
         check_[0] += get 
@@ -107,22 +123,22 @@ def parse(df):
     actions: del un needed columns 
     returns: df
     '''
-    to_del =  ['Unnamed: 0', 'Unnamed: 0.1', 'Health_Camp_ID', 'Var1', 'Var2', 'Var3',
-       'Var4', 'Var5',  'Camp Length', '1036', '1216', '1217',
-       '1352', '1704', '1729', '2517', '2662', '23384', 'BFSI', 'Broadcasting',
+    to_del =  ['Unnamed: 0', 'Health_Camp_ID', 'Var1', 'Var2', 'Var3',
+       'Var4', 'Var5',  'Camp Length', 'BFSI', 'Broadcasting',
        'Consulting', 'Education', 'Food', 'Health', 'Manufacturing', 'Others',
        'Real Estate', 'Retail', 'Software Industry', 'Technology', 'Telecom',
-       'Transport', 'A', 'C', 'D', 'E', 'F', 'G', '2100', 'Second', 'Third',
+       'Transport', 'A', 'C', 'D', 'E', 'F', 'G', 'Second', 'Third',
        '1', '2', '3', '4']
     df_ = df.drop( to_del , axis=1)
 
     df_['a'] = df['SVC']
     df_['b'] = df['XG']
     df_['c'] = df['log_preds'] 
-    print(df_.head(2))
+    #df_['d'] = df['SVC2'] 
+    # print(df_.head(2))
     return df_ 
 
-def experiment_numerical(dataframe,params={'a':[1.0, .5, 2 ] , 'b':[1.0, .5, 2 ] , 'c': [1.0, .5, 2 ]}):
+def experiment_numerical(dataframe,params={'a':[1.0, .5, 2 ] , 'b':[1.0, .5, 2 ] , 'c': [1.0, .5, 2 ]}): # , 'd': [1.0, .5, 2 ], 'e': [1.0, .5, 2 ]
     '''
     -recieves a dict & dict_of_results 
     -iterates through DF and updates dict based on each trial 
@@ -131,9 +147,10 @@ def experiment_numerical(dataframe,params={'a':[1.0, .5, 2 ] , 'b':[1.0, .5, 2 ]
     exp_resultz = {}
     nn=1
     
-    ratez = [v[1] for k,v in params.items()] #previous win rates * might need to pass all of params
-    ratez2 = params
-    for index in range(len(dataframe['Patient_ID'].values)): # iterate through patients/trials 
+    #ratez = [v[1] for k,v in params.items()] #previous win rates * might need to pass all of params
+    ratez2 = params 
+    #print(dataframe)
+    for index in range(len(dataframe.keys())): # iterate through patients/trials 
 
         i_ = index-1
         if i_>2:
@@ -158,6 +175,7 @@ def experiment_numerical(dataframe,params={'a':[1.0, .5, 2 ] , 'b':[1.0, .5, 2 ]
         
         if nn == len(dataframe):
             ap,bp,cp = round((ratez2['a'][0]/(ratez2['a'][2])),2), round((ratez2['b'][0]/(ratez2['b'][2])),3) ,round((ratez2['c'][0]/(ratez2['c'][2])),3)
+            #dp , ep = round((ratez2['d'][0]/(ratez2['d'][2])),2) , round((ratez2['e'][0]/(ratez2['e'][2])),2)
             indv_wins =  ratez2['a'][0] ,ratez2['b'][0] , ratez2['c'][0]
             total_wins = ratez2['a'][0] + ratez2['b'][0] + ratez2['c'][0]
             return exp_resultz  
@@ -166,7 +184,7 @@ if __name__ == '__main__':
     df = pd.read_csv('/home/allen/Galva/capstones/capstone2/src/explore/temp_csv/thomps2.csv') 
     print(df)
     parsed = parse(df) 
-    print(experiment_numerical(parsed , params={'a':[1.0, .5, 2 ] , 'b':[1.0, .5, 2 ] , 'c': [1.0, .5, 2 ]})) 
+    print(experiment_numerical(parsed , params={'a':[1.0, .5, 2 ] , 'b':[1.0, .5, 2 ] , 'c': [1.0, .5, 2 ]})) # , 'd': [1.0, .5, 2 ], 'e': [1.0, .5, 2 ]
     #print( experiment_numerical(params = [ {'a':[1.0, .5, 2 ], 'b':[1.0, .5, 2 ], 'c': [1.0, .5, 2 ]} , [ 0.03, 0.05, 0.08] ] ))
   
 ''' 

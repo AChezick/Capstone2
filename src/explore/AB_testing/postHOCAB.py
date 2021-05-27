@@ -71,7 +71,7 @@ def temp_test():
             test_df = df1[df1['Health_Camp_ID'] == iD ]  
             train_df = df2.loc[ df2['Health_Camp_ID'].isin(camps)  ]  
 
-            print(train_df , 'TRAIN', test_df)
+            #print(train_df , 'TRAIN', test_df)
 
             get_result = run_tests(test_df,train_df)
             ans[index] = get_result
@@ -95,12 +95,13 @@ def run_tests(test_df,train_df ):
     
     # combine results
     final_df['SVC'] = get_svc['prediction'].values
+    #final_df['SVC2'] = get_svc['prediction_svc2'].values
     final_df['svc_preds'] = get_svc['proba']
     final_df['XG'] = get_knn['prediction']
     final_df['xg_preds'] = get_knn['Proba']
     final_df['log'] = get_L['predictionL']
     final_df['log_preds'] = get_L['probaL']
-
+    #final_df['log2'] =  get_L['predictionL2']
     return final_df
 
 def run_test_typeAA(test_df1 , train_df1):
@@ -169,10 +170,8 @@ def run_test_typeS(test_dfs , train_dfs):
     trainz_y = train_dfs['y_target'].values
     testz_y = test_dfs['y_target'].values 
 
-    test_dfs = scale2(test_dfs)
-    train_dfs = scale2(train_dfs)
-
-
+    test_dfs = scale(test_dfs)
+    train_dfs = scale(train_dfs)
 
     del train_dfs['y_target']
     del test_dfs['y_target']
@@ -190,9 +189,6 @@ def run_test_typeS(test_dfs , train_dfs):
 
     del df_train['Patient_ID'] 
     del df_test['Patient_ID'] 
-    # print(df_train.columns,df_test.columns, 'next are the y', train_y,test_y)
-    #X_trainS, X_testS, y_trainS, y_testS = train_test_split(x, y, test_size=0.2, random_state=101) 
-    #^ the above line wont be needed 
 
     svc = SVC(random_state=101 ,probability=True)
     svc.fit(df_train,train_y)
@@ -200,8 +196,9 @@ def run_test_typeS(test_dfs , train_dfs):
     svc_proba = svc.predict_proba(df_test)[:,1]
 
     predsx , preds2x = svc_proba  >= .5 , svc_proba  >= .3
-
+   # print(preds2x , 'preds2x')
     df_test['prediction'] = svc_preds
+     
     df_test['proba'] = svc_proba
     df_test['y_target'] = test_y
 
@@ -239,8 +236,8 @@ def run_test_typek(test_dfk , train_dfk):
     knn_preds = knn.predict(df_test)
     knn_proba = knn.predict_proba(df_test) 
      
-    print(knn_proba, 'is proba'  )
-    print(knn_preds, 'is preds'  )
+   # print(knn_proba, 'is proba'  )
+   # print(knn_preds, 'is preds'  )
 
     df_test['prediction'] = knn_preds
     df_test['Proba'] = knn_proba[ :,1]   
@@ -253,7 +250,7 @@ def run_test_typeL(test_dfl , train_dfl):
     run knn for post hoc- analysis 
     '''
     train_y = train_dfl['y_target'].values #getting y_target values for test & train
-    test_y = test_dfl['y_target'].values 
+    # test_y = test_dfl['y_target'].values 
 
     del train_dfl['y_target'] #deleting values 
     del test_dfl['y_target']
@@ -267,7 +264,7 @@ def run_test_typeL(test_dfl , train_dfl):
     del df_train['Patient_ID'] 
     del df_test['Patient_ID'] 
     
-    w = {0:59, 1:41} 
+    w = {0:65, 1:35} 
     logmodelx = LogisticRegression(penalty='l2', dual=False, tol=1e-4, C=1.0, 
             fit_intercept=True, intercept_scaling=1, class_weight=w , random_state=None, 
             solver='lbfgs', max_iter=50, multi_class='auto', verbose=0, warm_start=False, 
@@ -276,10 +273,13 @@ def run_test_typeL(test_dfl , train_dfl):
 
     pure_probaz = logmodelx.predict_proba(df_test) 
     predictionsz = logmodelx.predict(df_test)
+    preds2x = pure_probaz >= .3
 
-    df_test['predictionL'] = pure_probaz[:,-1]  #logmodelx.predict(df_test)
-    df_test['probaL'] =  predictionsz   #logmodelx.predict_proba(df_test)[:,-1]   
+   # print(preds2x , 'preds2x') 
 
+    df_test['predictionL'] = pure_probaz[:,-1]   
+    df_test['probaL'] =  predictionsz     
+       
     return df_test 
 
 if __name__ =='__main__':
@@ -307,6 +307,9 @@ input will be test_df, train_df
 -- Test function is working, scaling is working, dropping is working
 -- SVC test is working, KNN is not, not sure on XG
 -- Next step is to try and pass dfs from by_date_camps
+5/26
+-- adjusting thresholds gives arrays of True/False - might map to 0/1 , if yes could convert and then append
+-- 
 '''
  
 

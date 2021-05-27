@@ -36,8 +36,10 @@ def edit_df():
     5/20 
     This is being edited since new csv was made. 
     '''
-
-    df = dataframe.drop(['City_Type2_x','Job Type_x','Category 2','Category 3','Category 1', 'online_score'],axis=1) 
+    to_del =  [ 'Unnamed: 0', 'Unnamed: 0.1',
+    '1352', '1704', '1729', '2517', '2662', '23384',  '2100', '1036', '1216', '1217',
+    'City_Type2_x','Job Type_x','Category 2','Category 3','Category 1', 'online_score']
+    df = dataframe.drop(to_del,axis=1) 
     return df
 
 def sep_by_date(df_encode):
@@ -73,13 +75,32 @@ def sep_by_date(df_encode):
     return ans
 
 
-def parse_results():
+def parse_results(df):
     '''
     reformat modeling results for easier parsing in AB testing
+    input: data Frame
+    actions: del un needed columns 
+    returns: df
     '''
     #What to send to do_ab testing? 
+    df_ = df.copy()     
+    
+    
+    to_del =  [ 'Health_Camp_ID', 'Var1', 'Var2', 'Var3',
+       'Var4', 'Var5',  'Camp Length', 'BFSI', 'Broadcasting',
+       'Consulting', 'Education', 'Food', 'Health', 'Manufacturing', 'Others',
+       'Real Estate', 'Retail', 'Software Industry', 'Technology', 'Telecom',
+       'Transport', 'A', 'C', 'D', 'E', 'F', 'G', 'Second', 'Third',
+       '1', '2', '3', '4']
+    df_ = df.drop( to_del , axis=1)
 
-    return None
+    df_['a'] = df['SVC']
+    df_['b'] = df['XG']
+    df_['c'] = df['log_preds'] 
+    #df_['d'] = df['SVC2'] 
+    # print(df_.head(2))
+    return df_ 
+     
 
 def create_df(df, keys): #5/7 Main 'Function for AB pipeline' 
     '''
@@ -97,10 +118,10 @@ def create_df(df, keys): #5/7 Main 'Function for AB pipeline'
     df1 = df.copy()
     df2 = df.copy() 
                 # ={  'svc':[1.0, .5, 2 ]   'avg':[1.0, .5, 2 ]}
-    model_bandits ={'xg':[1.0, .5, 2 ], 'svc':[1.0, .5, 2 ] , 'log': [1.0, .5, 2 ], 'avg':[1.0, .5, 2 ]}
+    model_bandits ={'xg':[1.0, .5, 2 ], 'svc':[1.0, .5, 2 ] , 'log': [1.0, .5, 2 ]} #, 'svc2':[1.0, .5, 2 ]
     model_check = [] #Del this line eventually / EXCHANGE FOR making pickle files 
     win_rates = [v[2] for k,v in model_bandits.items()]
-    for item in keys[3:5]: # [(6530, ['NA']), (6560, ['NA']), (6544, ['NA', 6530, 6560]), (6561, ['NA', 6530, 6560, 6544]), (6585, ['NA', 6530, 6560, 6544])
+    for item in keys[3:9]: # [(6530, ['NA']), (6560, ['NA']), (6544, ['NA', 6530, 6560]), (6561, ['NA', 6530, 6560, 6544]), (6585, ['NA', 6530, 6560, 6544])
         if len(item[1]) <=1: #
             break
         else:
@@ -113,11 +134,12 @@ def create_df(df, keys): #5/7 Main 'Function for AB pipeline'
             
             do_modeling = run_tests(test_df,train_df) # This should be parsed before sending to do_testing
             model_check.append(do_modeling)
-            do_modeling.to_csv('/home/allen/Galva/capstones/capstone2/src/explore/temp_csv/thomps2.csv') # Help with next phase 
-            # parser = parse_results(do_modeling)
+            #do_modeling.to_csv('/home/allen/Galva/capstones/capstone2/src/explore/temp_csv/thomps2.csv') # Help with next phase 
+            parser = parse_results(do_modeling)
             
-            #do_testing = experiment_numerical(model_bandits , parser )
-
+            do_testing = experiment_numerical( parser,model_bandits )
+            get = max(do_testing.keys())
+            model_check.append(do_testing[get])
             # Will then need to update model_bandits 
 
         return model_check , 'SUCCESSSSSS'
@@ -142,6 +164,9 @@ if __name__ == '__main__':
 - Parser function will need to be completed 
 ---currently the beta is being done in cap_ab_testing 
 - Same csv made to expeidate the next steps 
-
+5/26
+- current is to improve model results = {'a': [1.0, 0.02, 121], 'b': [163.0, 0.05, 3297], 'c': [1.0, 0.01, 104]} 
+- removing columns
+- Also, testing other camp results, creating pickle files. 
 '''
    
