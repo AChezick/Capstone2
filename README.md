@@ -281,7 +281,15 @@ Steps in Experiment:
 
 ## Results
 
-Initial results show improved scores! When I separated each camp and had the models predict patient attendance for just that camp, each model generally performed better than when I had used more data and trained them all at once. My next step will be to see how scores align with other features: Camp Location, Camp Length etc. As indicated in the post-hoc above, there was much variation among camp attendance rates and this may result in poor performance. The data may have been 'pulled' away from a better prediction vector by too much diversity and not enough data among the diversity to create a normal distribution.
+Win = Correct prediction of a random patient's attendance for that camp.
+
+Initial results are mixed, with some camps having higher prediction rates and some being lower.
+
+Question to ponder:
+- Is there conflicting data? 
+-...As in patient A has values 1,1,1 for characteristics ABC, and does NOT attend and patient B has 1,1,1 for characteristics ABC, and DOES attend? 
+
+When I separated each camp and had the models predict patient attendance for just that camp, each model generally performed better than when I had used more data and trained them all at once. My next step will be to see how scores align with other features: Camp Location, Camp Length etc. As indicated in the post-hoc above, there was much variation among camp attendance rates and this may result in poor performance. The data may have been 'pulled' away from a better prediction vector by too much diversity and not enough data among the diversity to create a normal distribution.
 
 
 |    | camp_ID | Win Rate SVC | Win Rate KNN | Win Rate Logistic Regression | Camp Size (Number of Patients) |
@@ -323,3 +331,5 @@ Initial results show improved scores! When I separated each camp and had the mod
 | 34 | 6575    | 0.36         | 0.32         | 0.533                        | 88                             |
 | 35 | 6552    | 0.125        | 0.514        | 0.548                        | 80                             |
 | 36 | 6558    | 0.583        | 0.526        | 0.5                          | 42                             |
+
+More coming soon...
