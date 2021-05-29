@@ -264,10 +264,18 @@ However, I am confident that these scores can improve by using a grid search and
 ![]( https://github.com/AChezick/Capstone2/blob/main/images/images2/BasicNN_loss.png ) 
 
 
-## ~ AB Testing in /src
+# ~ AB Testing in /src
 
 *Under construction
 
-My plan is to conduct a mock analysis of 'model prediction' with limited data and no date features. A 'What if' we used only previous camp data to train the above models in real time? Which would perform best as a bandit?!?
+My plan is to conduct a mock analysis of 'model predictions' had they been actually implemented. Essentially, 'What if' MedCamp used previous camp data to train models for each camp individually and sequentially?
+
+
+Which model (SVC, Logistic Regression, KNN) would perform best as a bandit ?!? 
+
+Steps in Experiment:
+
+1. Put camps in-order by end date
+2. Remove overlap (if  for Camp D , Camps A,B & C, end  before Camp D, the patient data from Camp A,B &C would be used to train the [SVC,Logistic Regression, KNN] to predict Camp D’s patient attendance). However, if Camp C starts before D but does not end before D starts Camp C ‘s results can’t be used to train the bandits [SVC,Logistic Regression, KNN]. 
 
 
