@@ -263,6 +263,7 @@ However, I am confident that these scores can improve by using a grid search and
 
 ![]( https://github.com/AChezick/Capstone2/blob/main/images/images2/BasicNN_loss.png ) 
 
+---
 
 # ~ AB Testing in /src
 
@@ -271,11 +272,54 @@ However, I am confident that these scores can improve by using a grid search and
 My plan is to conduct a mock analysis of 'model predictions' had they been actually implemented. Essentially, 'What if' MedCamp used previous camp data to train models for each camp individually and sequentially?
 
 
-Which model (SVC, Logistic Regression, KNN) would perform best as a bandit ?!? 
+### Which model (SVC, Logistic Regression, KNN) would perform best as a bandit ?!? 
 
 Steps in Experiment:
 
 1. Put camps in-order by end date
 2. Remove overlap (if  for Camp D , Camps A,B & C, end  before Camp D, the patient data from Camp A,B &C would be used to train the [SVC,Logistic Regression, KNN] to predict Camp D’s patient attendance). However, if Camp C starts before D but does not end before D starts Camp C ‘s results can’t be used to train the bandits [SVC,Logistic Regression, KNN]. 
 
+## Results
 
+Initial results show improved scores! When I separated each camp and had the models predict patient attendance for just that camp, each model generally performed better than when I had used more data and trained them all at once. My next step will be to see how scores align with other features: Camp Location, Camp Length etc. As indicated in the post-hoc above, there was much variation among camp attendance rates and this may result in poor performance. The data may have been 'pulled' away from a better prediction vector by too much diversity and not enough data among the diversity to create a normal distribution.
+
+
+|    | camp_ID | Win Rate SVC | Win Rate KNN | Win Rate Logistic Regression | Camp Size (Number of Patients) |
+|----|---------|--------------|--------------|------------------------------|--------------------------------|
+| 0  | 6578    | 0.345        | 0.336        | 0.362                        | 2835                           |
+| 1  | 6532    | 0.874        | 0.861        | 0.863                        | 1991                           |
+| 2  | 6543    | 0.88         | 0.877        | 0.852                        | 6541                           |
+| 3  | 6580    | 0.935        | 0.925        | 0.913                        | 3515                           |
+| 4  | 6570    | 0.92         | 0.918        | 0.927                        | 3562                           |
+| 5  | 6542    | 0.836        | 0.81         | 0.866                        | 2366                           |
+| 6  | 6571    | 0.92         | 0.892        | 0.899                        | 2084                           |
+| 7  | 6527    | 0.379        | 0.344        | 0.428                        | 4142                           |
+| 8  | 6526    | 0.954        | 0.969        | 0.959                        | 3807                           |
+| 9  | 6539    | 0.883        | 0.861        | 0.871                        | 1990                           |
+| 10 | 6528    | 0.306        | 0.305        | 0.243                        | 1742                           |
+| 11 | 6555    | 0.646        | 0.61         | 0.489                        | 1736                           |
+| 12 | 6541    | 0.409        | 0.382        | 0.429                        | 1545                           |
+| 13 | 6523    | 0.277        | 0.258        | 0.315                        | 2082                           |
+| 14 | 6538    | 0.841        | 0.837        | 0.845                        | 3952                           |
+| 15 | 6549    | 0.682        | 0.719        | 0.687                        | 1833                           |
+| 16 | 6586    | 0.766        | 0.789        | 0.675                        | 2622                           |
+| 17 | 6554    | 0.843        | 0.859        | 0.846                        | 2301                           |
+| 18 | 6529    | 0.495        | 0.573        | 0.577                        | 3821                           |
+| 19 | 6540    | 0.888        | 0.901        | 0.906                        | 1424                           |
+| 20 | 6534    | 0.305        | 0.296        | 0.283                        | 3595                           |
+| 21 | 6535    | 0.871        | 0.831        | 0.884                        | 1880                           |
+| 22 | 6561    | 0.542        | 0.685        | 0.592                        | 198                            |
+| 23 | 6585    | 0.735        | 0.787        | 0.752                        | 1396                           |
+| 24 | 6536    | 0.565        | 0.57         | 0.495                        | 2035                           |
+| 25 | 6562    | 0.963        | 0.959        | 0.957                        | 2336                           |
+| 26 | 6537    | 0.881        | 0.864        | 0.877                        | 3857                           |
+| 27 | 6581    | 0.943        | 0.935        | 0.938                        | 1483                           |
+| 28 | 6524    | 0.655        | 0.538        | 0.667                        | 147                            |
+| 29 | 6587    | 0.462        | 0.581        | 0.556                        | 77                             |
+| 30 | 6557    | 0.35         | 0.3          | 0.294                        | 50                             |
+| 31 | 6546    | 0.931        | 0.967        | 0.936                        | 401                            |
+| 32 | 6569    | 0.374        | 0.357        | 0.296                        | 175                            |
+| 33 | 6564    | 0.915        | 0.884        | 0.885                        | 512                            |
+| 34 | 6575    | 0.36         | 0.32         | 0.533                        | 88                             |
+| 35 | 6552    | 0.125        | 0.514        | 0.548                        | 80                             |
+| 36 | 6558    | 0.583        | 0.526        | 0.5                          | 42                             |
