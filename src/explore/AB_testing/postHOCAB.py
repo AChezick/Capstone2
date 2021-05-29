@@ -268,7 +268,7 @@ def run_test_typeL(test_dfl , train_dfl):
     logmodelx = LogisticRegression(penalty='l2', dual=False, tol=1e-4, C=1.0, 
             fit_intercept=True, intercept_scaling=1, class_weight=w , random_state=None, 
             solver='lbfgs', max_iter=50, multi_class='auto', verbose=0, warm_start=False, 
-            n_jobs=1, l1_ratio=None ) 
+            n_jobs=6, l1_ratio=None ) 
     logmodelx.fit(df_train, train_y)
 
     pure_probaz = logmodelx.predict_proba(df_test) 
@@ -309,7 +309,19 @@ input will be test_df, train_df
 -- Next step is to try and pass dfs from by_date_camps
 5/26
 -- adjusting thresholds gives arrays of True/False - might map to 0/1 , if yes could convert and then append
--- 
+5/27
+- revisited beta for Thompson sample to ensure bandits were updating correctly
+--needed to adjust wins because model = 0 and y_target = 0 ==win 
+- Also, all 3 models predict quite well for the 3517 thomps.csv   
+y = dataframe['y_target'].values
+log = dataframe['log_preds'].values
+svc = dataframe['SVC'].values
+xg = dataframe['XG'].values
+
+logy = [1 for x in list(zip(y,log)) if x[0]==x[1]]
+s = [1 for x in list(zip(y,svc)) if x[0]==x[1]]
+x = [1 for x in list(zip(y,xg)) if x[0]==x[1]]
+print(sum(logy), len(y),sum(s),sum(x))
 '''
  
 

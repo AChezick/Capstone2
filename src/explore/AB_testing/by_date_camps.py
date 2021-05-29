@@ -119,9 +119,9 @@ def create_df(df, keys): #5/7 Main 'Function for AB pipeline'
     df2 = df.copy() 
                 # ={  'svc':[1.0, .5, 2 ]   'avg':[1.0, .5, 2 ]}
     model_bandits ={'xg':[1.0, .5, 2 ], 'svc':[1.0, .5, 2 ] , 'log': [1.0, .5, 2 ]} #, 'svc2':[1.0, .5, 2 ]
-    model_check = [] #Del this line eventually / EXCHANGE FOR making pickle files 
+    model_check = {} #Del this line eventually / EXCHANGE FOR making pickle files 
     win_rates = [v[2] for k,v in model_bandits.items()]
-    for item in keys[3:9]: # [(6530, ['NA']), (6560, ['NA']), (6544, ['NA', 6530, 6560]), (6561, ['NA', 6530, 6560, 6544]), (6585, ['NA', 6530, 6560, 6544])
+    for item in keys: # [(6530, ['NA']), (6560, ['NA']), (6544, ['NA', 6530, 6560]), (6561, ['NA', 6530, 6560, 6544]), (6585, ['NA', 6530, 6560, 6544])
         if len(item[1]) <=1: #
             break
         else:
@@ -133,23 +133,23 @@ def create_df(df, keys): #5/7 Main 'Function for AB pipeline'
 
             
             do_modeling = run_tests(test_df,train_df) # This should be parsed before sending to do_testing
-            model_check.append(do_modeling)
+             
             #do_modeling.to_csv('/home/allen/Galva/capstones/capstone2/src/explore/temp_csv/thomps2.csv') # Help with next phase 
             parser = parse_results(do_modeling)
-            
+             
             do_testing = experiment_numerical( parser,model_bandits )
-            get = max(do_testing.keys())
-            model_check.append(do_testing[get])
+            
+            model_check[iD] = do_testing
             # Will then need to update model_bandits 
 
-        return model_check , 'SUCCESSSSSS'
+    return model_check  
 
 
 
 
 if __name__ == '__main__':
     step1 = edit_df()
-    # step1.to_csv('/home/allen/Galva/capstone/capstone2/src/explore/AB_testing/for_ab_modeling.csv')
+    #step1.to_csv('/home/allen/Galva/capstone/capstone2/src/explore/AB_testing/for_ab_modeling.csv')
     step2 = sep_by_date(step1)
    # step3 = step2.sort(key = lambda x : x[1]) # wont need this for final modeling 
     step3 = create_df(step1 , step2)
@@ -168,5 +168,19 @@ if __name__ == '__main__':
 - current is to improve model results = {'a': [1.0, 0.02, 121], 'b': [163.0, 0.05, 3297], 'c': [1.0, 0.01, 104]} 
 - removing columns
 - Also, testing other camp results, creating pickle files. 
+5/27
+- revisited beta for Thompson sample to ensure bandits were updating correctly
+--needed to adjust wins because model = 0 and y_target = 0 ==win 
+- Also, all 3 models predict quite well for the 3517 thomps.csv  [3260 3517 3261 3128]
+y = dataframe['y_target'].values
+log = dataframe['log_preds'].values
+svc = dataframe['SVC'].values
+xg = dataframe['XG'].values
+
+logy = [1 for x in list(zip(y,log)) if x[0]==x[1]]
+s = [1 for x in list(zip(y,svc)) if x[0]==x[1]]
+x = [1 for x in list(zip(y,xg)) if x[0]==x[1]]
+print(sum(logy), len(y),sum(s),sum(x))
+
 '''
    
