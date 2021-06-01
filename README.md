@@ -283,7 +283,9 @@ Steps in Experiment:
 
 Steps for modified Thompson Sampling:
 
-I modified the traditional Thompson Sampling steps to impose a small penality if a bandit is chosen and the beta
+I modified the traditional Thompson Sampling steps. Rather than using the beta if
+
+impose a small penality if a bandit is chosen and the beta is
 
 ## Results
 
