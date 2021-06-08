@@ -340,4 +340,8 @@ When I separated each camp and had the models predict patient attendance for jus
 | 35 | 6552    | 0.125        | 0.514        | 0.548                        | 80                             |
 | 36 | 6558    | 0.583        | 0.526        | 0.5                          | 42                             |
 
-More coming soon...
+## Next Steps
+
+1. Unsupervised K means & Supervised KNN
+- I would like to determine if there is overlap among the 4 potential outcomes (model prediction yes/no & patient attendance yes/no)
+- It might be fruitful to see what differences exist among patients who attended and those who did not: for each Location , camp length 
