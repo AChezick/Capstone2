@@ -15,8 +15,8 @@ class Create_DF:
 
     def __init__(self,name,patient, df_city):
         self.name = name 
-        self.patient = patient() 
-        self.df_city = df_city() 
+        self.patient = patient  
+        self.df_city = df_city 
 
 
     def impute_city(self,patient, df_city):
@@ -30,14 +30,14 @@ class Create_DF:
             else:
                 self.dict_of_cities[i]+=1
 
-        self.patient['City_Type2'] = self.df_city['City_Type'].map(dict_of_cities)
+        self.patient['City_Type2'] = self.df_city['City_Type'].map(self.dict_of_cities)
         return self.patient 
 
     def impute_Job(self,patient):
         '''
         Edit column for City_Type, impute missing values
         '''
-        self.patient.Employer_Category = self.patient.Employer_Category.astype(str)
+        self.patient['Employer_Category'] = self.patient['Employer_Category'].astype(str)
         
         self.patient['Employer_Category'] = patient['Employer_Category'].replace(to_replace = 'None', value=np.nan).fillna(0)
         self.to_change = self.patient['Employer_Category'].values 
@@ -52,11 +52,29 @@ class Create_DF:
         self.patient['Job Type'] = self.to_change_
         print(patient.info())
  
-        
-        return patient  
+        return self.patient  
 
- 
+    def impute_online_score(self,patient):
+        '''
+        Create Column for sum of all Online Shares 
+        '''
+        #sum col values in certain columns across each individual row
+        self.online_score = self.patient['LinkedIn_Shared'] + self.patient['Facebook_Shared'] + self.patient['Twitter_Shared'] + self.patient['Online_Follower'] 
+        self.patient['online_score'] = self.online_score 
+        return self.patient
+
+
+
 if __name__ == '__main__':
     impute_citi = Create_DF(patient, camp_info, df_city  )
-    impute_jobs = Create_DF(impute_citi) 
+    impute_citi.impute_city(patient, df_city)
+    impute_citi.impute_Job(patient)
+    df_check = impute_citi.impute_online_score(patient )
+    print(patient.head())
+      
+    print(df_check)
 
+'''
+5/12 Got first two functions to work - can get a data frame
+-not 
+'''
