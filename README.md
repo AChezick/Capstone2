@@ -277,8 +277,8 @@ My plan is to conduct a mock analysis of 'model predictions' had they been actua
 Steps in Experiment:
 
 1. Put camps in-order by end date
-2a. Remove overlap (if  for Camp D , Camps A,B & C, end  before Camp D, the patient data from Camp A,B &C would be used to train the [SVC,Logistic Regression, KNN] to predict Camp D’s patient attendance). 
-2b. However, if Camp C starts before D but does not end before D starts Camp C ‘s results can’t be used to train the bandits [SVC,Logistic Regression, KNN]. 
+2A. Remove overlap (if  for Camp D , Camps A,B & C, end  before Camp D, the patient data from Camp A,B &C would be used to train the [SVC,Logistic Regression, KNN] to predict Camp D’s patient attendance). 
+2B. However, if Camp C starts before D but does not end before D starts Camp C ‘s results can’t be used to train the bandits [SVC,Logistic Regression, KNN]. 
 3. Append model results to data frame
 
 Steps for modified Thompson Sampling:
