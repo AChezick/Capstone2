@@ -283,9 +283,12 @@ Steps in Experiment:
 
 Steps for modified Thompson Sampling:
 
-I modified the traditional Thompson Sampling steps. Rather than explictely using the[ beta ](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.beta.html) ...
+I modified the traditional Thompson Sampling in favor for a numerical solution. Rather than explictely using the[ beta ](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.beta.html), a small penality ( - 0.5%) was imposed if a bandit is chosen AND the Beta was greater than the actual rate for that model. In a different experiment using different bandits this method acheived a modest improvement over using the exact Beta. I plan on conducting the same experiment for this data set. Results comming soon.
 
-A small penality ( - 0.5%) was imposed if a bandit is chosen AND the Beta was greater than the actual rate for that model.
+Below is a graph showing what Beta was chosen and how it compares to that bandit's current win rate
+
+![]( https://github.com/AChezick/Capstone2/blob/main/images/images2/beta_vs_winrate.png )
+
 
 ## Results
 
