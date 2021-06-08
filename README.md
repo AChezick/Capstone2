@@ -283,9 +283,9 @@ Steps in Experiment:
 
 Steps for modified Thompson Sampling:
 
-I modified the traditional Thompson Sampling steps. Rather than using the beta if
+I modified the traditional Thompson Sampling steps. Rather than explictely using the[ beta ](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.beta.html) ...
 
-impose a small penality if a bandit is chosen and the beta is
+A small penality ( - 0.5%) was imposed if a bandit is chosen AND the Beta was greater than the actual rate for that model.
 
 ## Results
 
