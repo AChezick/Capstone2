@@ -209,7 +209,7 @@ The Date features ended up improving scores for all models. Additionally, for al
 
 ## Post-Hoc
 
-The global attendance rate was 20%. The training and validation attendance rate was 27%. However, 5/10 camp locations had an attendance rate between 32.2% and 33.8%. The highest attendance rate was just over 70%. 
+The global attendance rate was 20%. The training and validation attendance rate was 27%. However, 5/10 camp locations had a attendance rate between 32.2% and 33.8%. The highest attendance rate was just over 70%. 
 
 
 #### There was much diversity among Health Camp Attendance Rates:
