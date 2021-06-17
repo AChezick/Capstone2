@@ -181,21 +181,6 @@ if __name__ == '__main__':
     #print( experiment_numerical(params = [ {'a':[1.0, .5, 2 ], 'b':[1.0, .5, 2 ], 'c': [1.0, .5, 2 ]} , [ 0.03, 0.05, 0.08] ] ))
   
 ''' 
-5/6/21
-
-Editing this file to get input from modelings 
-
-input = [dict , dataframe] 
--dict ={'xg':[1.0, .5, 2 ], 'svc':[1.0, .5, 2 ] , 'log': [1.0, .5, 2 ], 'avg':[1.0, .5, 2 ]} 
--df = [patientID , campID, xgP,xg_p , svcP,svc_p, knnP,knn_p , avgP,avg_p ]
-patient_1
-patient_2
-.
-.
-.
-len(df) = num trials
-
-
 5/24
 - Create a parsing function to clean DF and then send through testing pipline 
 5/27
