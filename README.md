@@ -4,7 +4,7 @@
 
 MedCamp is a non-profit which provides health camps for people in various cities acorss America.  MedCamp was having challenges maintaining their operations due to excessive operational expense. 
 
-#### Goal 
+#### Goal
 Help MedCamp reduce wasteful spending AND maintain quality experiences of attendees by accurately predicting who will and will not attend a health-fare events. 
 
 --- 
@@ -209,13 +209,14 @@ The Date features ended up improving scores for all models. Additionally, for al
 
 ## Post-Hoc
 
-The global attendance rate was 20%. The training and validation attendance rate was 27%. However, 5/10 camp locations had a attendance rate between 32.2% and 33.8%. The highest attendance rate was just over 70%. 
+The global attendance rate was 20%. The training and validation attendance rate was 27%. However, 5/10 camp locations had a attendance rate between 32.2% and 33.8%. The highest attendance rate was just over 70%. The high level of variance helps to explain why adjusting to the exact glabal attendance rate, when dealing with class imbalance, casued the models to perform worse than with the standard balanced class option. However, models did perform best with a slight weighting of classes at .4 for attends and .6 for non-attends.
 
 
-#### There was much diversity among Health Camp Attendance Rates:
+#### There was much diversity BOTH within & among Health Camp attendance rates as it pertains to:
 ##### 1. The size of the Health Camp. 
 ##### 2. Among groups of the same size
 ##### 3. Camp Location
+##### 4. Among different camps at the Same Location
 
 ![]( https://github.com/AChezick/Capstone2/blob/main/images/images2/scatter_camp2.png )
 
@@ -226,7 +227,7 @@ The global attendance rate was 20%. The training and validation attendance rate 
 #### Models Specifics: Disagreement on 'Which Patients will attend' 
 
 I created a new dataframe which contains the prediction and probability results for three of the models used in this project. 
-y_target_SUM is the total 'Score' or sum of predicted attendance (0 or 1) among all models and y_target. Top value = 4
+y_target_SUM is the total 'Score' or sum of predicted attendance (0 or 1) among all models and y_target. Top value = 4 
 Y_count_allModels is the the sum of all predicted values for attendance (0 or 1) among the three models being analyzed here Top value = 3
 
 ---
