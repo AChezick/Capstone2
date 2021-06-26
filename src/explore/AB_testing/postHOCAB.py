@@ -88,20 +88,25 @@ def run_tests(test_df,train_df ):
     test_df1 , train_df1 = test_df.copy() , train_df.copy() 
     test_df2 , train_df2 = test_df.copy() , train_df.copy() 
     test_df3 , train_df3 = test_df.copy() , train_df.copy() 
+    #test_df4 , train_df4 = test_df.copy() , train_df.copy()
 
     get_L =  run_test_typeL(test_df1 , train_df1)
     get_knn = run_test_typek(test_df2 , train_df2)
     get_svc = run_test_typeS(test_df3 , train_df3)
+    #get_xg = run_test_typeAA(test_df4 , train_df4)
     
     # combine results
     final_df['SVC'] = get_svc['prediction'].values
     #final_df['SVC2'] = get_svc['prediction_svc2'].values
-    final_df['svc_preds'] = get_svc['proba']
-    final_df['XG'] = get_knn['prediction']
-    final_df['xg_preds'] = get_knn['Proba']
+    final_df['svc_proba'] = get_svc['proba']
+    final_df['knn'] = get_knn['prediction']
+    final_df['knn_proba'] = get_knn['Proba']
     final_df['log'] = get_L['predictionL']
-    final_df['log_preds'] = get_L['probaL']
+    final_df['log_proba'] = get_L['probaL']
     #final_df['log2'] =  get_L['predictionL2']
+    # final_df['xg'] = get_xg['predictionXG']
+    # final_df['xg_proba'] = get_xg['ProbaXG']
+
     return final_df
 
 def run_test_typeAA(test_df1 , train_df1):
@@ -152,8 +157,8 @@ def run_test_typeAA(test_df1 , train_df1):
     test_size =len(X_testD)
     train_size =len(X_trainD)
 
-    X_testD['prediction'] = xg_reg1_predict
-    X_testD['Proba'] = xg_reg1_proba
+    X_testD['predictionXG'] = xg_reg1_predict
+    X_testD['ProbaXG'] = xg_reg1_proba
     X_testD['y_target'] = y_testD 
 
     return X_testD 
@@ -173,6 +178,8 @@ def run_test_typeS(test_dfs , train_dfs):
     test_dfs = scale(test_dfs)
     train_dfs = scale(train_dfs)
 
+    
+
     del train_dfs['y_target']
     del test_dfs['y_target']
 
@@ -189,7 +196,7 @@ def run_test_typeS(test_dfs , train_dfs):
 
     del df_train['Patient_ID'] 
     del df_test['Patient_ID'] 
-
+     
     svc = SVC(random_state=101 ,probability=True)
     svc.fit(df_train,train_y)
     svc_preds = svc.predict(df_test)
@@ -273,13 +280,13 @@ def run_test_typeL(test_dfl , train_dfl):
 
     pure_probaz = logmodelx.predict_proba(df_test) 
     predictionsz = logmodelx.predict(df_test)
-    preds2x = pure_probaz >= .3
+    preds2x = predictionsz >= .3
 
    # print(preds2x , 'preds2x') 
 
-    df_test['predictionL'] = pure_probaz[:,-1]   
-    df_test['probaL'] =  predictionsz     
-       
+    df_test['predictionL'] = predictionsz   
+    df_test['probaL'] =  pure_probaz[:,-1]     
+    #df_test['predictionL2']  = preds2x  
     return df_test 
 
 if __name__ =='__main__':
@@ -322,6 +329,13 @@ logy = [1 for x in list(zip(y,log)) if x[0]==x[1]]
 s = [1 for x in list(zip(y,svc)) if x[0]==x[1]]
 x = [1 for x in list(zip(y,xg)) if x[0]==x[1]]
 print(sum(logy), len(y),sum(s),sum(x))
+
+6/25
+--Need to ue different column names for XG modeling *tabling for now
+--changing col names to include KNN
+--Second Log threshold returns True/False values?
+
+
 '''
  
 

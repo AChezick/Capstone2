@@ -6,7 +6,7 @@ from preprocessing_formatting import drop_cols , one_hot_encoding , scale
 
 
 pd.set_option('display.max_columns', None) 
-
+dff = pd.read_csv('/home/allen/Galva/capstones/capstone2/data/model_agent.csv')
 df_withdates = pd.read_csv('/home/allen/Galva/capstones/capstone2/data/placeholder/df_withdates.csv') 
 df_blank = pd.read_csv('/home/allen/Galva/capstones/capstone2/data/ready12_24_train.csv') 
 # Dataframe = # Find a csv with scaled/ data ready 
@@ -30,12 +30,36 @@ def edit_df():
     df_encode.to_csv('/home/allen/Galva/capstones/capstone2/src/explore/temp_csv/ab_df.csv')
     return df_encode 
 
-def make_useful_df():
+
+
+def happen():
+    df = dff.copy()
+    lst = [ 'prediction_kNN', 'prediction', 'prediction_sVC', 'prediction_xg' ]
+
+    for col in lst:
+        col_ = col + '_score'
+        print(col_)
+        df['and_'+col] = dff['y_target'] + dff[col]
+    for col in lst:
+        df['and_'+col] = df['and_'+col].apply(lambda x: 2 if x ==0 else x) 
+    for col in lst:
+        col_ = col + '_score'
+        df[col_] = df['and_'+col].apply(lambda x: 1 if x == 2  else 0  )
     
+    df['Score'] = df['prediction_kNN_score']+ df['prediction_score'] +df['prediction_sVC_score'] + df['prediction_xg_score'] 
+    
+    return df
 
-    return dataframe
 
-print(dataframe.head(), dataframe.info() , dataframe.describe( ))
+
+
+
+# print(dataframe.head(), dataframe.info() , dataframe.describe( ))
+if __name__ =='__main__':
+    check = happen()
+    print(check.head(20))
+
+
 '''
 from preprocessing_formatting import drop_cols , one_hot_encoding , scale
 #from city_testing import run_test_typeC

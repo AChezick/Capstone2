@@ -131,8 +131,8 @@ def parse(df):
     df_ = df.drop( to_del , axis=1)
 
     df_['a'] = df['SVC']
-    df_['b'] = df['XG']
-    df_['c'] = df['log_preds'] 
+    df_['b'] = df['knn']
+    df_['c'] = df['log'] 
 
     return df_ 
 
@@ -166,7 +166,7 @@ def experiment_numerical(dataframe,params): #  ={'a':[1.0, .5, 2 ] , 'b':[1.0, .
         exp_resultz[index]=output # add new pay_out version to dict
         
         if nn == len(dataframe):
-            ap,bp,cp = round((ratez2['svc'][0]/(ratez2['svc'][2])),3), round((ratez2['xg'][0]/(ratez2['xg'][2])),3) , round((ratez2['log'][0]/(ratez2['log'][2])),3)
+            ap,bp,cp = round((ratez2['svc'][0]/(ratez2['svc'][2])),3), round((ratez2['knn'][0]/(ratez2['knn'][2])),3) , round((ratez2['log'][0]/(ratez2['log'][2])),3)
             #dp , ep = round((ratez2['d'][0]/(ratez2['d'][2])),2) , round((ratez2['e'][0]/(ratez2['e'][2])),2)
             # indv_wins =  ratez2['a'][0] ,ratez2['b'][0] , ratez2['c'][0]
             # total_wins = ratez2['a'][0] + ratez2['b'][0] + ratez2['c'][0]

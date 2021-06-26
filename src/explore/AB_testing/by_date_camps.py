@@ -3,8 +3,9 @@
 '''
 AB_testing tab is currently under construction.
 
-by_date_camps.py is the main testing file
+by_date_camps.py is the main file
 postHOCAB.py is the modeling file 
+cap_ab_testing.py is the AB testing file
 
  
 
@@ -82,7 +83,7 @@ def parse_results(df):
     actions: del un needed columns 
     returns: df
     '''
-    #What to send to do_ab testing? 
+     
     df_ = df.copy()     
     
     
@@ -95,8 +96,8 @@ def parse_results(df):
     df_ = df.drop( to_del , axis=1)
 
     df_['a'] = df['SVC']
-    df_['b'] = df['XG']
-    df_['c'] = df['log_preds'] 
+    df_['b'] = df['knn']
+    df_['c'] = df['log'] 
     #df_['d'] = df['SVC2'] 
     # print(df_.head(2))
     return df_ 
@@ -118,10 +119,10 @@ def create_df(df, keys): #5/7 Main 'Function for AB pipeline'
     df1 = df.copy()
     df2 = df.copy() 
                 # ={  'svc':[1.0, .5, 2 ]   'avg':[1.0, .5, 2 ]}
-    model_bandits ={'xg':[1.0, .5, 2 ], 'svc':[1.0, .5, 2 ] , 'log': [1.0, .5, 2 ]} #, 'svc2':[1.0, .5, 2 ]
+    model_bandits ={'knn':[1.0, .5, 2 ], 'svc':[1.0, .5, 2 ] , 'log': [1.0, .5, 2 ]} #, 'svc2':[1.0, .5, 2 ]
     model_check = {} #Del this line eventually / EXCHANGE FOR making pickle files 
     win_rates = [v[2] for k,v in model_bandits.items()]
-    for item in keys: # [(6530, ['NA']), (6560, ['NA']), (6544, ['NA', 6530, 6560]), (6561, ['NA', 6530, 6560, 6544]), (6585, ['NA', 6530, 6560, 6544])
+    for item in keys: 
         if len(item[1]) <=1: #
             break
         else:
@@ -130,15 +131,14 @@ def create_df(df, keys): #5/7 Main 'Function for AB pipeline'
 
             test_df = df1[df1['Health_Camp_ID'] == iD ]  
             train_df = df2.loc[ df2['Health_Camp_ID'].isin(camps)  ]  
-
             
             do_modeling = run_tests(test_df,train_df) # This should be parsed before sending to do_testing
              
-            #do_modeling.to_csv('/home/allen/Galva/capstones/capstone2/src/explore/temp_csv/thomps2.csv') # Help with next phase 
+            do_modeling.to_csv('/home/allen/Galva/capstones/capstone2/src/explore/temp_csv/thomps2a.csv') # Help with next phase 
             parser = parse_results(do_modeling)
              
             do_testing = experiment_numerical( parser,model_bandits )
-            
+            print(do_testing)
             model_check[iD] = do_testing
             # Will then need to update model_bandits 
 
@@ -149,8 +149,10 @@ def create_df(df, keys): #5/7 Main 'Function for AB pipeline'
 
 if __name__ == '__main__':
     step1 = edit_df()
+     
     #step1.to_csv('/home/allen/Galva/capstone/capstone2/src/explore/AB_testing/for_ab_modeling.csv')
     step2 = sep_by_date(step1)
+    
    # step3 = step2.sort(key = lambda x : x[1]) # wont need this for final modeling 
     step3 = create_df(step1 , step2)
     print(step3)
