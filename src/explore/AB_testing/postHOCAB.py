@@ -54,7 +54,7 @@ dataframe = pd.read_csv('/home/allen/Galva/capstones/capstone2/src/explore/temp_
 
 def temp_test():
     '''
-    Creating test function to get stuff working
+    Creating test function to get beta working
     '''
     ans ={}
     df_encode1 = dataframe.drop(['City_Type2_x','Job Type_x','Category 2','Category 3','Category 1', 'online_score', 'Start','End'],axis=1) 

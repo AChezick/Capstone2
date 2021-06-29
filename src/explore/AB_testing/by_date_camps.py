@@ -138,7 +138,7 @@ def create_df(df, keys): #5/7 Main 'Function for AB pipeline'
             parser = parse_results(do_modeling)
              
             do_testing = experiment_numerical( parser,model_bandits )
-            print(do_testing)
+            print(do_testing , 'This WAS DO Testing ')
             model_check[iD] = do_testing
             # Will then need to update model_bandits 
 

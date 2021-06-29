@@ -132,6 +132,7 @@ def parse(df):
 
     df_['a'] = df['SVC']
     df_['b'] = df['knn']
+    #df_['b'] = df['XG']
     df_['c'] = df['log'] 
 
     return df_ 
@@ -147,7 +148,7 @@ def experiment_numerical(dataframe,params): #  ={'a':[1.0, .5, 2 ] , 'b':[1.0, .
     
     #ratez = [v[1] for k,v in params.items()] #previous win rates * might need to pass all of params
     ratez2 = params 
-    print(ratez2)
+    
     # dict of all model predictions for each patient/trial 
     x = {'a': dataframe['a'].values , 'b': dataframe['b'].values , 'c': dataframe['c'].values , 'y_target':dataframe['y_target'].values } 
 
@@ -155,7 +156,7 @@ def experiment_numerical(dataframe,params): #  ={'a':[1.0, .5, 2 ] , 'b':[1.0, .
     for index in range(len(dataframe)): # iterate through patients/trials 
         
         i_ = index-1
-        if i_>2:
+        if i_>=1:
             exp_resultz.pop(i_)
          
         output = get_bandits( x ,nn , ratez2) #sending dict of model_predictions, trial_num, model_wins_dict --> to bandit funt
@@ -166,11 +167,11 @@ def experiment_numerical(dataframe,params): #  ={'a':[1.0, .5, 2 ] , 'b':[1.0, .
         exp_resultz[index]=output # add new pay_out version to dict
         
         if nn == len(dataframe):
-            ap,bp,cp = round((ratez2['svc'][0]/(ratez2['svc'][2])),3), round((ratez2['knn'][0]/(ratez2['knn'][2])),3) , round((ratez2['log'][0]/(ratez2['log'][2])),3)
-            #dp , ep = round((ratez2['d'][0]/(ratez2['d'][2])),2) , round((ratez2['e'][0]/(ratez2['e'][2])),2)
+            #ap,bp,cp=  round((ratez2['svc'][0]/(ratez2['svc'][2])),3), round((ratez2['knn'][0]/(ratez2['knn'][2])),3) , round((ratez2['log'][0]/(ratez2['log'][2])),3)
+ 
             # indv_wins =  ratez2['a'][0] ,ratez2['b'][0] , ratez2['c'][0]
             # total_wins = ratez2['a'][0] + ratez2['b'][0] + ratez2['c'][0]
-            print(ap,bp,cp)
+            #print(ap,bp,cp , '*****************************************************this is apbpcp')
             return exp_resultz  
 
 if __name__ == '__main__': 
@@ -196,6 +197,11 @@ logy = [1 for x in list(zip(y,log)) if x[0]==x[1]]
 s = [1 for x in list(zip(y,svc)) if x[0]==x[1]]
 x = [1 for x in list(zip(y,xg)) if x[0]==x[1]]
 print(sum(logy), len(y),sum(s),sum(x))
+
+6/23
+-finally back!
+-outputs in 0.455 0.588 0.571 are correct***the dict value includes the beta adjustment 
+-running a 3rd trial
 '''
 
  
