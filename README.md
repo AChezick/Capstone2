@@ -295,13 +295,11 @@ Below is a graph showing what Beta was chosen and how it compares to that bandit
 
 Win = Correct prediction of a random patient's attendance for that camp.
 
-Initial results are mixed, with some camps having himproved prediction rates and some being worse. The data below can't  
+Initial results are mixed, with some camps having improved prediction rates and some being worse. Three rounds of results are shown in the table below.
 
-Question to ponder:
-- Is there conflicting data? 
--...As in patient A has values 1,1,1 for characteristics ABC, and does NOT attend and patient B has 1,1,1 for characteristics ABC, and DOES attend? 
-
-When I separated each camp and had the models predict patient attendance for just that camp, each model generally performed better than when I had used more data and trained them all at once. My next step will be to see how scores align with other features: Camp Location, Camp Length etc. As indicated in the post-hoc above, there was much variation among camp attendance rates and this may result in poor performance. The data may have been 'pulled' away from a better prediction vector by too much diversity and not enough data among the diversity to create a normal distribution.
+When I separated each camp and had the models predict patient attendance for just that camp, each model generally performed better than when I had used more data and trained them all at once. My next step will be to see how scores align with other features: 
+--Camp Location, Camp Length etc. As indicated in the post-hoc above, there was much variation among camp attendance rates and this may result in poor performance. 
+--The data may have been 'pulled' away from a better prediction vector by too much diversity and not enough data among the diversity to create a normal distribution.
 
 
 |    | camp_ID | Win Rate SVC | Win Rate KNN | Win Rate Logistic Regression | Camp Size (Number of Patients) |
@@ -346,6 +344,12 @@ When I separated each camp and had the models predict patient attendance for jus
 
 ## Next Steps
 
-1. Unsupervised K means & Supervised KNN
-- I would like to determine if there is overlap among the 4 potential outcomes (model prediction yes/no & patient attendance yes/no)
-- It might be fruitful to see what differences exist among patients who attended and those who did not: for each Location , camp length 
+
+Question to ponder:
+- Is there conflicting data within and among camp locations? 
+...As in patient A has values 1,1,1 for characteristics ABC, and does NOT attend and patient B has 1,1,1 for characteristics ABC, and DOES attend? Thinking about this as permutations there would be 2^N different ways for each binary outcome.
+
+- Clustering patients might reveal trends and predictors 
+- I would like to see if multi-class models can predict how many models successfully predicted a patients attendance
+- -As in if 4 models were successful (success = 4) is there a meta pattern that could be learned?
+
