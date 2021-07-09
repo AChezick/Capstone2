@@ -27,7 +27,7 @@ def edit_df():
     df_encode['Start'] = start
     df_encode['End'] = end
     df_encode['Patient_ID'] = df_withdates['Patient_ID_x'].values
-    df_encode.to_csv('/home/allen/Galva/capstones/capstone2/src/explore/temp_csv/ab_df.csv')
+    #df_encode.to_csv('/home/allen/Galva/capstones/capstone2/src/explore/temp_csv/ab_df.csv')
     return df_encode 
 
 
@@ -56,9 +56,9 @@ def happen():
 
 # print(dataframe.head(), dataframe.info() , dataframe.describe( ))
 if __name__ =='__main__':
-    check = happen()
-    print(check.head(20))
-
+    # check = happen()
+    # print(check.head(20))
+    print(dataframe.head())
 
 '''
 from preprocessing_formatting import drop_cols , one_hot_encoding , scale

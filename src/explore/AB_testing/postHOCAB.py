@@ -85,6 +85,7 @@ def run_tests(test_df,train_df ):
     get dfs, make copies, run tests , combine_results, send back for AB testing
     '''
     final_df = test_df.copy() 
+    print(final_df.columns , 'these are the columns currently being modeled other than  [Health_Camp_ID]/Patient_ID] ')
     test_df1 , train_df1 = test_df.copy() , train_df.copy() 
     test_df2 , train_df2 = test_df.copy() , train_df.copy() 
     test_df3 , train_df3 = test_df.copy() , train_df.copy() 
@@ -104,8 +105,8 @@ def run_tests(test_df,train_df ):
     final_df['log'] = get_L['predictionL']
     final_df['log_proba'] = get_L['probaL']
     #final_df['log2'] =  get_L['predictionL2']
-    # final_df['xg'] = get_xg['predictionXG']
-    # final_df['xg_proba'] = get_xg['ProbaXG']
+    #final_df['xg'] = get_xg['predictionXG']
+    #final_df['xg_proba'] = get_xg['ProbaXG']
 
     return final_df
 
@@ -275,7 +276,7 @@ def run_test_typeL(test_dfl , train_dfl):
     logmodelx = LogisticRegression(penalty='l2', dual=False, tol=1e-4, C=1.0, 
             fit_intercept=True, intercept_scaling=1, class_weight=w , random_state=None, 
             solver='lbfgs', max_iter=50, multi_class='auto', verbose=0, warm_start=False, 
-            n_jobs=6, l1_ratio=None ) 
+            n_jobs=-1, l1_ratio=None ) 
     logmodelx.fit(df_train, train_y)
 
     pure_probaz = logmodelx.predict_proba(df_test) 
@@ -290,6 +291,11 @@ def run_test_typeL(test_dfl , train_dfl):
     return df_test 
 
 if __name__ =='__main__':
+    print([i for i in enumerate(dataframe.columns)])
+    # for i in dataframe.columns:
+    #     get = dataframe[i].values
+    #     get_ = [int(i) for i in get]
+    #     print(f'this is the sum for columns{i}', sum(get_))
     print(temp_test())
 
 '''

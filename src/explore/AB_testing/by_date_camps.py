@@ -24,7 +24,7 @@ import numpy as np
 import matplotlib.pyplot as plt  
 from preprocessing_formatting import drop_cols , one_hot_encoding , scale
 from postHOCAB import run_tests 
-
+import pickle 
 
 pd.set_option('display.max_columns', None) 
 dataframe = pd.read_csv('/home/allen/Galva/capstones/capstone2/src/explore/temp_csv/ab_df.csv') 
@@ -41,6 +41,7 @@ def edit_df():
     '1352', '1704', '1729', '2517', '2662', '23384',  '2100', '1036', '1216', '1217',
     'City_Type2_x','Job Type_x','Category 2','Category 3','Category 1', 'online_score']
     df = dataframe.drop(to_del,axis=1) 
+    print(df.columns) 
     return df
 
 def sep_by_date(df_encode):
@@ -122,6 +123,8 @@ def create_df(df, keys): #5/7 Main 'Function for AB pipeline'
     model_bandits ={'knn':[1.0, .5, 2 ], 'svc':[1.0, .5, 2 ] , 'log': [1.0, .5, 2 ]} #, 'svc2':[1.0, .5, 2 ]
     model_check = {} #Del this line eventually / EXCHANGE FOR making pickle files 
     win_rates = [v[2] for k,v in model_bandits.items()]
+
+    patient_results = []
     for item in keys: 
         if len(item[1]) <=1: #
             break
@@ -131,16 +134,19 @@ def create_df(df, keys): #5/7 Main 'Function for AB pipeline'
 
             test_df = df1[df1['Health_Camp_ID'] == iD ]  
             train_df = df2.loc[ df2['Health_Camp_ID'].isin(camps)  ]  
-            
-            do_modeling = run_tests(test_df,train_df) # This should be parsed before sending to do_testing
              
-            do_modeling.to_csv('/home/allen/Galva/capstones/capstone2/src/explore/temp_csv/thomps2a.csv') # Help with next phase 
+            do_modeling = run_tests(test_df,train_df) # This should be parsed before sending to do_testing
+            patient_results.append(do_modeling) 
+            #do_modeling.to_csv('/home/allen/Galva/capstones/capstone2/src/explore/temp_csv/thomps2a.csv') # Help with next phase 
             parser = parse_results(do_modeling)
              
             do_testing = experiment_numerical( parser,model_bandits )
-            print(do_testing , 'This WAS DO Testing ')
+            #print(do_testing , 'This WAS DO Testing ')
             model_check[iD] = do_testing
             # Will then need to update model_bandits 
+    patient_resultsz = pd.concat(patient_results)
+    patient_resultsz.to_csv('/home/allen/Galva/capstones/capstone2/src/explore/AB_testing/patient_ab_results5.csv')
+    #######################('/home/allen/Galva/capstone/capstone2/src/explore/AB_testing/ind_mod_results.csv'
 
     return model_check  
 
@@ -148,6 +154,7 @@ def create_df(df, keys): #5/7 Main 'Function for AB pipeline'
 
 
 if __name__ == '__main__':
+    #print(ids.head(), ids.columns)
     step1 = edit_df()
      
     #step1.to_csv('/home/allen/Galva/capstone/capstone2/src/explore/AB_testing/for_ab_modeling.csv')
@@ -156,9 +163,13 @@ if __name__ == '__main__':
    # step3 = step2.sort(key = lambda x : x[1]) # wont need this for final modeling 
     step3 = create_df(step1 , step2)
     print(step3)
-    #for item in step3: # For each camp to predict and the camps to train for that prediction 
-        # send item through create_df 
-       # print(item)
+    file_step3 = open("step3.pkl","wb")
+    pickle.dump(step3,file_step3)
+    file_step3.close()
+    
+#     #for item in step3: # For each camp to predict and the camps to train for that prediction 
+#         # send item through create_df 
+#        # print(item)
 
 
 '''
