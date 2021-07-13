@@ -341,6 +341,37 @@ When I separated each camp and had the models predict patient attendance for jus
 | 35 | 6552    | 0.125        | 0.514        | 0.548                        | 80                             | 0.429 | 0.529 | 0.5   | 0.381 | 0.538 | 0.519 |
 | 36 | 6558    | 0.583        | 0.526        | 0.5                          | 42                             | 0.72  | 0.462 | 0.273 | 0.588 | 0.455 | 0.571 |
 
+---
+#### Impacts from Randomizing 
+
+I edited the AB testing scipt to randomize the ordering of patients. The fear was that, by chance, a bandit could stumble upon a series of easy to predict patients (ones where all the models correctly classify) and thereby skew how accurate / good the bandit/model actually is at correctly predicting patient attendance.
+
+I performed all ANOVA comparisions among randomized vs non-randomized ordering of patients for AB testing. All p-values were between .22 and .98
+
+There are No significant differences among win rates for models which had patients were ranomly chosen vs the arbitrary order from camp output.
+
+### Unique Patients 
+
+What are the Most unique Patients?
+
+Due to the binomal nature of classification we need to break Unique into two groups: 
+1. Those patients who attend and No models predict they will attend
+2. Those patients who do NOT attend but All models predict they will attend
+
+There are 245 unique patients among 73,000 tested that would be considered the Most unique
+
+What are the next most unique Patients?
+
+Due to the binomal nature of classification we need to break Unique into two groups: 
+1. Those patients who attend and 1/3 model predicts they will attend
+2. Those patients who do NOT attend and 2/3 models predict they will attend
+
+ 
+
+
+
+
+
 ## Next Steps
 
 
