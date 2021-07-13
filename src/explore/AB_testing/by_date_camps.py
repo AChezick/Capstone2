@@ -19,6 +19,7 @@ This script :
  
 
 from cap_ab_testing import experiment_numerical
+from cap_ab_testing_rand import experiment_numericalR
 import pandas as pd 
 import numpy as np 
 import matplotlib.pyplot as plt  
@@ -140,12 +141,12 @@ def create_df(df, keys): #5/7 Main 'Function for AB pipeline'
             #do_modeling.to_csv('/home/allen/Galva/capstones/capstone2/src/explore/temp_csv/thomps2a.csv') # Help with next phase 
             parser = parse_results(do_modeling)
              
-            do_testing = experiment_numerical( parser,model_bandits )
+            do_testing = experiment_numericalR( parser,model_bandits )
             #print(do_testing , 'This WAS DO Testing ')
             model_check[iD] = do_testing
             # Will then need to update model_bandits 
     patient_resultsz = pd.concat(patient_results)
-    patient_resultsz.to_csv('/home/allen/Galva/capstones/capstone2/src/explore/AB_testing/patient_ab_results5.csv')
+    patient_resultsz.to_csv('/home/allen/Galva/capstones/capstone2/src/explore/AB_testing/patient_ab_resultsR2.csv')
     #######################('/home/allen/Galva/capstone/capstone2/src/explore/AB_testing/ind_mod_results.csv'
 
     return model_check  
@@ -163,7 +164,7 @@ if __name__ == '__main__':
    # step3 = step2.sort(key = lambda x : x[1]) # wont need this for final modeling 
     step3 = create_df(step1 , step2)
     print(step3)
-    file_step3 = open("step3.pkl","wb")
+    file_step3 = open("step5R.pkl","wb")
     pickle.dump(step3,file_step3)
     file_step3.close()
     

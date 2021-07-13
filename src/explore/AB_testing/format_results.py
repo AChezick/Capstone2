@@ -7,13 +7,19 @@
 
 import pandas as pd 
 import numpy as np 
+import itertools as it 
 pd.set_option('display.max_columns', None) 
-
+from scipy.stats import ttest_ind 
+from scipy.stats import f_oneway
 ab_df = pd.read_csv('/home/allen/Galva/capstones/capstone2/data/bandits_1.csv')
 ab_df2 =pd.read_csv('/home/allen/Galva/capstones/capstone2/data/ab2.csv')
 ab2 = pd.read_csv('/home/allen/Documents/ab_results1.txt')
 exp3 = pd.read_csv('/home/allen/Galva/capstones/capstone2/data/data_by_feature/ind_mod_results.csv')
-exp5 = pd.read_csv('/home/allen/Galva/capstones/capstone2/data/data_by_feature/patient_ab_results5.csv')
+x = pd.read_csv('/home/allen/Galva/capstones/capstone2/data/data_by_feature/patient_ab_results5.csv')
+# expR1 = pd.read_csv('/home/allen/Galva/capstones/capstone2/src/explore/AB_testing/patient_ab_resultsR1.csv')
+exp5 = pd.read_csv('/home/allen/Galva/capstones/capstone2/src/explore/AB_testing/patient_ab_resultsR2.csv')
+
+
 s = {
     6578: {0: {'knn': [2.0, 0.65, 3], 'svc': [1.0, 0.22, 2], 'log': [1.0, 0.54, 2]}, 1: {'knn': [2.0, 0.6495000000000001, 4], 'svc': [1.0, 0.2195, 2], 'log': [1.0, 0.5395000000000001, 2]}, 2: {'knn': [2.0, 0.42, 5], 'svc': [1.0, 0.07, 2], 'log': [1.0, 0.09, 2]}, 2835: {'knn': [422.0, 0.2595, 1170], 'svc': [341.0, 0.2695, 981], 'log': [241.0, 0.2795, 691]}}, 6532: {0: {'knn': [1.0, 0.12, 2], 'svc': [2.0, 0.65, 3], 'log': [1.0, 0.22, 2]}, 1: {'knn': [1.0, 0.24, 2], 'svc': [2.0, 0.6495000000000001, 4], 'log': [1.0, 0.2195, 2]}, 2: {'knn': [1.0, 0.29, 2], 'svc': [2.0, 0.42, 4], 'log': [2.0, 0.89, 3]}, 1991: {'knn': [338.0, 0.46, 417], 'svc': [766.0, 0.47, 868], 'log': [629.0, 0.4795, 713]}}, 6543: {0: {'knn': [1.0, 0.1, 2], 'svc': [2.0, 0.82, 3], 'log': [1.0, 0.04, 2]}, 1: {'knn': [1.0, 0.0995, 2], 'svc': [3.0, 0.84, 4], 'log': [1.0, 0.61, 2]}, 2: {'knn': [2.0, 0.46, 3], 'svc': [3.0, 0.07, 4], 'log': [1.0, 0.1, 2]}, 6541: {'knn': [3315.0, 0.48, 3756], 'svc': [1258.0, 0.4595, 1454], 'log': [1146.0, 0.46, 1338]}}, 6580: {0: {'knn': [2.0, 0.05, 3], 'svc': [1.0, 0.01, 2], 'log': [1.0, 0.02, 2]}, 1: {'knn': [2.0, 0.35, 3], 'svc': [1.0, 0.43, 2], 'log': [2.0, 0.84, 3]}, 2: {'knn': [2.0, 0.16, 3], 'svc': [2.0, 0.66, 3], 'log': [2.0, 0.5, 3]}, 3515: {'knn': [1355.0, 0.48, 1472], 'svc': [1126.0, 0.49, 1206], 'log': [781.0, 0.4795, 844]}}, 6570: {0: {'knn': [1.0, 0.03, 2], 'svc': [1.0, 0.33, 3], 'log': [1.0, 0.1, 2]}, 1: {'knn': [2.0, 0.55, 3], 'svc': [1.0, 0.46, 3], 'log': [1.0, 0.18, 2]}, 2: {'knn': [3.0, 0.45, 4], 'svc': [1.0, 0.21, 3], 'log': [1.0, 0.03, 2]}, 3562: {'knn': [1105.0, 0.47, 1210], 'svc': [992.0, 0.46, 1073], 'log': [1191.0, 0.47, 1286]}}, 6542: {0: {'knn': [1.0, 0.56, 2], 'svc': [1.0, 0.08, 2], 'log': [2.0, 0.62, 3]}, 1: {'knn': [1.0, 0.5595000000000001, 2], 'svc': [1.0, 0.16, 2], 'log': [3.0, 0.6195, 4]}, 2: {'knn': [2.0, 0.76, 3], 'svc': [1.0, 0.39, 2], 'log': [3.0, 0.52, 4]}, 2366: {'knn': [865.0, 0.47, 1018], 'svc': [554.0, 0.49, 669], 'log': [588.0, 0.48, 686]}}, 6571: {0: {'knn': [1.0, 0.16, 2], 'svc': [2.0, 0.72, 3], 'log': [1.0, 0.42, 2]}, 1: {'knn': [1.0, 0.47, 2], 'svc': [2.0, 0.7195, 4], 'log': [1.0, 0.63, 2]}, 2: {'knn': [2.0, 0.7, 3], 'svc': [2.0, 0.18, 4], 'log': [1.0, 0.66, 2]}, 2084: {'knn': [766.0, 0.47, 841], 'svc': [644.0, 0.46, 718], 'log': [483.0, 0.48, 532]}}, 6527: {0: {'knn': [1.0, 0.09, 2], 'svc': [1.0, 0.71, 3], 'log': [1.0, 0.16, 2]}, 1: {'knn': [1.0, 0.0895, 2], 'svc': [1.0, 0.7095, 4], 'log': [1.0, 0.1595, 2]}, 2: {'knn': [1.0, 0.78, 3], 'svc': [1.0, 0.06, 4], 'log': [1.0, 0.17, 2]}, 4142: {'knn': [879.0, 0.31, 2127], 'svc': [457.0, 0.29, 1115], 'log': [348.0, 0.27, 907]}}, 6526: {0: {'knn': [2.0, 0.69, 3], 'svc': [1.0, 0.28, 2], 'log': [1.0, 0.07, 2]}, 1: {'knn': [3.0, 0.6895, 4], 'svc': [1.0, 0.2795, 2], 'log': [1.0, 0.56, 2]}, 2: {'knn': [3.0, 0.16, 4], 'svc': [2.0, 0.6, 3], 'log': [1.0, 0.16, 2]}, 3807: {'knn': [1626.0, 0.5, 1677], 'svc': [1294.0, 0.4895, 1340], 'log': [752.0, 0.47, 797]}}, 6539: {0: {'knn': [1.0, 0.58, 3], 'svc': [1.0, 0.58, 2], 'log': [1.0, 0.51, 2]}, 1: {'knn': [1.0, 0.5795, 3], 'svc': [2.0, 0.67, 3], 'log': [1.0, 0.58, 2]}, 2: {'knn': [1.0, 0.05, 3], 'svc': [3.0, 0.64, 4], 'log': [1.0, 0.08, 2]}, 1990: {'knn': [667.0, 0.48, 757], 'svc': [506.0, 0.48, 596], 'log': [567.0, 0.47, 644]}}, 6528: {0: {'knn': [1.0, 0.22, 2], 'svc': [1.0, 0.24, 2], 'log': [1.0, 0.73, 3]}, 1: {'knn': [1.0, 0.2195, 2], 'svc': [1.0, 0.64, 2], 'log': [2.0, 0.7295, 4]}, 2: {'knn': [1.0, 0.32, 2], 'svc': [2.0, 0.43, 3], 'log': [2.0, 0.42, 4]}, 1742: {'knn': [72.0, 0.23, 261], 'svc': [191.0, 0.22, 661], 'log': [262.0, 0.22, 827]}}, 6555: {0: {'knn': [1.0, 0.18, 2], 'svc': [1.0, 0.1, 2], 'log': [1.0, 0.65, 3]}, 1: {'knn': [1.0, 0.58, 2], 'svc': [1.0, 0.55, 2], 'log': [2.0, 0.6495000000000001, 4]}, 2: {'knn': [1.0, 0.37, 2], 'svc': [1.0, 0.49, 3], 'log': [2.0, 0.43, 4]}, 1736: {'knn': [428.0, 0.4, 699], 'svc': [294.0, 0.37, 497], 'log': [348.0, 0.38, 547]}}, 6541: {0: {'knn': [1.0, 0.09, 2], 'svc': [1.0, 0.12, 3], 'log': [1.0, 0.02, 2]}, 1: {'knn': [2.0, 0.38, 3], 'svc': [1.0, 0.38, 3], 'log': [1.0, 0.19, 2]}, 2: {'knn': [2.0, 0.59, 4], 'svc': [1.0, 0.21, 3], 'log': [1.0, 0.27, 2]}, 1545: {'knn': [378.0, 0.3, 870], 'svc': [175.0, 0.2995, 439], 'log': [85.0, 0.3, 243]}}, 6523: {0: {'knn': [1.0, 0.19, 2], 'svc': [1.0, 0.59, 3], 'log': [1.0, 0.24, 2]}, 1: {'knn': [1.0, 0.1895, 2], 'svc': [2.0, 0.5895, 4], 'log': [1.0, 0.33, 2]}, 2: {'knn': [1.0, 0.07, 2], 'svc': [2.0, 0.42, 4], 'log': [1.0, 0.65, 3]}, 2082: {'knn': [342.0, 0.24, 1130], 'svc': [118.0, 0.27, 393], 'log': [164.0, 0.22, 566]}}, 6538: {0: {'knn': [1.0, 0.66, 2], 'svc': [1.0, 0.18, 2], 'log': [2.0, 0.71, 3]}, 1: {'knn': [1.0, 0.6595000000000001, 2], 'svc': [1.0, 0.24, 2], 'log': [2.0, 0.7095, 4]}, 2: {'knn': [1.0, 0.24, 2], 'svc': [2.0, 0.61, 3], 'log': [2.0, 0.31, 4]}, 3952: {'knn': [1206.0, 0.46, 1437], 'svc': [1209.0, 0.46, 1435], 'log': [916.0, 0.45, 1087]}}, 6549: {0: {'knn': [2.0, 0.67, 3], 'svc': [1.0, 0.58, 2], 'log': [1.0, 0.08, 2]}, 1: {'knn': [3.0, 0.6695000000000001, 4], 'svc': [1.0, 0.5795, 2], 'log': [1.0, 0.09, 2]}, 2: {'knn': [3.0, 0.48, 4], 'svc': [2.0, 0.61, 3], 'log': [1.0, 0.15, 2]}, 1833: {'knn': [605.0, 0.42, 854], 'svc': [407.0, 0.4195, 582], 'log': [275.0, 0.41, 404]}}, 6586: {0: {'knn': [1.0, 0.78, 2], 'svc': [1.0, 0.73, 2], 'log': [2.0, 0.8, 3]}, 1: {'knn': [1.0, 0.7795000000000001, 2], 'svc': [1.0, 0.7295, 2], 'log': [2.0, 0.7995000000000001, 4]}, 2: {'knn': [1.0, 0.08, 2], 'svc': [1.0, 0.16, 2], 'log': [3.0, 0.23, 5]}, 2622: {'knn': [1113.0, 0.45, 1410], 'svc': [371.0, 0.42, 513], 'log': [543.0, 0.44, 706]}}, 6554: {0: {'knn': [1.0, 0.06, 2], 'svc': [2.0, 0.3, 3], 'log': [1.0, 0.25, 2]}, 1: {'knn': [1.0, 0.13, 2], 'svc': [3.0, 0.2995, 4], 'log': [1.0, 0.2495, 2]}, 2: {'knn': [1.0, 0.37, 2], 'svc': [3.0, 0.42, 5], 'log': [1.0, 0.13, 2]}, 2301: {'knn': [542.0, 0.4795, 642], 'svc': [818.0, 0.46, 955], 'log': [603.0, 0.4795, 711]}}, 6529: {0: {'knn': [2.0, 0.76, 3], 'svc': [1.0, 0.66, 2], 'log': [1.0, 0.4, 2]}, 1: {'knn': [2.0, 0.7595000000000001, 3], 'svc': [1.0, 0.6595000000000001, 2], 'log': [1.0, 0.79, 3]}, 2: {'knn': [2.0, 0.29, 3], 'svc': [2.0, 0.61, 3], 'log': [1.0, 0.02, 3]}, 3821: {'knn': [1457.0, 0.3595, 2506], 'svc': [543.0, 0.37, 977], 'log': [176.0, 0.35, 345]}}, 6540: {0: {'knn': [1.0, 0.27, 2], 'svc': [1.0, 0.35, 2], 'log': [1.0, 0.49, 3]}, 1: {'knn': [1.0, 0.45, 2], 'svc': [1.0, 0.3495, 2], 'log': [1.0, 0.4895, 4]}, 2: {'knn': [1.0, 0.45, 2], 'svc': [1.0, 0.32, 2], 'log': [2.0, 0.46, 5]}, 1424: {'knn': [494.0, 0.48, 547], 'svc': [515.0, 0.47, 567], 'log': [277.0, 0.43, 317]}}, 6534: {0: {'knn': [1.0, 0.19, 3], 'svc': [1.0, 0.19, 2], 'log': [1.0, 0.08, 2]}, 1: {'knn': [1.0, 0.1895, 3], 'svc': [1.0, 0.1895, 2], 'log': [2.0, 0.34, 3]}, 2: {'knn': [1.0, 0.31, 3], 'svc': [1.0, 0.25, 2], 'log': [2.0, 0.73, 4]}, 3595: {'knn': [643.0, 0.24, 2123], 'svc': [184.0, 0.2195, 640], 'log': [239.0, 0.24, 839]}}, 6535: {0: {'knn': [1.0, 0.03, 2], 'svc': [2.0, 0.71, 3], 'log': [1.0, 0.45, 2]}, 1: {'knn': [1.0, 0.18, 2], 'svc': [3.0, 0.7095, 4], 'log': [1.0, 0.66, 2]}, 2: {'knn': [1.0, 0.38, 2], 'svc': [3.0, 0.38, 4], 'log': [2.0, 0.76, 3]}, 1880: {'knn': [301.0, 0.44, 362], 'svc': [642.0, 0.48, 736], 'log': [690.0, 0.49, 789]}}, 6561: {0: {'knn': [1.0, 0.2, 2], 'svc': [1.0, 0.36, 3], 'log': [1.0, 0.1, 2]}, 1: {'knn': [1.0, 0.1995, 2], 'svc': [2.0, 0.37, 4], 'log': [1.0, 0.36, 2]}, 2: {'knn': [1.0, 0.27, 2], 'svc': [2.0, 0.18, 4], 'log': [1.0, 0.4, 3]}, 198: {'knn': [59.0, 0.38, 92], 'svc': [40.0, 0.29, 65], 'log': [30.0, 0.38, 48]}}, 6585: {0: {'knn': [1.0, 0.0, 2], 'svc': [2.0, 0.06, 3], 'log': [1.0, 0.04, 2]}, 1: {'knn': [1.0, 0.2, 2], 'svc': [2.0, 0.87, 4], 'log': [1.0, 0.13, 2]}, 2: {'knn': [1.0, 0.38, 2], 'svc': [3.0, 0.58, 5], 'log': [1.0, 0.24, 2]}, 1396: {'knn': [484.0, 0.45, 626], 'svc': [362.0, 0.42, 471], 'log': [229.0, 0.44, 306]}}, 6536: {0: {'knn': [1.0, 0.88, 3], 'svc': [1.0, 0.65, 2], 'log': [1.0, 0.52, 2]}, 1: {'knn': [1.0, 0.8795000000000001, 4], 'svc': [1.0, 0.6495000000000001, 2], 'log': [1.0, 0.5195000000000001, 2]}, 2: {'knn': [1.0, 0.13, 4], 'svc': [1.0, 0.33, 3], 'log': [1.0, 0.06, 2]}, 2035: {'knn': [621.0, 0.37, 1083], 'svc': [142.0, 0.33, 288], 'log': [374.0, 0.35, 671]}}, 6562: {0: {'knn': [1.0, 0.23, 2], 'svc': [1.0, 0.08, 2], 'log': [2.0, 0.76, 3]}, 1: {'knn': [1.0, 0.2295, 2], 'svc': [1.0, 0.55, 2], 'log': [3.0, 0.7595000000000001, 4]}, 2: {'knn': [1.0, 0.19, 2], 'svc': [1.0, 0.31, 2], 'log': [4.0, 0.63, 5]}, 2336: {'knn': [860.0, 0.48, 900], 'svc': [642.0, 0.49, 671], 'log': [747.0, 0.49, 772]}}, 6537: {0: {'knn': [1.0, 0.03, 2], 'svc': [2.0, 0.73, 3], 'log': [1.0, 0.36, 2]}, 1: {'knn': [1.0, 0.26, 2], 'svc': [3.0, 0.7295, 4], 'log': [1.0, 0.3595, 2]}, 2: {'knn': [1.0, 0.41, 2], 'svc': [4.0, 0.59, 5], 'log': [1.0, 0.01, 2]}, 3857: {'knn': [1211.0, 0.48, 1379], 'svc': [1196.0, 0.48, 1366], 'log': [972.0, 0.46, 1119]}}, 6581: {0: {'knn': [1.0, 0.03, 2], 'svc': [1.0, 0.08, 2], 'log': [2.0, 0.3, 3]}, 1: {'knn': [2.0, 0.71, 3], 'svc': [1.0, 0.09, 2], 'log': [2.0, 0.52, 3]}, 2: {'knn': [2.0, 0.26, 3], 'svc': [1.0, 0.12, 2], 'log': [3.0, 0.57, 4]}, 1483: {'knn': [623.0, 0.51, 658], 'svc': [412.0, 0.4795, 442], 'log': [364.0, 0.51, 390]}}, 6524: {0: {'knn': [2.0, 0.57, 3], 'svc': [1.0, 0.3, 2], 'log': [1.0, 0.27, 2]}, 1: {'knn': [2.0, 0.5695, 3], 'svc': [1.0, 0.42, 2], 'log': [1.0, 0.64, 3]}, 2: {'knn': [2.0, 0.29, 3], 'svc': [2.0, 0.83, 3], 'log': [1.0, 0.11, 3]}, 147: {'knn': [18.0, 0.4, 32], 'svc': [56.0, 0.4495, 82], 'log': [23.0, 0.3895, 40]}}, 6587: {0: {'knn': [1.0, 0.22, 2], 'svc': [1.0, 0.67, 2], 'log': [1.0, 0.84, 3]}, 1: {'knn': [1.0, 0.2195, 2], 'svc': [1.0, 0.82, 2], 'log': [1.0, 0.8395, 4]}, 2: {'knn': [2.0, 0.65, 3], 'svc': [1.0, 0.1, 2], 'log': [1.0, 0.04, 4]}, 77: {'knn': [17.0, 0.38, 32], 'svc': [15.0, 0.3, 28], 'log': [13.0, 0.2895, 24]}}, 6557: {0: {'knn': [1.0, 0.03,
  2], 'svc': [2.0, 0.1, 3], 'log': [1.0, 0.04, 2]}, 1: {'knn': [1.0, 0.55, 2], 'svc': [3.0, 0.59, 4], 'log': [1.0, 0.39, 2]}, 2: {'knn': [1.0, 0.01, 2], 'svc': [3.0, 0.34, 4], 'log': [1.0, 0.74, 3]}, 50: {'knn': [6.0, 0.29, 16], 'svc': [5.0, 0.34, 22], 'log': [7.0, 0.33, 19]}}, 6546: {0: {'knn': [1.0, 0.29, 2], 'svc': [2.0, 0.39, 3], 'log': [1.0, 0.28, 2]}, 1: {'knn': [1.0, 0.2895, 2], 'svc': [2.0, 0.3895, 3], 'log': [2.0, 0.62, 3]}, 2: {'knn': [2.0, 0.39, 3], 'svc': [2.0, 0.09, 3], 'log': [2.0, 0.3, 3]}, 401: {'knn': [134.0, 0.4895, 140], 'svc': [85.0, 0.4295, 94], 'log': [168.0, 0.52, 174]}}, 6569: {0: {'knn': [1.0, 0.27, 2], 'svc': [1.0, 0.6, 3], 'log': [1.0, 0.28, 2]}, 1: {'knn': [1.0, 0.2695, 2], 'svc': [1.0, 0.5995, 4], 'log': [1.0, 0.35, 2]}, 2: {'knn': [1.0, 0.4, 2], 'svc': [1.0, 0.53, 5], 'log': [1.0, 0.03, 2]}, 175: {'knn': [34.0, 0.31, 85], 'svc': [7.0, 0.28, 31], 'log': [24.0, 0.3295, 66]}}, 6564: {0: {'knn': [1.0, 0.13, 2], 'svc': [1.0, 0.09, 2], 'log': [2.0, 0.32, 3]}, 1: {'knn': [1.0, 0.3, 2], 'svc': [1.0, 0.25, 2], 'log': [2.0, 0.51, 4]}, 2: {'knn': [1.0, 0.11, 2], 'svc': [1.0, 0.47, 2], 'log': [3.0, 0.73, 5]}, 512: {'knn': [162.0, 0.5, 184], 'svc': [176.0, 0.46, 193], 'log': [128.0, 0.48, 142]}}, 6575: {0: {'knn': [1.0, 0.01, 2], 'svc': [1.0, 0.51, 3], 'log': [1.0, 0.51, 2]}, 1: {'knn': [1.0, 0.02, 2], 'svc': [1.0, 0.5095000000000001, 4], 'log': [1.0, 0.5095000000000001, 2]}, 2: {'knn': [1.0, 0.07, 2], 'svc': [2.0, 0.51, 5], 'log': [1.0, 0.14, 2]}, 88: {'knn': [14.0, 0.38, 30], 'svc': [12.0, 0.3, 31], 'log': [15.0, 0.42, 34]}}, 6552: {0: {'knn': [1.0, 0.27, 2], 'svc': [1.0, 0.33, 3], 'log': [1.0, 0.12, 2]}, 1: {'knn': [1.0, 0.64, 3], 'svc': [1.0, 0.44, 3], 'log': [1.0, 0.26, 2]}, 2: {'knn': [1.0, 0.4, 3], 'svc': [1.0, 0.48, 3], 'log': [1.0, 0.55, 3]}, 80: {'knn': [9.0, 0.36, 21], 'svc': [18.0, 0.49, 34], 'log': [16.0, 0.4, 32]}}, 6558: {0: {'knn': [2.0, 0.54, 3], 'svc': [1.0, 0.07, 2], 'log': [1.0, 0.01, 2]}, 1: {'knn': [2.0, 0.5395000000000001, 4], 'svc': [1.0, 0.27, 2], 'log': [1.0, 0.32, 2]}, 2: {'knn': [2.0, 0.2, 4], 'svc': [1.0, 0.31, 2], 'log': [2.0, 0.45, 3]}, 42: {'knn': [18.0, 0.35, 25], 'svc': [6.0, 0.42, 13], 'log': [3.0, 0.12, 11]}}
@@ -73,13 +79,13 @@ def make_df(dct,df):
     log2 = []
 
     for k,v in dct.items():
-        knn2.append(round( v['knn'][0]/v['knn'][2],3)) 
+        knn2.append(round(v['knn'][0]/v['knn'][2],3)) 
         svc2.append(round(v['svc'][0]/v['svc'][2],3) )
         log2.append(round(v['log'][0]/v['log'][2],3) )
     
-    df['knn4'] = knn2
-    df['svc4'] = svc2
-    df['log4'] = log2
+    df['knn6R'] = knn2
+    df['svc6R'] = svc2
+    df['log6R'] = log2
 
 
     # for index,i in enumerate(dct):
@@ -149,39 +155,70 @@ def by_camp():
     for camp_id in exp5['Health_Camp_ID'].unique() :
         get = exp5[exp5['Health_Camp_ID'] == camp_id]
         create_cols = cols(get,lst= ['SVC','knn','log']) # creating new df_with scores
-        surprising_pat_go_HA = create_cols[(create_cols['y_target'] == 1) & (create_cols['score'] == 0 )]
+        surprising_pat_go_HA = create_cols[(create_cols['y_target'] == 1) & (create_cols['score'] == 2 )]
         surprising_pat_go_HO = create_cols[(create_cols['y_target'] == 1) & (create_cols['score'] == 3 )]
         
         results[camp_id] = [('Ho is',len(surprising_pat_go_HO)) ,('Ha is',len(surprising_pat_go_HA))]
         results2[camp_id] = [[surprising_pat_go_HO['Patient_ID'].values] , [surprising_pat_go_HA['Patient_ID'].values]]
-    #print(results2)
-    # for k,v in results.items():
-    #     print(k,v)
+ 
     for camp_id in exp5['Health_Camp_ID'].unique() :
         get = exp5[exp5['Health_Camp_ID'] == camp_id]
         create_cols = cols(get,lst= ['SVC','knn','log']) # creating new df_with scores
         surprising_pat_go_HAz = create_cols[(create_cols['y_target'] == 0) & (create_cols['score'] == 0 )]
-        surprising_pat_go_HOz = create_cols[(create_cols['y_target'] == 0) & (create_cols['score'] == 3 )]
+        surprising_pat_go_HOz = create_cols[(create_cols['y_target'] == 0) & (create_cols['score'] == 1 )]
         
         resultsZ[camp_id] = [('Ho is',len(surprising_pat_go_HOz)) ,('Ha is',len(surprising_pat_go_HAz))]
         results2Z[camp_id] = [[surprising_pat_go_HOz['Patient_ID'].values] , [surprising_pat_go_HAz['Patient_ID'].values]]
+    sup= 0
     for k,v in resultsZ.items():
-        print(k,v)
-    return None 
+        sup += v[1][1]  
+    for k,v in results.items():
+        sup += v[0][1]
+    return sup 
+
+
+def basic():
+    '''
+    -create avg , anova that? , 
+    -do all comparisions for each of the 3 model types , create dict for results 
+
+    '''
+    ans = {}
+
+    knnR = ['knn5R','knn6R']
+    logR = ['log5R','log6R']
+    svcR = ['svc5R','svc6R']
+
+    knn = [ 'Win Rate KNN' , 'knn2' , 'knn3' , 'knn4'] 
+    svc = ['Win Rate SVC', 'svc2','svc3','svc4']
+    log = ['Win Rate Logistic Regression', 'log2','log3','log4']
+    
+    for item in log:
+        for item2 in logR:
+            get = item + item2
+            if get not in ans:
+               a= ab_df2[item].values
+               b= ab_df2[item2].values
+               F,p = f_oneway(a,b)
+               ans[get]= f'F is {F} and p is {p}'
+
+    return ans
 
 
 if __name__ == '__main__':
-    # ab_results4 = pd.read_pickle("step3.pkl")
-     
+    # ab_results4 = pd.read_pickle("step5R.pkl")
+    
     # step1 = combine_results(x=ab_results4  )
     # print(step1)
     # step2 = make_df(step1 , ab_df2)
     # step2 = step2.drop(['Unnamed: 0'], axis=1)
+    
     #step2.to_csv('/home/allen/Galva/capstones/capstone2/data/ab2.csv')
      
     #print(step2) 
+    #print(ab_df2.describe() )
     print(by_camp())
-
+    #print(basic())
 
 '''
 7/9
@@ -191,4 +228,8 @@ Results from exp3 == exp5 for unique patients
 Among Ho / Ha
 -There are MANY patients that DO attend and ALL models Fail to predict they attend #671 for the first Camp 
 -There are FEW patients that do NOT attend and ALL models Fail to predict they wont come #8 for the first Camp
+
+There are No significant differences among win rates for models which had patients ranomly chosen vs the arbirataory order from camp output.
+The fear was that by chance a bandit could stumble upon a series of easy to predict patients (ones where all the models correctly classify)
+and thereby skew how accurate / good the bandit/model actually is at correctly predicting patient attendance.
 '''
