@@ -6,8 +6,12 @@
 
 MedCamp is a non-profit which provides health camps for people in various cities acorss America.  MedCamp was having challenges maintaining their operations due to excessive operational expense. 
 
-#### Goal
+#### Goal 1
 Help MedCamp reduce wasteful spending AND maintain quality experiences of attendees by accurately predicting who will and will not attend a health-fare events. 
+
+
+#### Goal 2
+Conduct AB testing to determine which model would have performed best in 'real time'
 
 --- 
 
