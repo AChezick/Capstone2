@@ -1,7 +1,5 @@
 # Are you going? I am not sure 
-
-
-
+![]( https://github.com/AChezick/Capstone2/blob/main/images/images2/confused%20world.jpg )
 # ... Lets think about it
 
 
