@@ -276,6 +276,8 @@ However, I am confident that these scores can improve by using a grid search and
 
 *Under construction
 
+*While AB testing is not the most direct method to compare models IT IS a valuable learning experience for implementing production code.
+
 My plan is to conduct a mock analysis of 'model predictions' had they been actually implemented. Essentially, 'What if' MedCamp used previous camp data to train models for each camp individually and sequentially?
 
 
