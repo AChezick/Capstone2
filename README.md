@@ -2,7 +2,7 @@
 ![]( https://github.com/AChezick/Capstone2/blob/main/images/images2/confused%20world.jpg )
 # ... Lets think about it
 
-#Real Cool Heading 
+# Real Cool Heading 
 
 MedCamp is a non-profit which provides health camps for people in various cities acorss America.  MedCamp was having challenges maintaining their operations due to excessive operational expense. 
 
