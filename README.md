@@ -2,7 +2,7 @@
 ![]( https://github.com/AChezick/Capstone2/blob/main/images/images2/confused%20world.jpg )
 # ... Lets think about it
 
-
+#Real Cool Heading 
 
 MedCamp is a non-profit which provides health camps for people in various cities acorss America.  MedCamp was having challenges maintaining their operations due to excessive operational expense. 
 
@@ -97,7 +97,7 @@ train.zip contains 6 different csv files apart from the data dictionary as descr
 
 ---
 
-
+#real-cool-heading 
 
 ## EDA
 
@@ -376,7 +376,7 @@ Due to the binomal nature of classification we need to break Unique into two gro
 
  
 
-
+[Go to Real Cool Heading section](#real-cool-heading) 
 
 
 
