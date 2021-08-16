@@ -1,13 +1,15 @@
 # Are you going? I am not sure 
 ![]( https://github.com/AChezick/Capstone2/blob/main/images/images2/confused%20world.jpg )
-# ... Lets think about it
+### ... Lets think about it
 
 ---
-### Table of Contents
+## Table of Contents
 
-[Go to Results](#results) 
+[Go to Description](#kaggle-description) 
 
 [Go to EDA](#eda) 
+
+[Go to Need for Feature Engineering](#need-for-feature-engineering)
 
 [Go to Modeling](#modeling)
 
@@ -387,8 +389,6 @@ Due to the binomal nature of classification we need to break Unique into two gro
 2. Those patients who do NOT attend and 2/3 models predict they will attend
 
  
-
-[Go to Results](#results) 
 
 
 
