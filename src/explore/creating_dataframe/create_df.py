@@ -127,7 +127,7 @@ def to_date(concat1):
     concat1['First_Interaction'] = pd.to_datetime(concat1['First_Interaction'], format="%d-%b-%y")
 
     concat1['Camp_length'] = concat1['Camp_End_Date'] - concat1['Camp_Start_Date']
-    #print(concat1.shape , 'main_df.shape ********************************************')
+    print(concat1.shape , 'main_df.shape ********************************************')
     return concat1  
 
 def to_date_patient(patient): # might not need since its already attached to each patient in the concat1 df
@@ -141,7 +141,7 @@ if __name__ == '__main__':
     impute_citi = impute_city( patient )
     impute_jobs = impute_Job(impute_citi)
     impute_online = impute_online_score(impute_jobs)
-    print(impute_online.head(20))
+    
    
     #patient2 = make_target_patient(patient)
 
@@ -155,6 +155,7 @@ if __name__ == '__main__':
  
     dated = to_date(concat1) # dates for all 20,555 patient_attends 
     dated_patient = to_date_patient(impute_online ) 
+    print(dated_patient.info())
     # d1,d2,d3 = {},{},{}
     # for i in dated['Age'].values:
     #     if i not in d1:
@@ -178,7 +179,7 @@ if __name__ == '__main__':
 
 
 
-    dated.to_csv('/home/allen/Galva/capstones/capstone2/data/attends_df.csv', index=False) # as at 10am 12/22 dec21.csv is all patients
-    dated_patient.to_csv('/home/allen/Galva/capstones/capstone2/data/patient_dec24.csv', index=False)
+    #dated.to_csv('/home/allen/Galva/capstones/capstone2/data/attends_df.csv', index=False) # as at 10am 12/22 dec21.csv is all patients
+    #dated_patient.to_csv('/home/allen/Galva/capstones/capstone2/data/patient_dec24.csv', index=False)
 
  

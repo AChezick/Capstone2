@@ -1,15 +1,17 @@
+'''
+This the Object oriented programming code that wrangles the files into the testing format
+'''
+
+
+
 import pandas as pd 
 import numpy as np 
 pd.set_option('display.max_columns', None) 
 
-
-
-
-
 class Create_DF:
 
-    def __init__(self ): #name
-        #self.name = name 
+    def __init__(self ): 
+        
         self.patient = pd.read_csv('/home/allen/Galva/capstones/capstone2/data/Train/Patient_Profile.csv') 
         self.event1 = pd.read_csv('/home/allen/Galva/capstones/capstone2/data/Train/First_Health_Camp_Attended.csv')
         self.event2 = pd.read_csv('/home/allen/Galva/capstones/capstone2/data/Train/Second_Health_Camp_Attended.csv')
@@ -20,7 +22,9 @@ class Create_DF:
 
     def impute_city(self):
         '''
-        Edit column for City_Type, impute missing values
+        Input: patient.csv (patient_DataFrame), camp & location dictionary (D7.csv)
+        Action: imputes missing location values 
+        Output: patient_DataFrame 
         '''
         
         for i in self.df_city['City_Type'].values:
@@ -34,7 +38,10 @@ class Create_DF:
 
     def impute_Job(self ):
         '''
-        Edit column for City_Type, impute missing values
+        Input: patient_DataFrame
+        Action: imputes the value '9999' for 'Employer_Category'
+        Output: patient_DataFrame
+        
         '''
         self.patient['Employer_Category'] = self.patient['Employer_Category'].astype(str)
         
@@ -49,21 +56,28 @@ class Create_DF:
 
          
         self.patient['Job Type'] = self.to_change_
- 
+        print(self.patient.info())
         return self.patient  
 
     def impute_online_score(self ):
         '''
-        Create Column for sum of all Online Shares 
+        Input: patient_DataFrame
+        Action: Create a new column 'Online_score' for each patient 
+        Output: patient_DataFrame
+         
         '''
-        #sum col values in certain columns across each individual row
+        
         self.online_score = self.patient['LinkedIn_Shared'] + self.patient['Facebook_Shared'] + self.patient['Twitter_Shared'] + self.patient['Online_Follower'] 
         self.patient['online_score'] = self.online_score 
         return self.patient
 
+    
+
     def make_target(self):
         ''' 
-
+        Input: event1,event2,event3 DataFrames
+        Action: Impute y_target for model prediction based on patient attendance 
+        Output: event DataFrames
         '''
         
         self.event1['y_target'] = self.event1['Health_Score'].apply(lambda x:1 if x >0 else 0)
@@ -74,7 +88,9 @@ class Create_DF:
 
     def make_primary_key(self):
         '''
-        *Better way to do this ?!? 
+        Input: event1,event2,event3 DataFrames
+        Action: create a primary key from patient_event 
+        Output: event DataFrames
         '''
     
         self.event1.Patient_ID = self.event1.Patient_ID.astype(int)
@@ -104,7 +120,10 @@ class Create_DF:
 
     def combine_info(self):
         '''
-        Merge patient info with Health_Camp_Detail
+        Input: event1,event2,event3, patient_DataFrame  
+        Action: Merge patient_DataFrame with health camp events  
+        Output: event DataFrames with patient_info columns 
+    
         '''
         self.patient_copy = self.patient.copy() 
         self.patient_copy.Patient_ID = self.patient_copy.Patient_ID.astype(str)
@@ -116,7 +135,9 @@ class Create_DF:
 
     def merge_patient_camps(self):
         '''
-        
+        Input:  event_dataFrame, camp_information_DataFrame
+        Action: Use primary key to merge camp_information & event_DataFrame
+        Output: Data Frame with all camp_info, patient_info, & health camp specifics 
         '''
         self.camp_info_copy = self.camp_info.copy() 
         self.camp_info_copy.Health_Camp_ID = self.camp_info_copy.Health_Camp_ID.astype(str)
@@ -129,27 +150,39 @@ class Create_DF:
 
     def combine_all_camps(self):
         '''
-        merge all 3 camps into single
+        Input: The combo dataframes
+        Action: Concat all 3 camps DataFrames into single DataFrame 
+        Output: Concatted DataFrame        
         '''
         self.all_camps = pd.concat([self.combined_df1,self.combined_df2,self.combined_df3])
+
         return self.all_camps
 
     def impute_dates(self):
         '''
+        Input:
+        Action:
+        Output:
         Convert date columns to date_time & create Length of event feature 
         '''
-        # print(self.all_camps['Camp_Start_Date'].values)
-        # self.all_camps['Camp_Start_Date'] = self.all_camps['Camp_Start_Date'].fillna('10-may-93', inplace=True)
-        # self.all_camps['Camp_End_Date'] = self.all_camps['Camp_End_Date'].fillna('10-may-93', inplace=True)
-        # self.all_camps['First_Interaction'] = self.all_camps['First_Interaction'].fillna('10-may-93', inplace=True)
          
         self.all_camps['Camp_Start_Date'] = pd.to_datetime(self.all_camps['Camp_Start_Date'], format="%d-%b-%y") 
         self.all_camps['Camp_End_Date'] = pd.to_datetime(self.all_camps['Camp_End_Date'], format="%d-%b-%y")
         self.all_camps['First_Interaction'] = pd.to_datetime(self.all_camps['First_Interaction'], format="%d-%b-%y")
 
         self.all_camps['Camp_length'] = self.all_camps['Camp_End_Date'] - self.all_camps['Camp_Start_Date']
-        
+        print(self.all_camps.shape)
         return self.all_camps
+
+    def to_date_patient(self):  
+        '''    
+        Input:
+        Action:
+        Output:
+        Convert date column in patient DF
+        '''
+        self.patient['First_Interaction'] = pd.to_datetime(self.patient['First_Interaction'], format="%d-%b-%y")
+        return self.patient 
 
 if __name__ == '__main__':
      
@@ -162,11 +195,7 @@ if __name__ == '__main__':
     impute_citi.combine_info()
     impute_citi.merge_patient_camps()
     impute_citi.combine_all_camps()
-    df_check = impute_citi.impute_dates()
+    impute_citi.impute_dates()
+    df_check = impute_citi.to_date_patient() 
     print(df_check.info())
 
-
-'''
-8/11/21
--Need to disentangle the two main data frames(csv files) being worked on
-'''
