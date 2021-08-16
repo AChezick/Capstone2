@@ -6,9 +6,12 @@
 ### Table of Contents
 
 [Go to Results](#results) 
+
 [Go to EDA](#eda) 
 
+[Go to Modeling](#modeling)
 
+[Go to AB Testing](#ab-testing)
 
 
 
@@ -281,7 +284,7 @@ However, I am confident that these scores can improve by using a grid search and
 
 ---
 
-# ~ AB Testing in /src
+# AB Testing  
 
 *Under construction
 
