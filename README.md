@@ -5,6 +5,13 @@
 ---
 ### Table of Contents
 
+[Go to Results](#results) 
+[Go to EDA](#eda) 
+
+
+
+
+
 ---
 
 MedCamp is a non-profit which provides health camps for people in various cities acorss America.  MedCamp was having challenges maintaining their operations due to excessive operational expense. 
@@ -99,8 +106,7 @@ train.zip contains 6 different csv files apart from the data dictionary as descr
 | 510954     | 6528           | 2                       | 2                         |
 
 ---
-
-#real-cool-heading 
+ 
 
 ## EDA
 
