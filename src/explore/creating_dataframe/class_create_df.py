@@ -12,13 +12,19 @@ class Create_DF:
 
     def __init__(self ): 
         
-        self.patient = pd.read_csv('/home/allen/Galva/capstones/capstone2/data/Train/Patient_Profile.csv') 
-        self.event1 = pd.read_csv('/home/allen/Galva/capstones/capstone2/data/Train/First_Health_Camp_Attended.csv')
-        self.event2 = pd.read_csv('/home/allen/Galva/capstones/capstone2/data/Train/Second_Health_Camp_Attended.csv')
-        self.event3 = pd.read_csv('/home/allen/Galva/capstones/capstone2/data/Train/Third_Health_Camp_Attended.csv')
-        self.camp_info = pd.read_csv('/home/allen/Galva/capstones/capstone2/data/Health_Camp_Detail.csv')
-        self.df_city = pd.read_csv('/home/allen/Galva/capstones/capstone2/data/D7.csv') 
+        self.patient = pd.read_csv('/home/allen/RIP_Tensor1/capstone2/Capstone2/data/Train/Patient_Profile.csv') 
+        self.event1 = pd.read_csv('/home/allen/RIP_Tensor1/capstone2/Capstone2/data/Train/First_Health_Camp_Attended.csv')
+        self.event2 = pd.read_csv('/home/allen/RIP_Tensor1/capstone2/Capstone2/data/Train/Second_Health_Camp_Attended.csv')
+        self.event3 = pd.read_csv('/home/allen/RIP_Tensor1/capstone2/Capstone2/data/Train/Third_Health_Camp_Attended.csv')
+        self.camp_info = pd.read_csv('/home/allen/RIP_Tensor1/capstone2/Capstone2/data/Health_Camp_Detail.csv')
+        self.df_city = pd.read_csv('/home/allen/RIP_Tensor1/capstone2/Capstone2/data/D7.csv') 
         self.dict_of_cities = {} 
+        self.train = pd.read_csv('/home/allen/RIP_Tensor1/capstone2/Capstone2/data/Train/Train.csv')
+        self.test = pd.read_csv('/home/allen/RIP_Tensor1/capstone2/Capstone2/data/Train/test.csv')
+        self.attends_df = pd.read_csv('/home/allen/RIP_Tensor1/capstone2/Capstone2/data/attends_df.csv')
+
+
+
 
     def impute_city(self):
         '''
@@ -56,7 +62,7 @@ class Create_DF:
 
          
         self.patient['Job Type'] = self.to_change_
-        print(self.patient.info())
+         
         return self.patient  
 
     def impute_online_score(self ):
@@ -184,7 +190,97 @@ class Create_DF:
         self.patient['First_Interaction'] = pd.to_datetime(self.patient['First_Interaction'], format="%d-%b-%y")
         return self.patient 
 
-if __name__ == '__main__':
+    def impute_missing_camp_info(self):
+        '''
+        Input:
+        Action:
+        Output:
+        Map categorical information from Health_Camp file to Main df by Camp_ID
+        '''
+        self.camp_info.Category1 = self.camp_info.Category1.astype(str)
+        self.camp_info.Category2 = self.camp_info.Category2.astype(str)
+        self.camp_info.Category3 = self.camp_info.Category3.astype(str)
+
+        self.camp_ID = self.camp_info['Health_Camp_ID'].values
+        self.cat1_vals = self.camp_info['Category1'].values
+        self.cat2_vals = self.camp_info['Category2'].values
+        self.cat3_vals = self.camp_info['Category3'].values
+        self.cat3_vals2 = [x+'100' for x in self.cat3_vals]
+
+        self.cat1d = list(zip(self.camp_ID, self.cat1_vals))  
+        self.cat2d = list(zip(self.camp_ID, self.cat2_vals)) 
+        self.cat3d = list(zip(self.camp_ID, self.cat3_vals2))
+
+        self.cd1 = {k:v for (k,v) in self.cat1d}
+        self.cd2 = {k:v for (k,v) in self.cat2d}
+        self.cd3 = {k:v for (k,v) in self.cat3d}
+
+        self.train['Category1'] = self.train['Health_Camp_ID'].map(self.cd1)
+        self.train['Category2'] = self.train['Health_Camp_ID'].map(self.cd2)
+        self.train['Category3'] = self.train['Health_Camp_ID'].map(self.cd3)
+
+        self.test['Category1'] = self.test['Health_Camp_ID'].map(self.cd1)
+        self.test['Category2'] = self.test['Health_Camp_ID'].map(self.cd2)
+        self.test['Category3'] = self.test['Health_Camp_ID'].map(self.cd3)
+
+        return self.train , self.test
+
+    def impute_missing_dates(self):
+        ''' 
+        Input:
+        Action:
+        Output:
+        Merge Camp_Info features with train/test dataframes via mapping
+        '''
+        
+        self.camp_info['Camp_Start_Date'] = pd.to_datetime(self.camp_info['Camp_Start_Date'])
+        self.camp_info['Camp_End_Date'] = pd.to_datetime(self.camp_info['Camp_End_Date'])
+
+        self.cci = self.camp_info['Health_Camp_ID'].values
+        self.cco = self.camp_info['Camp_Start_Date'].values 
+        self.ccc = self.camp_info['Camp_End_Date'].values 
+
+        self.bla , self.blah2 = list(zip(self.cci,self.cco)) ,list(zip(self.cci,self.ccc))
+        self.dict_of_dates , self.dict_of_dates2 = {k:v for (k,v) in self.bla} , {k:v for (k,v) in self.blah2}
+
+        self.train['Camp_Start_Date2'] = self.train['Health_Camp_ID'].map(self.dict_of_dates)
+        self.train['Camp_End_Date2'] =  self.train['Health_Camp_ID'].map(self.dict_of_dates2)
+
+        self.test['Camp_Start_Date2'] = self.test['Health_Camp_ID'].map(self.dict_of_dates)
+        self.test['Camp_End_Date2'] =  self.test['Health_Camp_ID'].map(self.dict_of_dates2)
+
+        return  self.train , self.test
+
+
+    def create_primary_key(self):
+        '''
+        Input: 
+        Action:
+        Output:
+        Create a primary key for each patient from their ID and Camp_Info
+        '''
+        self.train.Patient_ID = self.train.Patient_ID.astype(int)
+        self.train.Health_Camp_ID = self.train.Health_Camp_ID.astype(int)
+
+        self.test.Patient_ID = self.test.Patient_ID.astype(int)
+        self.test.Health_Camp_ID = self.test.Health_Camp_ID.astype(int)
+
+        self.train.Patient_ID = self.train.Patient_ID.astype(str)
+        self.train.Health_Camp_ID = self.train.Health_Camp_ID.astype(str)
+
+        self.test.Patient_ID = self.test.Patient_ID.astype(str)
+        self.test.Health_Camp_ID = self.test.Health_Camp_ID.astype(str)
+
+        self.train['patient_event'] = self.train["Patient_ID"] + self.train['Health_Camp_ID']
+        self.test['patient_event'] = self.test["Patient_ID"] + self.test['Health_Camp_ID']
+
+
+        return self.train , self.test
+
+
+
+
+if __name__ == '__main__': 
      
     impute_citi = Create_DF(  ) #name
     impute_citi.impute_city( )
@@ -196,6 +292,11 @@ if __name__ == '__main__':
     impute_citi.merge_patient_camps()
     impute_citi.combine_all_camps()
     impute_citi.impute_dates()
-    df_check = impute_citi.to_date_patient() 
-    print(df_check.info())
+    impute_citi.to_date_patient() 
+    impute_citi.impute_missing_camp_info()
+    impute_citi.impute_missing_dates()
+    df_check = impute_citi.create_primary_key()
+    print(df_check[0].info())
 
+
+#df_check = patient_df / patient_dec24.csv
