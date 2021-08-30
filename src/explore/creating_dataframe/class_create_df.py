@@ -277,6 +277,58 @@ class Create_DF:
 
         return self.train , self.test
 
+    def patient_merging(self):
+        '''
+        Input: 
+        Action:
+        Output:
+        Merge train and Patient_info on Patient_ID
+        '''
+        self.train_=self.train.copy()
+        self.test_=self.test.copy()
+        self.patient_copy2  =self.patient.copy()
+
+        self.train_['Patient_ID'] = self.train['Patient_ID'].astype(int)
+        self.test_['Patient_ID'] = self.test['Patient_ID'].astype(int) 
+        
+        self.test = pd.merge(self.test_, self.patient_copy2 , how='outer',on='Patient_ID')
+        self.train = pd.merge(self.train_, self.patient_copy2 , how='outer',on='Patient_ID')
+        return self.train , self.test 
+
+    def to_date(self):
+        '''
+        Input: 
+        Action:
+        Output:
+        
+        Impute missing column values for Employer_Category
+        '''
+        self.train['Registration_Date'].fillna('10-may-93', inplace=True) 
+        self.test['Registration_Date'].fillna('10-may-93', inplace=True) 
+
+        return self.train , self.test
+
+    # def merger(self):
+    #     '''
+    #     -Merge train and attendance dataframes
+    #     -Remove overlap and NA values
+    #     '''  
+    #     self.attends_df_ = self.attends_df.copy() 
+    #     self.attends_df_= self.attends_df_.drop([
+    #     'LinkedIn_Shared', 'Twitter_Shared', 'Facebook_Shared', 'Income',
+    #     'Education_Score', 'Age', 'First_Interaction', 'City_Type', 'Camp_Start_Date',
+    #     'Employer_Category',   'online_score', 'Camp_End_Date',
+    #     'Donation', 'Health_Score', 'Unnamed: 4', 'Health_Camp_ID'], axis=1) 
+    #     dataframe['patient_event']= dataframe.patient_event.fillna(0)
+    #     dataframe.patient_event = dataframe.patient_event.astype(int)
+    #     attends_df_.patient_event = attends_df_.patient_event.astype(int)
+
+    #     dataframe = pd.merge(dataframe, attends_df_ ,how='outer', on='patient_event')
+    #     dataframe['y_target'] = dataframe['y_target'].replace(to_replace = 'None', value=np.nan).fillna(0)
+    #     x_ = dataframe[dataframe['patient_event'].notna()]
+        
+    #     return x_
+
 
 
 
@@ -295,7 +347,9 @@ if __name__ == '__main__':
     impute_citi.to_date_patient() 
     impute_citi.impute_missing_camp_info()
     impute_citi.impute_missing_dates()
-    df_check = impute_citi.create_primary_key()
+    impute_citi.create_primary_key()
+    impute_citi.patient_merging()
+    df_check = impute_citi.to_date()
     print(df_check[0].info())
 
 
