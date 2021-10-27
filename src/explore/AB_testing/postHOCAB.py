@@ -36,14 +36,14 @@ import matplotlib.pyplot as plt
 from sklearn.datasets import make_classification
 from sklearn.feature_selection import RFECV
 # from preprocessing import drop_cols , one_hot_encoding , scale   #5/20 trying to use the pre_format file
-import xgboost as xgb   
-from xgboost import XGBClassifier 
+# import xgboost as xgb   
+# from xgboost import XGBClassifier 
 from sklearn.metrics import mean_squared_error
 
 from preprocessing_formatting import drop_cols , drop_cols_specific, one_hot_encoding , scale , scale2    
 #from city_testing import run_test_typeC
 import itertools as it 
-dataframe = pd.read_csv('/home/allen/Galva/capstones/capstone2/src/explore/temp_csv/ab_df.csv')
+dataframe = pd.read_csv('/home/allen/RIP_Tensor1/capstone2/Capstone2/src/explore/ab_df.csv') 
 # deleting columns that mess with svc - which are words.
 # del dataframe['Job Type_x']
 # del dataframe['Category 1']

@@ -1,12 +1,12 @@
 import pandas as pd 
 import numpy as np 
-import seaborn as sns
+#import seaborn as sns
 pd.set_option('display.max_columns', None) 
-train = pd.read_csv('/home/allen/Galva/capstones/capstone2/data/Train/Train.csv')
-test = pd.read_csv('/home/allen/Galva/capstones/capstone2/data/Train/test.csv')
-attends_df = pd.read_csv('/home/allen/Galva/capstones/capstone2/data/attends_df.csv')
-patient_df = pd.read_csv('/home/allen/Galva/capstones/capstone2/data/patient_dec24.csv')
-camp_info = pd.read_csv('/home/allen/Galva/capstones/capstone2/data/Health_Camp_Detail.csv')
+train = pd.read_csv('/home/allen/RIP_Tensor1/capstone2/Capstone2/data/Train/Train.csv')
+test = pd.read_csv('/home/allen/RIP_Tensor1/capstone2/Capstone2/data/Train/test.csv')
+attends_df = pd.read_csv('/home/allen/RIP_Tensor1/capstone2/Capstone2/data/attends_df.csv')
+patient_df = pd.read_csv('/home/allen/RIP_Tensor1/capstone2/Capstone2/data/patient_dec24.csv')
+camp_info = pd.read_csv('/home/allen/RIP_Tensor1/capstone2/Capstone2/data/Health_Camp_Detail.csv')
 
 def impute_camp_info(dataframe):
     '''
@@ -64,8 +64,6 @@ def combine(x):
 
     x['patient_event'] =  x['Patient_ID'] + x['Health_Camp_ID'] 
     x.patient_event = x.patient_event.astype(int)
-
-
 
     return x ##  
 
@@ -192,16 +190,21 @@ if __name__ == '__main__':
     train_dated , test_dated = to_date(train_concat) , to_date(test_concat)
 
     train_merge ,test_merge = merger(train_dated), merger(test_dated)
+    
+
+
     droped_train, droped_test = drop_cols(train_merge), drop_cols(test_merge)
     
     train_final, test_final = impute_missing_vals(droped_train), impute_missing_vals(droped_test)
     train_final2, test_final2 = keep_ints(train_final) , keep_ints(test_final)
-    
-    checker = train_final2[train_final2['Health_Camp_ID'].notnull()]
-    #print(checker.info(), checker.describe())
-    #checker_  = convert_date_part2(checker) #, convert_date_part2(test_final2)
-    checker_5421 = checker
-    checker_5421.to_csv('/home/allen/Galva/capstones/capstone2/data/placeholder/df_withdates.csv')
+    print(train_final2.info(), test_final2.info())
+    # checker = train_final2[train_final2['Health_Camp_ID'].notnull()]
+    # #print(checker.info(), checker.describe())
+    # #checker_  = convert_date_part2(checker) #, convert_date_part2(test_final2)
+    # checker_5421 = checker
+    # checker_5421.to_csv('/home/allen/Galva/capstones/capstone2/data/placeholder/df_withdates.csv')
+
+
     # checker["Camp Start Date - Registration Date"] = checker['delta_first_reg']
     # checker[ "Registration Date - First Interaction"] = checker['interaction_regreister_delta']
     # checker["Camp Start Date - First Interaction"]=checker['delta_first_start']

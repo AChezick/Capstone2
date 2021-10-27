@@ -7,7 +7,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 scaler =  StandardScaler()
 pd.set_option('display.max_columns', None) 
-df1 = pd.read_csv('/home/allen/Galva/capstones/capstone2/data/ready12_24_train.csv') 
+df1 = pd.read_csv('/home/allen/RIP_Tensor1/capstone2/Capstone2/data/ready12_24_train.csv') 
 df=df1.copy() 
 
 def drop_cols(df):

@@ -25,13 +25,12 @@ import numpy as np
 import matplotlib.pyplot as plt  
 from preprocessing_formatting import drop_cols , one_hot_encoding , scale
 from postHOCAB import run_tests 
-import pickle 
-
+import pickle, csv 
 pd.set_option('display.max_columns', None) 
-dataframe = pd.read_csv('/home/allen/Galva/capstones/capstone2/src/explore/temp_csv/ab_df.csv') 
-ids = pd.read_csv('/home/allen/Galva/capstones/capstone2/src/explore/testing/x1.csv')
-df_withdates = pd.read_csv('/home/allen/Galva/capstones/capstone2/data/placeholder/df_withdates.csv') 
-df_blank = pd.read_csv('/home/allen/Galva/capstones/capstone2/data/ready12_24_train.csv') 
+dataframe = pd.read_csv('/home/allen/RIP_Tensor1/capstone2/Capstone2/src/explore/ab_df.csv') 
+#ids = pd.read_csv('/home/allen/RIP_Tensor1/capstone2/Capstone2/src/explore/testing/x1.csv')
+df_withdates = pd.read_csv('/home/allen/RIP_Tensor1/capstone2/Capstone2/data/placeholder/df_withdates.csv') 
+df_blank = pd.read_csv('/home/allen/RIP_Tensor1/capstone2/Capstone2/data/ready12_24_train.csv') 
 
 def edit_df():
     '''
@@ -160,17 +159,38 @@ if __name__ == '__main__':
      
     #step1.to_csv('/home/allen/Galva/capstone/capstone2/src/explore/AB_testing/for_ab_modeling.csv')
     step2 = sep_by_date(step1)
-    
+    with open('cfc', 'w') as 
+    lst_to_dct.to_csv('/home/allen/RIP_Tensor1/capstone2/Capstone2/src/explore/AB_testing/sep_camps_lst.csv')
    # step3 = step2.sort(key = lambda x : x[1]) # wont need this for final modeling 
-    step3 = create_df(step1 , step2)
-    print(step3)
-    file_step3 = open("step5R.pkl","wb")
-    pickle.dump(step3,file_step3)
-    file_step3.close()
+    # step3 = create_df(step1 , step2)
+    # print(step3)
+    # file_step3 = open("step5R.pkl","wb")
+    # pickle.dump(step3,file_step3)
+    # file_step3.close()
     
 #     #for item in step3: # For each camp to predict and the camps to train for that prediction 
 #         # send item through create_df 
 #        # print(item)
+
+'''
+Notes
+10-23 | saving pickle to make AB OOP
+'''
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 '''
