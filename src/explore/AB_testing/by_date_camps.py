@@ -17,6 +17,7 @@ This script :
 4. Bandit (the models) probabilities are updated as they are played 
 '''
  
+# Testing adding an extra line for PR 
 
 from cap_ab_testing import experiment_numerical
 from cap_ab_testing_rand import experiment_numericalR
