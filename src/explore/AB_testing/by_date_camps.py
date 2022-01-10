@@ -74,10 +74,6 @@ def sep_by_date(df_encode):
         if camp_id not in unique:
             unique[camp_id] = (start, end)
 
-    for camp_id in camp_ids:
-        if camp_id not in d_time:
-            d_time[camp_id] = ['NA']
-
     d_time = {camp_id: ['NA'] for camp_id in camp_ids}
 
     for camp_id, v in unique.items():
