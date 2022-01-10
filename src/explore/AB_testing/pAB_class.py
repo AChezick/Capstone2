@@ -44,44 +44,40 @@ class ABmodeling:
 
     def __init__(self): #df_passed1
         # self.df1 = df_passed1 [] How to initlize a passed data frame to this class <?> 
-        self.df = pd.read_csv('/home/allen/RIP_Tensor1/capstone2/Capstone2/src/explore/ab_df.csv')
-        self.df1 = pd.read_csv('/home/allen/RIP_Tensor1/capstone2/Capstone2/src/explore/ab_df.csv')
+        #self.df = pd.read_csv('/home/allen/RIP_Tensor1/capstone2/Capstone2/src/explore/ab_df.csv')
+        self.df_1 = pd.read_csv('/home/allen/RIP_Tensor1/capstone2/Capstone2/src/explore/ab_df.csv')
+        self.df_encode = self.df_1.drop(['Unnamed: 0', 'Unnamed: 0.1','City_Type2_x','Job Type_x','Category 2','Category 3','Category 1', 'online_score', 'Start','End'],axis=1) 
+        self.df1,self.df2 = self.df_encode.copy() , self.df_encode.copy() 
 
-        # self.df_encode1 = self.df.drop(['City_Type2_x','Job Type_x','Category 2','Category 3','Category 1', 'online_score', 'Start','End'],axis=1) 
-        # self.df1,self.df2 = self.df_encode1.copy() , self.df_encode1.copy() 
-        # self.ans ={}
-        self.df_encode1 = self.df1.drop(['City_Type2_x','Job Type_x','Category 2','Category 3','Category 1', 'online_score', 'Start','End'],axis=1) 
-        self.df1,self.df2 = self.df_encode1.copy() , self.df_encode1.copy() 
-        #self.test_df = self.df1[self.df1['Health_Camp_ID'] == 6585 ]
-        for index,item in enumerate([(6544, ['NA', 6530, 6560]) , (6561, ['NA', 6530, 6560, 6544]), (6585, ['NA', 6530, 6560, 6544])]): 
+        #self.test_df = self.df1[self.df1['Health_Camp_ID'] == 6585 ] # trying to consolidate or treat error 
+
+        for index,item in enumerate([ (6585, ['NA', 6530, 6560, 6544])]): #[ (6544, ['NA', 6530, 6560]) , (6561, ['NA', 6530, 6560, 6544]), ]
             if len(item[1]) <=1: #
                 break
         else:
             iD = item[0] # Camp_ID
             camps = item[1][1:] #list of camps for training 
 
-            self.test_df1 = self.df1[self.df1['Health_Camp_ID'] == iD ]  
-            self.train_df = self.df2.loc[self.df2['Health_Camp_ID'].isin(camps)  ]  
+            self.test_df_0 = self.df1[self.df1['Health_Camp_ID'] == iD ]  
+            self.train_df_0 = self.df2.loc[self.df2['Health_Camp_ID'].isin(camps)  ]  
             
-        self.test_dfl , self.train_dfl = self.test_df1.copy() , self.train_df.copy()
-        self.test_dfk , self.train_dfk = self.test_df1.copy() , self.train_df.copy()
+            self.test_df_1 , self.train_df_1 = self.test_df_0.copy() , self.train_df_0.copy()
+            
 
 
     def run_tests(self ):
         '''
         get dfs, make copies, run tests , combine_results, send back for AB testing
         '''
-        self.final_df = self.test_df.copy() 
-        print(self.final_df.columns , 'these are the columns currently being modeled other than  [Health_Camp_ID]/Patient_ID] ')
-        self.test_df1 , self.train_df1 = self.test_df.copy() , self.train_df.copy() 
-  
-        get_L =  beta.run_test_typeL()
-        get_k = beta.run_test_typek() 
+        
+        #print(self.final_df.columns , 'these are the columns currently being modeled other than  [Health_Camp_ID]/Patient_ID] ')
+        self.final_df = self.test_df_0.copy() 
+        get_results =  beta.run_test_typeL()
 
-        self.final_df['log'] = get_L['predictionL']
-        self.final_df['log_proba'] = get_L['probaL']
-        self.final_df['kmean'] = get_k['predictionK']
-        self.final_df['k_proba'] = get_k['probaK']
+        self.final_df['log'] = get_results['predictionL']
+        self.final_df['log_proba'] = get_results['probaL']
+        self.final_df['kmean'] = get_results['predictionK']
+        self.final_df['k_proba'] = get_results['probaK']
 
         return self.final_df
 
@@ -89,20 +85,29 @@ class ABmodeling:
         '''
         run knn for post hoc - analysis 
         '''
-        self.train_y = self.train_dfl['y_target'].values #getting y_target values for test & train
-        # test_y = test_dfl['y_target'].values 
+        self.train_y = self.train_df_1['y_target'].values #getting y_target values for test & train
+        self.test_y = self.test_df_1['y_target'].values # y values for testing 
 
-        del self.train_dfl['y_target'] #deleting values 
-        del self.test_dfl['y_target']
 
-        df_train = self.train_dfl
-        df_test = self.test_dfl
+
+        df_train = self.train_df_1   #setting data frame to variable for logistic model
+        df_test = self.test_df_1 #setting data frame to variable for logistic model
+
+
+        df_trainK = self.train_df_1 #setting data frame to variable for logistic model
+        df_testK = self.test_df_1 #setting data frame to variable for logistic model
         
-        del df_train['Health_Camp_ID'] 
-        del df_test['Health_Camp_ID']  
+        del df_trainK['Health_Camp_ID'] 
+        del df_testK['Health_Camp_ID']  
 
         del df_train['Patient_ID'] 
         del df_test['Patient_ID'] 
+
+        # del df_train['y_target'] #deleting values 
+        # del df_test['y_target']
+        # del df_trainK['y_target'] #deleting values 
+        # del df_testK['y_target']
+
         
         w = {0:65, 1:35} 
         logmodelx = LogisticRegression(penalty='l2', dual=False, tol=1e-4, C=1.0, 
@@ -113,12 +118,19 @@ class ABmodeling:
 
         pure_probaz = logmodelx.predict_proba(df_test) 
         predictionsz = logmodelx.predict(df_test)
-        preds2x = predictionsz >= .3
+        # preds2x = predictionsz >= .3
 
+        knn = KNeighborsClassifier(n_neighbors=7)
+        knn.fit(df_train,self.train_y)
+        knn_preds = knn.predict(df_test)
+        knn_proba = knn.predict_proba(df_test) 
+
+        df_test['predictionK'] = knn_preds
+        df_test['probaK'] = knn_proba[ :,1]   
 
         df_test['predictionL'] = predictionsz   
         df_test['probaL'] =  pure_probaz[:,-1]     
-        #df_test['predictionL2']  = preds2x  
+         
         return df_test 
 
     def run_test_typek(self):
@@ -128,8 +140,8 @@ class ABmodeling:
         traink_y = self.train_dfk['y_target'].values #getting y_target values for test & train
         testk_y = self.test_dfk['y_target'].values 
 
-        del self.train_dfk['y_target'] #deleting values 
-        del self.test_dfk['y_target']
+       # del self.train_dfk['y_target'] #deleting values 
+      #  del self.test_dfk['y_target']
 
         traink_y = traink_y 
         testk_y = testk_y
@@ -138,8 +150,8 @@ class ABmodeling:
         df_test = self.test_dfk
         
         #might need to delete / edit DF
-        del df_train['Health_Camp_ID'] 
-        del df_test['Health_Camp_ID']  
+       # del df_train['Health_Camp_ID'] 
+       # del df_test['Health_Camp_ID']  
 
         del df_train['Patient_ID'] 
         del df_test['Patient_ID'] 
@@ -162,7 +174,7 @@ if __name__ =='__main__':
 
     beta = ABmodeling( )
     checkl = beta.run_test_typeL()
-    checkk = beta.run_test_typek()
+    #checkk = beta.run_test_typek()
     check2 = beta.run_tests()
     print(check2)
 
@@ -184,4 +196,14 @@ each declared global within __init__ but the local functions are not able find t
 
 10-24-21
 --did some renaming ,there is an error, just figure out how to pass
+
+11-4-21
+--Seems like the class would be better if I dont have individual functions for each model
+--trying to do all modeling in one function.
+11-9-21
+--KeyError: 'y_target' is current issue. 
+OR
+--KeyError: 'Health_Camp_ID'
+
+
 '''
