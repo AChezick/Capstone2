@@ -17,23 +17,34 @@ This script :
 4. Bandit (the models) probabilities are updated as they are played 
 '''
  
-# Testing adding an extra line for PR 
-
-from cap_ab_testing import experiment_numerical
-from cap_ab_testing_rand import experiment_numericalR
+from enum import Enum
+import logging
 import pandas as pd 
 import numpy as np 
 import matplotlib.pyplot as plt  
+import pickle, csv 
+
+from cap_ab_testing import experiment_numerical
+from cap_ab_testing_rand import experiment_numericalR
 from preprocessing_formatting import drop_cols , one_hot_encoding , scale
 from postHOCAB import run_tests 
-import pickle, csv 
-pd.set_option('display.max_columns', None) 
-dataframe = pd.read_csv('/home/allen/RIP_Tensor1/capstone2/Capstone2/src/explore/ab_df.csv') 
-#ids = pd.read_csv('/home/allen/RIP_Tensor1/capstone2/Capstone2/src/explore/testing/x1.csv')
-df_withdates = pd.read_csv('/home/allen/RIP_Tensor1/capstone2/Capstone2/data/placeholder/df_withdates.csv') 
-df_blank = pd.read_csv('/home/allen/RIP_Tensor1/capstone2/Capstone2/data/ready12_24_train.csv') 
 
-def edit_df():
+pd.set_option('display.max_columns', None) 
+
+DATAFRAME_AB = '/home/allen/RIP_Tensor1/capstone2/Capstone2/src/explore/ab_df.csv'
+DATAFRAME_WITHDATES = '/home/allen/RIP_Tensor1/capstone2/Capstone2/data/placeholder/df_withdates.csv'
+DATAFRAME_BLANK = '/home/allen/RIP_Tensor1/capstone2/Capstone2/data/ready12_24_train.csv'
+
+_LOGGER = logging
+
+
+class CampColumns(Enum):
+    START_DATE2 = 'Camp_Start_Date2'
+    END_DATE2 = 'Camp_End_Date2'
+    CAMP_ID = 'Health_Camp_ID'
+
+
+def edit_df(df):
     '''
     5/20 
     This is being edited since new csv was made. 
@@ -41,9 +52,12 @@ def edit_df():
     to_del =  [ 'Unnamed: 0', 'Unnamed: 0.1',
     '1352', '1704', '1729', '2517', '2662', '23384',  '2100', '1036', '1216', '1217',
     'City_Type2_x','Job Type_x','Category 2','Category 3','Category 1', 'online_score']
-    df = dataframe.drop(to_del,axis=1) 
+    df = df.drop(to_del,axis=1) 
+    _LOGGER.info("datframe edited containing columns {}".format(df.columns))
     print(df.columns) 
+
     return df
+
 
 def sep_by_date(df_encode):
     '''
@@ -51,30 +65,32 @@ def sep_by_date(df_encode):
     actions = Create dict of camp_IDs, compare each start date to end_date
     create tupple of camp_ID and other Campsz that end before camp_ID starts (IDs that can be used for model training)
     '''
-    start = df_withdates['Camp_Start_Date2'].values
-    end = df_withdates['Camp_End_Date2'].values
-    camp_id = df_encode['Health_Camp_ID'].values 
-    unique={}
+    start_dates = df_withdates[CampColumns.START_DATE2.value].values
+    end_dates = df_withdates[CampColumns.END_DATE2.value].values
+    camp_ids = df_encode[CampColumns.CAMP_ID.value].values 
+    unique = {}
     d_time = {}
-    for item in list(zip(start,end, camp_id)):
-        if item not in unique:
-            unique[item[2]] =item
+    for start, end, camp_id in zip(start_dates, end_dates, camp_ids):
+        if camp_id not in unique:
+            unique[camp_id] = (start, end)
 
-    for item in camp_id:
-        if item not in d_time:
-            d_time[item] = ['NA']
+    for camp_id in camp_ids:
+        if camp_id not in d_time:
+            d_time[camp_id] = ['NA']
 
-    for k,v in unique.items():
-        
+    d_time = {camp_id: ['NA'] for camp_id in camp_ids}
+
+    for camp_id, v in unique.items():
         start = v[0]
         end = v[1]
-        for kk,vv in unique.items():
+        for camp_id2, vv in unique.items():
             start2 = vv[0]
             end2 = vv[1]
             if start > end2: # check if start date camp_1 is after end date camp_2
-                d_time[k].append(kk)
+                d_time[camp_id].append(camp_id2)
 
-    ans = [(k,v) for k,v in d_time.items() ] 
+    ans = list(d_time.items())
+
     return ans
 
 
@@ -102,8 +118,8 @@ def parse_results(df):
     df_['c'] = df['log'] 
     #df_['d'] = df['SVC2'] 
     # print(df_.head(2))
-    return df_ 
-     
+    return df_      
+
 
 def create_df(df, keys): #5/7 Main 'Function for AB pipeline' 
     '''
@@ -121,7 +137,7 @@ def create_df(df, keys): #5/7 Main 'Function for AB pipeline'
     df1 = df.copy()
     df2 = df.copy() 
                 # ={  'svc':[1.0, .5, 2 ]   'avg':[1.0, .5, 2 ]}
-    model_bandits ={'knn':[1.0, .5, 2 ], 'svc':[1.0, .5, 2 ] , 'log': [1.0, .5, 2 ]} #, 'svc2':[1.0, .5, 2 ]
+    model_bandits = {'knn':[1.0, .5, 2 ], 'svc':[1.0, .5, 2 ] , 'log':[1.0, .5, 2 ]} #, 'svc2':[1.0, .5, 2 ]
     model_check = {} #Del this line eventually / EXCHANGE FOR making pickle files 
     win_rates = [v[2] for k,v in model_bandits.items()]
 
@@ -133,15 +149,15 @@ def create_df(df, keys): #5/7 Main 'Function for AB pipeline'
             iD = item[0] # Camp_ID
             camps = item[1][1:] #list of camps for training 
 
-            test_df = df1[df1['Health_Camp_ID'] == iD ]  
-            train_df = df2.loc[ df2['Health_Camp_ID'].isin(camps)  ]  
+            test_df = df1[df1[CampColumns.CAMP_ID.value] == iD]  
+            train_df = df2.loc[df2[CampColumns.CAMP_ID.value].isin(camps)]  
              
             do_modeling = run_tests(test_df,train_df) # This should be parsed before sending to do_testing
             patient_results.append(do_modeling) 
             #do_modeling.to_csv('/home/allen/Galva/capstones/capstone2/src/explore/temp_csv/thomps2a.csv') # Help with next phase 
             parser = parse_results(do_modeling)
              
-            do_testing = experiment_numericalR( parser,model_bandits )
+            do_testing = experiment_numericalR(parser, model_bandits)
             #print(do_testing , 'This WAS DO Testing ')
             model_check[iD] = do_testing
             # Will then need to update model_bandits 
@@ -152,11 +168,14 @@ def create_df(df, keys): #5/7 Main 'Function for AB pipeline'
     return model_check  
 
 
-
-
 if __name__ == '__main__':
+
+    dataframe = pd.read_csv(DATAFRAME_AB) 
+    #ids = pd.read_csv('/home/allen/RIP_Tensor1/capstone2/Capstone2/src/explore/testing/x1.csv')
+    df_withdates = pd.read_csv(DATAFRAME_WITHDATES) 
+    df_blank = pd.read_csv(DATAFRAME_BLANK) 
     #print(ids.head(), ids.columns)
-    step1 = edit_df()
+    step1 = edit_df(dataframe)
      
     #step1.to_csv('/home/allen/Galva/capstone/capstone2/src/explore/AB_testing/for_ab_modeling.csv')
     step2 = sep_by_date(step1)
