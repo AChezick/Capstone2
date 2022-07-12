@@ -308,7 +308,7 @@ Steps in Experiment:
 
 Steps for modified Thompson Sampling:
 
-I modified the traditional Thompson Sampling in favor for a numerical solution. Rather than explictely using the[ beta ](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.beta.html), a small penality ( - 0.5%) was imposed if a bandit is chosen AND the Beta was greater than the actual rate for that model. In a different experiment using different bandits this method acheived a modest improvement over using the exact Beta. I plan on conducting the same experiment for this data set. Results comming soon.
+I modified the traditional Thompson Sampling in favor for a numerical solution. Rather than explictely using the[ beta ](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.beta.html), a small penality ( - 0.5%) was imposed if a bandit is chosen AND the Beta was greater than the actual rate for that model. In a different experiment using different bandits this method acheived a modest improvement over using the exact Beta. I plan on conducting the same experiment for this data set a few more times. Results comming soon.
 
 Below is a graph showing what Beta was chosen and how it compares to that bandit's current win rate
 
@@ -398,6 +398,7 @@ Due to the binomal nature of classification we need to break Unique into two gro
 
 
 Question to ponder:
+- How similar was my approach to the recent google [ research ](https://storage.googleapis.com/pub-tools-public-publication-data/pdf/9b9bc5315b20c1bc7ea90946376190672eb1921e.pdf) 
 - Is there conflicting data within and among camp locations? 
 --As in patient A has values 1,1,1 for characteristics ABC, and does NOT attend and patient B has 1,1,1 for characteristics ABC, and DOES attend? Thinking about this as permutations there would be 2^N different ways for each binary outcome.
 
